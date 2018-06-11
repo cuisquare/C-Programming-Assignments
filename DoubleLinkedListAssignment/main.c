@@ -174,6 +174,7 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel) {
 
 void PrintMenu() {
 	printf("Double Linked List Program");
+	printf("Please choose from the following options : ");
 }
 
 /////////////////
