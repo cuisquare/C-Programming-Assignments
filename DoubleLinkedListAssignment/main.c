@@ -27,7 +27,10 @@ typedef struct header {
 	struct listitem *last;
 } HEADER;
 
-int ErrorInt = 99;
+//error status given if integer not in range for menu items
+int MenuOutOfRangeError = 99;
+//continues looping through menu after invalid menu choice 1 - or not
+int ContinueDefault = 1;
 
 ////////////////
 //END TYPEDEFS//
@@ -237,11 +240,11 @@ int getIntValue(int *errstatus) {
 	choice = strtol(charinput, &garbagestring, 10);
 	/*printf("Your choice was : %d!\n", choice);
 	PressEnterToContinue();*/
-	printf("charinput = %s; invalidinput = %s", charinput, garbagestring);
+	//printf("charinput = %s; invalidinput = %s", charinput, garbagestring);
 	//input is invalid if the invalid part of input is equal to the whole input
 	invalidinput = (garbagestring == charinput);
 	if (invalidinput) {
-		printf("charinput = %s; invalidinput = %s, the input was invalid.", charinput, garbagestring);
+		printf("invalidinput = %s, the input was invalid.", garbagestring);
 		*errstatus = 0;
 	}
 	else {
@@ -255,10 +258,11 @@ int getMenuChoice(int *errstatus) {
 	printf("Menu choice : ");
 	int output = getIntValue(errstatus);
 	printf("\n");
-	//catching additional error that the input it outside of range allowed for menu choices
-	if ((output<0)||(output>8)) {
-		output = ErrorInt;
-		*errstatus = 99;
+	//catching additional error that the input it outside of range allowed for menu choices even though input is integer
+	if (errstatus == 1) {
+		if ((output<0) || (output>8)) {
+			*errstatus = MenuOutOfRangeError;
+		}
 	}
 	return output;
 }
@@ -384,11 +388,12 @@ int main() {
 	do {
 		PrintMenu();
 		choice = getMenuChoice(&errstatus);
-		if (errstatus != 0) {
+		if (errstatus == 1) {
 			head = carryOutChoice(head, choice);
 		}
 		else {
 			printf("Incorrect Input. Only allowed inputs are integers 0-8.\n");
+			choice = ContinueDefault;
 			PressEnterToContinue();
 		}
 	} while (choice != 0);
