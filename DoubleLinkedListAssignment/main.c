@@ -260,29 +260,24 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 	switch (choice) {
 		case 0:
 			printf("Exiting Program.\n");
-			PressEnterToContinue();
 			break;
 		case 1:
 			printf("Input Single Value to Insert:  ");
 			head = InsertElementForwardByVal(head, getIntValue());
 			printf("Value Inserted.\n");
-			PressEnterToContinue();
 			break;
 		case 2:
 			printf("Input Single Value to Delete:  ");
 			head = DeleteElementByVal(head, getIntValue());
 			printf("Value Deleted.\n");
-			PressEnterToContinue();
 			break;
 		case 3:
 			PrintList(head); 
 			printf("List Printed.\n");
-			PressEnterToContinue();
 			break;
 		case 4:
 			head = CreateEmptyList();
 			printf("List Cleared.\n");
-			PressEnterToContinue();
 			break;
 		case 5:
 			printf("Input Number of Values to Insert:  ");
@@ -292,7 +287,6 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 				head = InsertElementForwardByVal(head, getIntValue());
 			} 
 			printf("Input of values to insert over.\n");
-			PressEnterToContinue();
 			break;
 		case 6:
 			printf("Input Number of Values to Delete:  ");
@@ -302,7 +296,6 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 				head = DeleteElementByVal(head, getIntValue());
 			}
 			printf("Input of values to be deleted over.\n");
-			PressEnterToContinue();
 			break;
 		case 7:
 			printf("Input Start of Range - inclusive - to Insert:  ");
@@ -314,7 +307,6 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 				head = InsertElementForwardByVal(head, i);
 			}
 			printf("Range to be Inserted Defined.\n");
-			PressEnterToContinue();
 			break;
 		case 8:
 			printf("Input Start of Range - inclusive - to Delete:  ");
@@ -326,9 +318,9 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 				head = DeleteElementByVal(head, i);
 			}
 			printf("Range to be Deleted Defined.\n");
-			PressEnterToContinue();
 			break;
 	}
+	PressEnterToContinue();
 	return head;
 }
 
