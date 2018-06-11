@@ -172,18 +172,7 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel) {
 	return head;
 }
 
-void PrintMenu() {
-	printf("Double Linked List Program");
-	printf("Please choose from the following options : ");
-}
-
-/////////////////
-//END FUNCTIONS//
-/////////////////
-
-
-
-int main() {
+void TestProgram() {
 	HEADER* head = CreateEmptyList();
 	PrintList(head);
 	head = InsertElementForwardByVal(head, 7);
@@ -217,6 +206,45 @@ int main() {
 	printf("Press ENTER to continue.\n");
 
 	getchar();
+}
+
+void PrintMenu() {
+	system("cls");
+	printf("*****Double Linked List Program*****\n");
+	printf("Please choose from the following options : \n");
+	printf("	1 : Print List\n");
+	printf("	2 : Insert Value In List\n");
+	printf("	3 : Delete Value From List\n");
+	printf("	0 : Exit Program\n");
+}
+
+int getMenuChoice() {
+	char charinput[20];
+	scanf("%1s", &charinput);
+	int output = atoi(charinput);
+	/*printf("Your choice was : %d!\n", output);
+	int c;
+	do {
+		c = getchar();
+	} while (c != '\n' && c != EOF);
+	printf("Press ENTER to continue.\n");
+	getchar();*/
+	return output;
+}
+
+/////////////////
+//END FUNCTIONS//
+/////////////////
+
+
+
+int main() {
+	int choice;
+
+	do {
+		PrintMenu();
+		choice = getMenuChoice();
+	} while (choice != 0);
 
 	return 0;
 }
