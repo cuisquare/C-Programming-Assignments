@@ -225,16 +225,6 @@ void PrintMenu() {
 	printf("	0 : Exit Program\n");
 }
 
-int getMenuChoice() {
-	printf("Menu choice : ");
-	int output = getIntValue();
-	printf("\n");
-	if ((output<0)||(output>8)) {
-		output = ErrorInt;
-	}
-	return output;
-}
-
 // gets input from keyboard and convert to integer
 int getIntValue() {
 	char charinput[10];
@@ -243,6 +233,16 @@ int getIntValue() {
 	/*printf("Your choice was : %d!\n", choice);
 	PressEnterToContinue();*/
 	return choice;
+}
+
+int getMenuChoice() {
+	printf("Menu choice : ");
+	int output = getIntValue();
+	printf("\n");
+	if ((output<0)||(output>8)) {
+		output = ErrorInt;
+	}
+	return output;
 }
 
 //flushes buffer and wait for getchar to resume
