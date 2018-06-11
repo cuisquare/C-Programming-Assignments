@@ -106,7 +106,7 @@ LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val) {
 //Inserts an Element in forward order based on its value, updating branching
 HEADER* InsertElementForwardByVal(HEADER* head, int valtoins) {
 	LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
-	printf("Attemping to insert elt with value %d...\n", valtoins);
+	//printf("Attemping to insert elt with value %d...\n", valtoins);
 	if (nextelt == NULL) {
 		//there is no element in list greater than the one to insert. 
 		//Therefore : Insert Element at End
@@ -265,17 +265,24 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		case 1:
 			printf("Input Single Value to Insert:  ");
 			head = InsertElementForwardByVal(head, getIntValue());
+			printf("Value Inserted.\n");
+			PressEnterToContinue();
 			break;
 		case 2:
 			printf("Input Single Value to Delete:  ");
 			head = DeleteElementByVal(head, getIntValue());
+			printf("Value Deleted.\n");
+			PressEnterToContinue();
 			break;
 		case 3:
 			PrintList(head); 
+			printf("List Printed.\n");
 			PressEnterToContinue();
 			break;
 		case 4:
 			head = CreateEmptyList();
+			printf("List Cleared.\n");
+			PressEnterToContinue();
 			break;
 		case 5:
 			printf("Input Number of Values to Insert:  ");
@@ -306,6 +313,8 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 			for (int i = RangeStartForIns; i<RangeEndForIns; i++) {
 				head = InsertElementForwardByVal(head, i);
 			}
+			printf("Range to be Inserted Defined.\n");
+			PressEnterToContinue();
 			break;
 		case 8:
 			printf("Input Start of Range - inclusive - to Delete:  ");
@@ -316,6 +325,8 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 			for (int i = RangeStartForDel; i<RangeEndForDel; i++) {
 				head = DeleteElementByVal(head, i);
 			}
+			printf("Range to be Deleted Defined.\n");
+			PressEnterToContinue();
 			break;
 	}
 	return head;
