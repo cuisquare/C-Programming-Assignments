@@ -226,21 +226,39 @@ void PrintMenu() {
 }
 
 // gets input from keyboard and convert to integer
-int getIntValue() {
+int getIntValue(int *errstatus) {
 	char charinput[10];
+	char *garbagestring;
+	bool invalidinput = 1;
+	int choice;
+
 	scanf_s("%9s", &charinput, 9);
-	int choice = atoi(charinput);
+	//int choice = atoi(charinput);
+	choice = strtol(charinput, &garbagestring, 10);
 	/*printf("Your choice was : %d!\n", choice);
 	PressEnterToContinue();*/
+	printf("charinput = %s; invalidinput = %s", charinput, garbagestring);
+	//input is invalid if the invalid part of input is equal to the whole input
+	invalidinput = (garbagestring == charinput);
+	if (invalidinput) {
+		printf("charinput = %s; invalidinput = %s, the input was invalid.", charinput, garbagestring);
+		*errstatus = 0;
+	}
+	else {
+		*errstatus = 1;
+	}
+
 	return choice;
 }
 
-int getMenuChoice() {
+int getMenuChoice(int *errstatus) {
 	printf("Menu choice : ");
-	int output = getIntValue();
+	int output = getIntValue(errstatus);
 	printf("\n");
+	//catching additional error that the input it outside of range allowed for menu choices
 	if ((output<0)||(output>8)) {
 		output = ErrorInt;
+		*errstatus = 99;
 	}
 	return output;
 }
@@ -257,19 +275,33 @@ void PressEnterToContinue() {
 
 //Carry out choice from user input
 HEADER* carryOutChoice(HEADER* head, int choice) {
+	int errstatus;
+	int inputval;
 	switch (choice) {
 		case 0:
 			printf("Exiting Program.\n");
 			break;
 		case 1:
 			printf("Input Single Value to Insert:  ");
-			head = InsertElementForwardByVal(head, getIntValue());
-			printf("Value Inserted.\n");
+			inputval = getIntValue(&errstatus);
+			if (errstatus == 1) {
+				head = InsertElementForwardByVal(head, inputval);
+				printf("Value Inserted.\n");
+			}
+			else {
+				printf("Input error. No value Inserted.\n");
+			}
 			break;
 		case 2:
 			printf("Input Single Value to Delete:  ");
-			head = DeleteElementByVal(head, getIntValue());
-			printf("Value Deleted.\n");
+			inputval = getIntValue(&errstatus);
+			if (errstatus == 1) {
+				head = DeleteElementByVal(head, inputval);
+				printf("Value Deleted.\n");
+			}
+			else {
+				printf("Input error. No value Deleted.\n");
+			}
 			break;
 		case 3:
 			PrintList(head); 
@@ -281,28 +313,40 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 			break;
 		case 5:
 			printf("Input Number of Values to Insert:  ");
-			int NbValToInsert = getIntValue();
+			int NbValToInsert = getIntValue(&errstatus);
 			for (int i=0; i<NbValToInsert ;i++) {
 				printf("Input Value %d / %d: ", i+1 , NbValToInsert);
-				head = InsertElementForwardByVal(head, getIntValue());
+				inputval = getIntValue(&errstatus);
+				if (errstatus == 1) {
+					head = InsertElementForwardByVal(head, inputval);
+				}
+				else {
+					printf("\nInput error. Value will not be inserted.\n");
+				}
 			} 
 			printf("Input of values to insert over.\n");
 			break;
 		case 6:
 			printf("Input Number of Values to Delete:  ");
-			int NbValToDelete = getIntValue();
+			int NbValToDelete = getIntValue(&errstatus);
 			for (int i = 0; i<NbValToDelete; i++) {
 				printf("Value To Be Deleted %d / %d: ", i + 1, NbValToDelete);
-				head = DeleteElementByVal(head, getIntValue());
+				inputval = getIntValue(&errstatus);
+				if (errstatus == 1) {
+					head = DeleteElementByVal(head, inputval);
+				}
+				else {
+					printf("\nInput error. No value will be deleted.\n");
+				}
 			}
 			printf("Input of values to be deleted over.\n");
 			break;
 		case 7:
 			printf("Input Start of Range - inclusive - to Insert:  ");
-			int RangeStartForIns = getIntValue();
+			int RangeStartForIns = getIntValue(&errstatus);
 			printf("\n");
 			printf("Input End of Range - exclusive - to Insert:  ");
-			int RangeEndForIns = getIntValue();
+			int RangeEndForIns = getIntValue(&errstatus);
 			for (int i = RangeStartForIns; i<RangeEndForIns; i++) {
 				head = InsertElementForwardByVal(head, i);
 			}
@@ -310,10 +354,10 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 			break;
 		case 8:
 			printf("Input Start of Range - inclusive - to Delete:  ");
-			int RangeStartForDel = getIntValue();
+			int RangeStartForDel = getIntValue(&errstatus);
 			printf("\n");
 			printf("Input End of Range - exclusive - to Delete:  ");
-			int RangeEndForDel = getIntValue();
+			int RangeEndForDel = getIntValue(&errstatus);
 			for (int i = RangeStartForDel; i<RangeEndForDel; i++) {
 				head = DeleteElementByVal(head, i);
 			}
@@ -336,10 +380,11 @@ int main() {
 	HEADER* head = CreateEmptyList();
 
 	int choice;
+	int errstatus;
 	do {
 		PrintMenu();
-		choice = getMenuChoice();
-		if (choice != ErrorInt) {
+		choice = getMenuChoice(&errstatus);
+		if (errstatus != 0) {
 			head = carryOutChoice(head, choice);
 		}
 		else {
