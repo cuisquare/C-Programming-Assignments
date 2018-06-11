@@ -259,7 +259,7 @@ int getMenuChoice(int *errstatus) {
 	int output = getIntValue(errstatus);
 	printf("\n");
 	//catching additional error that the input it outside of range allowed for menu choices even though input is integer
-	if (errstatus == 1) {
+	if (*errstatus == 1) {
 		if ((output<0) || (output>8)) {
 			*errstatus = MenuOutOfRangeError;
 		}
