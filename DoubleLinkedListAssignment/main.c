@@ -27,6 +27,8 @@ typedef struct header {
 	struct listitem *last;
 } HEADER;
 
+int ErrorInt = 99;
+
 ////////////////
 //END TYPEDEFS//
 ////////////////
@@ -46,9 +48,9 @@ void PrintList(HEADER* head) {
 	if (!IsEmptyList(head)) {
 		LISTITEM* temp = head->first;
 		int i = 0;
-		int NMax = 50; // avoiding infinite loop
+		int NMax = 100; // avoiding infinite loop
 		while (i < NMax) {
-			printf("Val number %d = %d\n", i, temp->val);
+			printf("Val number %d = %d\n", i+1, temp->val);
 			if (temp == head->last) {
 				break;
 			}
@@ -141,14 +143,14 @@ HEADER* InsertElementForwardByVal(HEADER* head, int valtoins) {
 			nextelt->bck = newelt; //branches next element back to new element 
 		}
 	}
-	printf("Updated List: \n");
-	PrintList(head);
+	//printf("Updated List: \n");
+	//PrintList(head);
 	return head;
 }
 
 //Deletes One Element with value val, updating branching
 HEADER* DeleteElementByVal(HEADER* head, int valtodel) {
-	printf("Attemping to delete elt with value %d...\n", valtodel);
+	//printf("Attemping to delete elt with value %d...\n", valtodel);
 	LISTITEM* elttodel = GetSmallestGreaterEltByVal(head, valtodel);
 	if ((elttodel == NULL) || (elttodel->val != valtodel))
 	{
@@ -167,8 +169,8 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel) {
 		}
 		free(elttodel); //free memory previously held by elttodel
 	}
-	printf("Updated List: \n");
-	PrintList(head);
+	//printf("Updated List: \n");
+	//PrintList(head);
 	return head;
 }
 
@@ -212,25 +214,113 @@ void PrintMenu() {
 	system("cls");
 	printf("*****Double Linked List Program*****\n");
 	printf("Please choose from the following options : \n");
-	printf("	1 : Print List\n");
-	printf("	2 : Insert Value In List\n");
-	printf("	3 : Delete Value From List\n");
+	printf("	1 : Insert Value In List\n");
+	printf("	2 : Delete Value From List\n");
+	printf("	3 : Print List\n");
+	printf("	4 : Clear List\n");
+	printf("	5 : Input Multiple values in List\n");
+	printf("	6 : Delete Multiple values in List\n");
+	printf("	7 : Input Range in List\n");
+	printf("	8 : Delete Range in List\n");
 	printf("	0 : Exit Program\n");
 }
 
 int getMenuChoice() {
-	char charinput[20];
-	scanf("%1s", &charinput);
-	int output = atoi(charinput);
-	/*printf("Your choice was : %d!\n", output);
+	printf("Menu choice : ");
+	int output = getIntValue();
+	printf("\n");
+	if ((output<0)||(output>8)) {
+		output = ErrorInt;
+	}
+	return output;
+}
+
+// gets input from keyboard and convert to integer
+int getIntValue() {
+	char charinput[10];
+	scanf_s("%9s", &charinput, 9);
+	int choice = atoi(charinput);
+	/*printf("Your choice was : %d!\n", choice);
+	PressEnterToContinue();*/
+	return choice;
+}
+
+//flushes buffer and wait for getchar to resume
+void PressEnterToContinue() {
 	int c;
 	do {
 		c = getchar();
 	} while (c != '\n' && c != EOF);
 	printf("Press ENTER to continue.\n");
-	getchar();*/
-	return output;
+	getchar();
 }
+
+//Carry out choice from user input
+HEADER* carryOutChoice(HEADER* head, int choice) {
+	switch (choice) {
+		case 0:
+			printf("Exiting Program.\n");
+			PressEnterToContinue();
+			break;
+		case 1:
+			printf("Input Single Value to Insert:  ");
+			head = InsertElementForwardByVal(head, getIntValue());
+			break;
+		case 2:
+			printf("Input Single Value to Delete:  ");
+			head = DeleteElementByVal(head, getIntValue());
+			break;
+		case 3:
+			PrintList(head); 
+			PressEnterToContinue();
+			break;
+		case 4:
+			head = CreateEmptyList();
+			break;
+		case 5:
+			printf("Input Number of Values to Insert:  ");
+			int NbValToInsert = getIntValue();
+			for (int i=0; i<NbValToInsert ;i++) {
+				printf("Input Value %d / %d: ", i+1 , NbValToInsert);
+				head = InsertElementForwardByVal(head, getIntValue());
+			} 
+			printf("Input of values to insert over.\n");
+			PressEnterToContinue();
+			break;
+		case 6:
+			printf("Input Number of Values to Delete:  ");
+			int NbValToDelete = getIntValue();
+			for (int i = 0; i<NbValToDelete; i++) {
+				printf("Value To Be Deleted %d / %d: ", i + 1, NbValToDelete);
+				head = DeleteElementByVal(head, getIntValue());
+			}
+			printf("Input of values to be deleted over.\n");
+			PressEnterToContinue();
+			break;
+		case 7:
+			printf("Input Start of Range - inclusive - to Insert:  ");
+			int RangeStartForIns = getIntValue();
+			printf("\n");
+			printf("Input End of Range - exclusive - to Insert:  ");
+			int RangeEndForIns = getIntValue();
+			for (int i = RangeStartForIns; i<RangeEndForIns; i++) {
+				head = InsertElementForwardByVal(head, i);
+			}
+			break;
+		case 8:
+			printf("Input Start of Range - inclusive - to Delete:  ");
+			int RangeStartForDel = getIntValue();
+			printf("\n");
+			printf("Input End of Range - exclusive - to Delete:  ");
+			int RangeEndForDel = getIntValue();
+			for (int i = RangeStartForDel; i<RangeEndForDel; i++) {
+				head = DeleteElementByVal(head, i);
+			}
+			break;
+	}
+	return head;
+}
+
 
 /////////////////
 //END FUNCTIONS//
@@ -239,11 +329,20 @@ int getMenuChoice() {
 
 
 int main() {
-	int choice;
 
+	HEADER* head = CreateEmptyList();
+
+	int choice;
 	do {
 		PrintMenu();
 		choice = getMenuChoice();
+		if (choice != ErrorInt) {
+			head = carryOutChoice(head, choice);
+		}
+		else {
+			printf("Incorrect Input. Only allowed inputs are integers 0-8.\n");
+			PressEnterToContinue();
+		}
 	} while (choice != 0);
 
 	return 0;
