@@ -76,6 +76,13 @@ HEADER* CreateEmptyList() {
 	return head;
 }
 
+//Creates new LISTITEM elt containing value val
+static LISTITEM* CreateEltFromVal(val) {
+	LISTITEM* newelt = malloc(sizeof(LISTITEM));
+	newelt->val = val;
+	return newelt;
+}
+
 //Returns element in head that has smallest value greater or equal to val
 LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val) {
 	LISTITEM* temp;
@@ -108,8 +115,7 @@ LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val) {
 //Inserts a new element of value valtoins at the start of the list maintaining branching, without check on value.
 //Static so end user in main cannot insert an element out of order or duplicate.
 static HEADER * InsertAtStart(HEADER* head, int valtoins) {
-	LISTITEM* newelt = malloc(sizeof(LISTITEM));  //CreateEltFromVal(valtoins);
-	newelt->val = valtoins;
+	LISTITEM* newelt = CreateEltFromVal(valtoins);
 	newelt->fwd = head->first; // newelt points forward to soon-to-be-old first element
 	head->first->bck = newelt; // soon-to-be-old first element points back to newelt
 	head->first = newelt; // newelt is new first element
@@ -119,8 +125,7 @@ static HEADER * InsertAtStart(HEADER* head, int valtoins) {
 //Inserts a new element of value valtoins at the end of the list maintaining branching, without check on value.
 //Static so end user in main cannot insert an element out of order or duplicate.
 static HEADER * InsertAtEnd(HEADER* head, int valtoins) {
-	LISTITEM* newelt = malloc(sizeof(LISTITEM));  //CreateEltFromVal(valtoins);
-	newelt->val = valtoins;
+	LISTITEM* newelt = CreateEltFromVal(valtoins);
 	newelt->bck = head->last; // newelt points backward to soon-to-be-old last element
 	head->last->fwd = newelt; // soon-to-be-old last element points forward to newelt
 	head->last = newelt; // newelt is new last element
@@ -130,8 +135,7 @@ static HEADER * InsertAtEnd(HEADER* head, int valtoins) {
 //Inserts an element before element nextelt. Assumes that nextelt exists in list.
 //Static so end user in main cannot insert an element out of order or duplicate.
 static HEADER * InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins) {
-	LISTITEM* newelt = malloc(sizeof(LISTITEM));
-	newelt->val = valtoins;
+	LISTITEM* newelt = CreateEltFromVal(valtoins);
 	newelt->bck = nextelt->bck; //branch new element back, maintaining link to next element soon-to-be-old prev element 
 	newelt->fwd = nextelt; //branch new element forward to next element 
 	nextelt->bck->fwd = newelt; //branch next elt old prev element forward to new elt
