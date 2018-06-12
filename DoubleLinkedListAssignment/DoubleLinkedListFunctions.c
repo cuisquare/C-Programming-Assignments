@@ -72,6 +72,8 @@ LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val) {
 	return temp;
 }
 
+//Inserts an element at the start of the list maintaining branching, without check on value.
+//Static so end user in main cannot insert an element out of order.
 static HEADER * InsertAtStart(HEADER* head, int valtoins) {
 	LISTITEM* newelt = malloc(sizeof(LISTITEM));  //CreateEltFromVal(valtoins);
 	newelt->val = valtoins;
@@ -81,6 +83,8 @@ static HEADER * InsertAtStart(HEADER* head, int valtoins) {
 	return head;
 }
 
+//Inserts an element at the end of the list maintaining branching, without check on value.
+//Static so end user in main cannot insert an element out of order.
 static HEADER * InsertAtEnd(HEADER* head, int valtoins) {
 	LISTITEM* newelt = malloc(sizeof(LISTITEM));  //CreateEltFromVal(valtoins);
 	newelt->val = valtoins;
