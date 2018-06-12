@@ -12,8 +12,8 @@ bool IsEmptyList(HEADER* head) {
 	return ((head->first == (LISTITEM*)head));
 }
 
-//Prints all values of linked list with header head
-void PrintList(HEADER* head) {
+//Prints all values of linked list with header head - Verbose
+void PrintListVerbose(HEADER* head) {
 	printf("***START PRINT*** \n");
 	if (!IsEmptyList(head)) {
 		LISTITEM* temp = head->first;
@@ -28,11 +28,46 @@ void PrintList(HEADER* head) {
 				temp = temp->fwd;
 			}
 		}
+		if (i == NMaxPrint) {
+			printf("\n Warning: Number of values in list is greater than NMaxPrint = %d. Print interrupted.\n", NMaxPrint);
+		}
 	}
 	else {
 		printf("No elements to print (empty list).\n");
 	}
 	printf("***END PRINT*** \n");
+}
+
+//Prints all values of linked list with header head
+void PrintList(HEADER* head) {
+	//printf("***START PRINT*** \n");
+	printf("[");
+	if (!IsEmptyList(head)) {
+		LISTITEM* temp = head->first;
+		int i = 0;
+		while (i < NMaxPrint) {
+			printf("%d", temp->val);
+			if (temp == head->last) {
+				break;
+			}
+			else {
+				i++;
+				temp = temp->fwd;
+				printf(", ");
+			}
+		}
+		if (i == NMaxPrint) {
+			printf("...]\n");
+			printf("Warning: Number of values in list is greater than NMaxPrint = %d. Print interrupted.\n", NMaxPrint);
+		}
+		else {
+			printf("]\n");
+		}
+	}
+	else {
+		printf("]\n");
+	}
+	//printf("***END PRINT*** \n");
 }
 
 //Creates an Empty List
