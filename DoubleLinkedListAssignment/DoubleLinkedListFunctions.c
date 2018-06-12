@@ -72,6 +72,9 @@ void PrintList(HEADER* head) {
 //this assumes list is not empty and pos is an item of list
 static LISTITEM* PrintNItemsFromPos(HEADER* head, LISTITEM* pos, int NbItems) {
 	printf("[");
+	if (pos == head->first) {
+		printf("     ");
+	}
 	bool PrintFinished = 0;
 	bool LastReached = 0;
 	bool ChunkAllPrinted = 0;
@@ -80,7 +83,7 @@ static LISTITEM* PrintNItemsFromPos(HEADER* head, LISTITEM* pos, int NbItems) {
 		printf("..., ");
 	}
 	while (!PrintFinished) {
-		printf("%d", pos->val);
+		printf("%4d", pos->val);
 		LastReached = (pos == head->last);
 		ChunkAllPrinted = (i == NbItems);
 		PrintFinished = (LastReached || ChunkAllPrinted);
