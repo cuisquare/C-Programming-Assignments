@@ -4,7 +4,7 @@
 void PrintMenu();
 
 // gets input from keyboard and convert to integer
-int getIntValue(int *errstatus);
+int getInputValAsInt(int *errstatus);
 
 // gets menu choice with protection of values
 int getMenuChoice(int *errstatus);

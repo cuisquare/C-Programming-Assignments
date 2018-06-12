@@ -27,19 +27,18 @@ void PrintMenu() {
 	printf("	0 : Exit Program\n");
 }
 
-// gets input from keyboard and convert to integer
-int getIntValue(int *errstatus) {
+// gets input from keyboard and convert to integer if possible
+// updates error status pointer errstatus to 0 if input invalid
+int getInputValAsInt(int *errstatus) {
 	char charinput[10];
 	char *garbagestring;
 	bool invalidinput = 1;
-	int choice;
+	int inputval;
 
 	scanf_s("%9s", &charinput, 9);
-	//int choice = atoi(charinput);
-	choice = strtol(charinput, &garbagestring, 10);
-	/*printf("Your choice was : %d!\n", choice);
-	PressEnterToContinue();*/
-	//printf("charinput = %s; invalidinput = %s", charinput, garbagestring);
+	inputval = strtol(charinput, &garbagestring, 10);
+	//printf("Your choice was : %d!\n", choice);
+	//PressEnterToContinue();
 	//input is invalid if the invalid part of input is equal to the whole input
 	invalidinput = (garbagestring == charinput);
 	if (invalidinput) {
@@ -50,12 +49,12 @@ int getIntValue(int *errstatus) {
 		*errstatus = 1;
 	}
 
-	return choice;
+	return inputval;
 }
 
 int getMenuChoice(int *errstatus) {
 	printf("Menu choice : ");
-	int output = getIntValue(errstatus);
+	int output = getInputValAsInt(errstatus);
 	printf("\n");
 	//catching additional error that the input it outside of range allowed for menu choices even though input is integer
 	if (*errstatus == 1) {
@@ -86,7 +85,7 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		break;
 	case 1:
 		printf("Input Single Value to Insert:  ");
-		inputval = getIntValue(&errstatus);
+		inputval = getInputValAsInt(&errstatus);
 		if (errstatus == 1) {
 			head = InsertElementForwardByVal(head, inputval);
 			printf("Value Inserted.\n");
@@ -97,7 +96,7 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		break;
 	case 2:
 		printf("Input Single Value to Delete:  ");
-		inputval = getIntValue(&errstatus);
+		inputval = getInputValAsInt(&errstatus);
 		if (errstatus == 1) {
 			head = DeleteElementByVal(head, inputval);
 			printf("Value Deleted.\n");
@@ -116,10 +115,10 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		break;
 	case 5:
 		printf("Input Number of Values to Insert:  ");
-		int NbValToInsert = getIntValue(&errstatus);
+		int NbValToInsert = getInputValAsInt(&errstatus);
 		for (int i = 0; i<NbValToInsert; i++) {
 			printf("Input Value %d / %d: ", i + 1, NbValToInsert);
-			inputval = getIntValue(&errstatus);
+			inputval = getInputValAsInt(&errstatus);
 			if (errstatus == 1) {
 				head = InsertElementForwardByVal(head, inputval);
 			}
@@ -131,10 +130,10 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		break;
 	case 6:
 		printf("Input Number of Values to Delete:  ");
-		int NbValToDelete = getIntValue(&errstatus);
+		int NbValToDelete = getInputValAsInt(&errstatus);
 		for (int i = 0; i<NbValToDelete; i++) {
 			printf("Value To Be Deleted %d / %d: ", i + 1, NbValToDelete);
-			inputval = getIntValue(&errstatus);
+			inputval = getInputValAsInt(&errstatus);
 			if (errstatus == 1) {
 				head = DeleteElementByVal(head, inputval);
 			}
@@ -146,10 +145,10 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		break;
 	case 7:
 		printf("Input Start of Range - inclusive - to Insert:  ");
-		int RangeStartForIns = getIntValue(&errstatus);
+		int RangeStartForIns = getInputValAsInt(&errstatus);
 		printf("\n");
 		printf("Input End of Range - exclusive - to Insert:  ");
-		int RangeEndForIns = getIntValue(&errstatus);
+		int RangeEndForIns = getInputValAsInt(&errstatus);
 		for (int i = RangeStartForIns; i<RangeEndForIns; i++) {
 			head = InsertElementForwardByVal(head, i);
 		}
@@ -157,10 +156,10 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		break;
 	case 8:
 		printf("Input Start of Range - inclusive - to Delete:  ");
-		int RangeStartForDel = getIntValue(&errstatus);
+		int RangeStartForDel = getInputValAsInt(&errstatus);
 		printf("\n");
 		printf("Input End of Range - exclusive - to Delete:  ");
-		int RangeEndForDel = getIntValue(&errstatus);
+		int RangeEndForDel = getInputValAsInt(&errstatus);
 		for (int i = RangeStartForDel; i<RangeEndForDel; i++) {
 			head = DeleteElementByVal(head, i);
 		}
