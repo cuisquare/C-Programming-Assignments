@@ -40,7 +40,6 @@ void PrintListVerbose(HEADER* head) {
 
 //Prints all values of linked list with header head
 void PrintList(HEADER* head) {
-	//printf("***START PRINT*** \n");
 	printf("[");
 	if (!IsEmptyList(head)) {
 		LISTITEM* temp = head->first;
@@ -67,7 +66,6 @@ void PrintList(HEADER* head) {
 	else {
 		printf("]\n");
 	}
-	//printf("***END PRINT*** \n");
 }
 
 //Creates an Empty List
@@ -107,8 +105,8 @@ LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val) {
 	return temp;
 }
 
-//Inserts an element at the start of the list maintaining branching, without check on value.
-//Static so end user in main cannot insert an element out of order.
+//Inserts a new element of value valtoins at the start of the list maintaining branching, without check on value.
+//Static so end user in main cannot insert an element out of order or duplicate.
 static HEADER * InsertAtStart(HEADER* head, int valtoins) {
 	LISTITEM* newelt = malloc(sizeof(LISTITEM));  //CreateEltFromVal(valtoins);
 	newelt->val = valtoins;
@@ -118,14 +116,26 @@ static HEADER * InsertAtStart(HEADER* head, int valtoins) {
 	return head;
 }
 
-//Inserts an element at the end of the list maintaining branching, without check on value.
-//Static so end user in main cannot insert an element out of order.
+//Inserts a new element of value valtoins at the end of the list maintaining branching, without check on value.
+//Static so end user in main cannot insert an element out of order or duplicate.
 static HEADER * InsertAtEnd(HEADER* head, int valtoins) {
 	LISTITEM* newelt = malloc(sizeof(LISTITEM));  //CreateEltFromVal(valtoins);
 	newelt->val = valtoins;
 	newelt->bck = head->last; // newelt points backward to soon-to-be-old last element
 	head->last->fwd = newelt; // soon-to-be-old last element points forward to newelt
 	head->last = newelt; // newelt is new last element
+	return head;
+}
+
+//Inserts an element before element nextelt. Assumes that nextelt exists in list.
+//Static so end user in main cannot insert an element out of order or duplicate.
+static HEADER * InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins) {
+	LISTITEM* newelt = malloc(sizeof(LISTITEM));
+	newelt->val = valtoins;
+	newelt->bck = nextelt->bck; //branch new element back, maintaining link to next element soon-to-be-old prev element 
+	newelt->fwd = nextelt; //branch new element forward to next element 
+	nextelt->bck->fwd = newelt; //branch next elt old prev element forward to new elt
+	nextelt->bck = newelt; //branches next element back to new element 
 	return head;
 }
 
@@ -153,12 +163,7 @@ HEADER* InsertElementForwardByVal(HEADER* head, int valtoins) {
 		{
 			//Smallest greater element is list element neither first nor last
 			//Therefore : insert new element before that element, updating branching
-			LISTITEM* newelt = malloc(sizeof(LISTITEM));
-			newelt->val = valtoins;
-			newelt->bck = nextelt->bck; //branch new element back, maintaining link to next element soon-to-be-old prev element 
-			newelt->fwd = nextelt; //branch new element forward to next element 
-			nextelt->bck->fwd = newelt; //branch next elt old prev element forward to new elt
-			nextelt->bck = newelt; //branches next element back to new element 
+			head = InsertBefore(head, nextelt, valtoins);
 		}
 	}
 	//printf("Updated List: \n");
