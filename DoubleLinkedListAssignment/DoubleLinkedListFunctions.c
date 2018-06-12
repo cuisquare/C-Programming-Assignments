@@ -96,7 +96,9 @@ static LISTITEM* PrintNItemsFromPos(HEADER* head, LISTITEM* pos, int NbItems) {
 		}
 	}
 	if (!LastReached) {
+		//there are still elements to print
 		printf("...");
+		//we move pos to the element to be printed first in the next chunk
 		pos = pos->fwd;
 	}
 	printf("]\n");
