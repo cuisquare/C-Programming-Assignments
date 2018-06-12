@@ -139,7 +139,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DoubleLinkedListFunctions.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="MenuFunctions.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DoubleLinkedListFunctions.h" />
+    <ClInclude Include="ErrorCodes.h" />
+    <ClInclude Include="MenuFunctions.h" />
+    <ClInclude Include="ParameterConstants.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
