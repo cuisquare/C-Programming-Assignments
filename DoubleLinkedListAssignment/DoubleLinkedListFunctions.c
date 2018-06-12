@@ -81,6 +81,15 @@ static HEADER * InsertAtStart(HEADER* head, int valtoins) {
 	return head;
 }
 
+static HEADER * InsertAtEnd(HEADER* head, int valtoins) {
+	LISTITEM* newelt = malloc(sizeof(LISTITEM));  //CreateEltFromVal(valtoins);
+	newelt->val = valtoins;
+	newelt->bck = head->last; // newelt points backward to soon-to-be-old last element
+	head->last->fwd = newelt; // soon-to-be-old last element points forward to newelt
+	head->last = newelt; // newelt is new last element
+	return head;
+}
+
 //Inserts an Element in forward order based on its value, updating branching
 HEADER* InsertElementForwardByVal(HEADER* head, int valtoins) {
 	LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
@@ -88,11 +97,7 @@ HEADER* InsertElementForwardByVal(HEADER* head, int valtoins) {
 	if (nextelt == NULL) {
 		//there is no element in list greater than the one to insert. 
 		//Therefore : Insert Element at End
-		LISTITEM* newelt = malloc(sizeof(LISTITEM));  //CreateEltFromVal(valtoins);
-		newelt->val = valtoins;
-		newelt->bck = head->last; // newelt points backward to soon-to-be-old last element
-		head->last->fwd = newelt; // soon-to-be-old last element points forward to newelt
-		head->last = newelt; // newelt is new last element
+		head = InsertAtEnd(head, valtoins);
 	}
 	else if (nextelt->val == valtoins) {
 		//There already is elt with value valtoins in the list
