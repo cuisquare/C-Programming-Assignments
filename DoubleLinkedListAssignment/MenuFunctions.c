@@ -56,7 +56,7 @@ int getMenuChoice(int *errstatus) {
 	printf("Menu choice : ");
 	int output = getInputValAsInt(errstatus);
 	printf("\n");
-	//catching additional error that the input it outside of range allowed for menu choices even though input is integer
+	//catching additional error that the input while integer is outside of range allowed for menu choices
 	if (*errstatus == 1) {
 		if ((output<0) || (output>8)) {
 			*errstatus = MenuOutOfRangeError;
@@ -106,7 +106,8 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		}
 		break;
 	case 3:
-		PrintList(head);
+		//PrintList(head);
+		PrintByChunks(head, ChunkSize);
 		printf("List Printed.\n");
 		break;
 	case 4:

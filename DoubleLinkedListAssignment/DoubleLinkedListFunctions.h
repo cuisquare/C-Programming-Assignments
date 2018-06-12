@@ -7,6 +7,9 @@ bool IsEmptyList(HEADER* head);
 //Prints all values of linked list with header head
 void PrintList(HEADER* head);
 
+//Prints all values of linked list with header head, by chunks of size ChunkSize
+void PrintByChunks(HEADER* head, int ChunkSize);
+
 //Creates an Empty List
 HEADER* CreateEmptyList();
 

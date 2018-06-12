@@ -23,7 +23,12 @@ int main() {
 			head = carryOutChoice(head, choice);
 		}
 		else {
-			printf("Incorrect Input. Only allowed inputs are integers 0-8.\n");
+			if (errstatus == MenuOutOfRangeError) {
+				printf("Menu Input Error: Menu Input was integer but not between 0 and 8.\n");
+			}
+			else {
+				printf("Menu Input Error: Menu Input could not succesfully be interpreted as integer value.\n");
+			}
 			choice = ContinueDefault;
 			PressEnterToContinue();
 		}
