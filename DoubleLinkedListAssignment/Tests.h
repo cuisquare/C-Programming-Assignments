@@ -5,4 +5,6 @@ void TestProgram();
 
 void TestHeadRefTry();
 
+void TestUpdatePos();
+
 #endif

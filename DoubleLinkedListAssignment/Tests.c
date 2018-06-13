@@ -56,3 +56,25 @@ void TestHeadRefTry() {
 
 	getchar();
 }
+
+static void MovePosFwdBy(HEADER* head, LISTITEM** pos, int NbMoves) {
+	for (int i = 0; i < NbMoves; i++) {
+		*pos = (*pos)->fwd;
+	}
+}
+
+void TestUpdatePos() {
+	HEADER* head = CreateEmptyList();
+	for (int i = 1; i < 21; i++) {
+		InsertElementForwardByVal(head, i);
+	}
+	int NbMoves = 5;
+	LISTITEM* pos = head->first;
+	pos = pos->fwd;
+	printf("Before Move, pos val = %d\n", pos->val);
+	MovePosFwdBy(head, &pos, NbMoves);
+	printf("After %d Move, pos val = %d\n",NbMoves, pos->val);
+
+	printf("Press Enter to Continue...");
+	getchar();
+}
