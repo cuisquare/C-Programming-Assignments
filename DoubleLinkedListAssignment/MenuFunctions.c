@@ -10,6 +10,7 @@
 #include "ErrorCodes.h"
 #include "DoubleLinkedListFunctions.h"
 #include "MenuFunctions.h"
+#include "Tests.h"
 
 
 void PrintMenu() {
@@ -76,7 +77,7 @@ void PressEnterToContinue() {
 }
 
 //Carry out choice from user input
-HEADER* carryOutChoice(HEADER* head, int choice) {
+void carryOutChoice(HEADER* head, int choice) {
 	int errstatus;
 	int inputval;
 	switch (choice) {
@@ -168,5 +169,4 @@ HEADER* carryOutChoice(HEADER* head, int choice) {
 		break;
 	}
 	PressEnterToContinue();
-	return head;
 }

@@ -13,6 +13,6 @@ int getMenuChoice(int *errstatus);
 void PressEnterToContinue();
 
 //Carry out choice from user input
-HEADER* carryOutChoice(HEADER* head, int choice);
+void carryOutChoice(HEADER* head, int choice);
 
 #endif /* MENUFUNCTIONS_H */

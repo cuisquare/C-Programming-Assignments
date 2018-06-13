@@ -142,10 +142,12 @@
     <ClCompile Include="DoubleLinkedListFunctions.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="MenuFunctions.c" />
+    <ClCompile Include="Tests.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DoubleLinkedListFunctions.h" />
     <ClInclude Include="ErrorCodes.h" />
+    <ClInclude Include="Tests.h" />
     <ClInclude Include="MenuFunctions.h" />
     <ClInclude Include="ParameterConstants.h" />
     <ClInclude Include="Types.h" />
