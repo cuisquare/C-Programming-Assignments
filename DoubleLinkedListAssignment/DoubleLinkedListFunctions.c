@@ -171,43 +171,40 @@ LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val) {
 
 //Inserts a new element of value valtoins at the start of the list maintaining branching, without check on value.
 //Static so end user in main cannot insert an element out of order or duplicate.
-static HEADER * InsertAtStart(HEADER* head, int valtoins) {
+static void InsertAtStart(HEADER* head, int valtoins) {
 	LISTITEM* newelt = CreateEltFromVal(valtoins);
 	newelt->fwd = head->first; // newelt points forward to soon-to-be-old first element
 	head->first->bck = newelt; // soon-to-be-old first element points back to newelt
 	head->first = newelt; // newelt is new first element
-	return head;
 }
 
 //Inserts a new element of value valtoins at the end of the list maintaining branching, without check on value.
 //Static so end user in main cannot insert an element out of order or duplicate.
-static HEADER * InsertAtEnd(HEADER* head, int valtoins) {
+static void InsertAtEnd(HEADER* head, int valtoins) {
 	LISTITEM* newelt = CreateEltFromVal(valtoins);
 	newelt->bck = head->last; // newelt points backward to soon-to-be-old last element
 	head->last->fwd = newelt; // soon-to-be-old last element points forward to newelt
 	head->last = newelt; // newelt is new last element
-	return head;
 }
 
 //Inserts an element before element nextelt. Assumes that nextelt exists in list.
 //Static so end user in main cannot insert an element out of order or duplicate.
-static HEADER * InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins) {
+static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins) {
 	LISTITEM* newelt = CreateEltFromVal(valtoins);
 	newelt->bck = nextelt->bck; //branch new element back, maintaining link to next element soon-to-be-old prev element 
 	newelt->fwd = nextelt; //branch new element forward to next element 
 	nextelt->bck->fwd = newelt; //branch next elt old prev element forward to new elt
 	nextelt->bck = newelt; //branches next element back to new element 
-	return head;
 }
 
 //Inserts an Element in forward order based on its value, updating branching
-HEADER* InsertElementForwardByVal(HEADER* head, int valtoins) {
+void InsertElementForwardByVal(HEADER* head, int valtoins) {
 	LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
 	//printf("Attemping to insert elt with value %d...\n", valtoins);
 	if (nextelt == NULL) {
 		//there is no element in list greater than the one to insert. 
 		//Therefore : Insert Element at End
-		head = InsertAtEnd(head, valtoins);
+		InsertAtEnd(head, valtoins);
 	}
 	else if (nextelt->val == valtoins) {
 		//There already is elt with value valtoins in the list
@@ -218,22 +215,21 @@ HEADER* InsertElementForwardByVal(HEADER* head, int valtoins) {
 		if (nextelt == head->first) {
 			//First element in the list is greater than val to insert 
 			//Therefore : Insert Element at Start
-			head = InsertAtStart(head, valtoins);
+			InsertAtStart(head, valtoins);
 		}
 		else
 		{
 			//Smallest greater element is list element neither first nor last
 			//Therefore : insert new element before that element, updating branching
-			head = InsertBefore(head, nextelt, valtoins);
+			InsertBefore(head, nextelt, valtoins);
 		}
 	}
 	//printf("Updated List: \n");
 	//PrintList(head);
-	return head;
 }
 
 //Deletes One Element with value val, updating branching
-HEADER* DeleteElementByVal(HEADER* head, int valtodel) {
+void DeleteElementByVal(HEADER* head, int valtodel) {
 	//printf("Attemping to delete elt with value %d...\n", valtodel);
 	LISTITEM* elttodel = GetSmallestGreaterEltByVal(head, valtodel);
 	if ((elttodel == NULL) || (elttodel->val != valtodel))
@@ -255,5 +251,4 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel) {
 	}
 	//printf("Updated List: \n");
 	//PrintList(head);
-	return head;
 }

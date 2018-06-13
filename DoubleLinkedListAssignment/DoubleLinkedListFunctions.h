@@ -17,9 +17,9 @@ HEADER* CreateEmptyList();
 LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val);
 
 //Inserts an Element in forward order based on its value, updating branching
-HEADER* InsertElementForwardByVal(HEADER* head, int valtoins);
+void InsertElementForwardByVal(HEADER* head, int valtoins);
 
 //Deletes One Element with value val, updating branching
-HEADER* DeleteElementByVal(HEADER* head, int valtodel);
+void DeleteElementByVal(HEADER* head, int valtodel);
 
 #endif /* DOUBLELINKEDLISTFUNCTIONS_H */
