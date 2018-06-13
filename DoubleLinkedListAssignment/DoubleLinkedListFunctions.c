@@ -293,3 +293,18 @@ static void TestProgram() {
 
 	getchar();
 }
+
+void TestHeadRefTry() {
+	HEADER* head = CreateEmptyList();
+
+	printf("Inserting value 7 without ref...\n");
+	InsertElementForwardByVal(head, 7);
+	printf("Inserting value 13 without ref...\n");
+	InsertElementForwardByVal(head, 13);
+
+	printf("Results:\n");
+	PrintList(head);
+	printf("Press ENTER to continue.\n");
+
+	getchar();
+}

@@ -20,7 +20,7 @@ int main() {
 		PrintMenu();
 		choice = getMenuChoice(&errstatus);
 		if (errstatus == 1) {
-			head = carryOutChoice(head, choice);
+			carryOutChoice(head, choice);
 		}
 		else {
 			if (errstatus == MenuOutOfRangeError) {
@@ -33,6 +33,8 @@ int main() {
 			PressEnterToContinue();
 		}
 	} while (choice != 0);
+
+	//TestHeadRefTry();
 
 	return 0;
 }

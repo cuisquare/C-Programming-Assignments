@@ -22,4 +22,6 @@ HEADER* InsertElementForwardByVal(HEADER* head, int valtoins);
 //Deletes One Element with value val, updating branching
 HEADER* DeleteElementByVal(HEADER* head, int valtodel);
 
+void TestHeadRefTry();
+
 #endif /* DOUBLELINKEDLISTFUNCTIONS_H */
