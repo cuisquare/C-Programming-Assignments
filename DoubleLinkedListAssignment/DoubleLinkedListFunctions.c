@@ -69,6 +69,7 @@ void PrintList(HEADER* head) {
 }
 
 //prints NbItems from list headed by head starting at position pos
+//returns pointer to element last printed
 //this assumes list is not empty and pos is an item of list
 static LISTITEM* PrintNItemsFromPos(HEADER* head, LISTITEM* pos, int NbItems) {
 	printf("[");
@@ -95,11 +96,10 @@ static LISTITEM* PrintNItemsFromPos(HEADER* head, LISTITEM* pos, int NbItems) {
 			printf(", ");
 		}
 	}
+	//Print is finished
 	if (!LastReached) {
 		//there are still elements to print
 		printf("...");
-		//we move pos to the element to be printed first in the next chunk
-		pos = pos->fwd;
 	}
 	printf("]\n");
 
@@ -114,6 +114,10 @@ void PrintByChunks(HEADER* head, int NbItems) {
 		while (!PrintFinished) {
 			pos = PrintNItemsFromPos(head, pos, NbItems);
 			PrintFinished = (pos == head->last);
+			if (!PrintFinished) {
+				//we move pos to the element to be printed first in the next chunk
+				pos = pos->fwd;
+			}
 		}
 	}
 	else {
