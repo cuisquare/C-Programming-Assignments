@@ -88,7 +88,7 @@ void PressEnterToContinue()
 }
 
 // Carry out choice from user input
-void carryOutChoice(HEADER* head, int choice)
+HEADER* carryOutChoice(HEADER* head, int choice)
 {
     int errstatus;
     int inputval;
@@ -129,7 +129,7 @@ void carryOutChoice(HEADER* head, int choice)
 	    printf("List Printed.\n");
 	    break;
 	case 4:
-	    CreateEmptyList();
+	    head = ClearList(head);
 	    printf("List Cleared.\n");
 	    break;
 	case 5:
@@ -194,6 +194,7 @@ void carryOutChoice(HEADER* head, int choice)
 	    break;
 	}
     PressEnterToContinue();
+	return(head);
 }
 
 // Menu Loop for program : 
@@ -209,7 +210,7 @@ void MenuLoop() {
 	    choice = getMenuChoice(&errstatus);
 	    if(errstatus == 1)
 		{
-		    carryOutChoice(head, choice);
+		    head = carryOutChoice(head, choice);
 		}
 	    else
 		{

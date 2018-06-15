@@ -19,6 +19,12 @@ void PrintByChunks(HEADER* head);
 //Creates an Empty List
 HEADER* CreateEmptyList();
 
+// Creates an Empty List
+HEADER* ClearList();
+
+// Creates new LISTITEM elt containing value val
+LISTITEM* CreateEltFromVal(int val);
+
 //Returns element in head that has smallest value greater or equal to val
 LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val);
 

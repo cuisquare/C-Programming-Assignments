@@ -143,7 +143,7 @@ static HEADER* ReverseList(HEADER* head) {
 
 static HEADER* ReverseListNEW(HEADER* head) {
 	
-	HEADER* headoutput;
+	HEADER* headoutput = CreateEmptyList();
 	headoutput->first = head->last;
 	headoutput->last = head->first;
 	
@@ -152,8 +152,7 @@ static HEADER* ReverseListNEW(HEADER* head) {
 	while (!Finished) 
 	{
 		Finished = (temp == head->last);
-		LISTITEM* temp2 = malloc(sizeof(LISTITEM));
-		temp2->val = temp->val;
+		LISTITEM* temp2 = CreateEltFromVal(temp->val);
 		temp2->fwd = temp->bck;
 		temp2->bck = temp->fwd;
 		if (!Finished) 
@@ -175,7 +174,7 @@ void TestReverse() {
 	}
 	printf("Before Reversing : \n");
 	PrintListVerbose(head);
-	HEADER* head2 = ReverseList(head);
+	HEADER* head2 = ReverseListNEW(head);
 	printf("After Reversing : \n");
 	PrintListVerbose(head2);
 }

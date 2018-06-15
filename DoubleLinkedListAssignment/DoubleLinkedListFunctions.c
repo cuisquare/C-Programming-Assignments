@@ -174,8 +174,33 @@ HEADER* CreateEmptyList()
     return head;
 }
 
+// Clears a List
+HEADER* ClearList(HEADER* head)
+{
+	if (!IsEmptyList(head))
+	{
+		if (head->first!=head->last) 
+		{
+			LISTITEM* temp = head->first->fwd;
+			bool ListFinished = 0;
+			while (!ListFinished)
+			{
+				ListFinished = (temp == head->last);
+				free(temp->bck);
+				if (!ListFinished)
+				{
+					temp = temp->fwd;
+				}
+			}
+		}
+		free(head->last);
+	}
+	head = CreateEmptyList();
+	return head;
+}
+
 // Creates new LISTITEM elt containing value val
-static LISTITEM* CreateEltFromVal(int val)
+LISTITEM* CreateEltFromVal(int val)
 {
     LISTITEM* newelt = malloc(sizeof(LISTITEM));
     newelt->val = val;
