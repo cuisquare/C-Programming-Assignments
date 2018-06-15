@@ -6,9 +6,7 @@
 #include <stdlib.h>
 
 #include "Types.h"
-
 #include "DoubleLinkedListFunctions.h"
-#include "MenuFunctions.h"
 
 //continues looping through menu after invalid menu choice 1 - or not
 static int ContinueDefault = 1; 

@@ -4,8 +4,6 @@
 #include <string.h>
 
 #include "Types.h"
-
-#include "DoubleLinkedListFunctions.h"
 #include "MenuFunctions.h"
 
 int main()

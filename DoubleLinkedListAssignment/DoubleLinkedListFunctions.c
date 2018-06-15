@@ -4,8 +4,6 @@
 
 #include "Types.h"
 
-#include "DoubleLinkedListFunctions.h"
-
 //Maximum number of elements to print out
 static int NMaxPrint = 100;
 
