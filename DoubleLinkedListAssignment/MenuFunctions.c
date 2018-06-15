@@ -6,15 +6,15 @@
 #include <stdlib.h>
 
 #include "Types.h"
-#include "ParameterConstants.h"
-#include "ErrorCodes.h"
 
 #include "DoubleLinkedListFunctions.h"
 #include "MenuFunctions.h"
-#include "Tests.h"
 
 //continues looping through menu after invalid menu choice 1 - or not
 static int ContinueDefault = 1; 
+
+//error status given if integer not in range for menu items
+static int MenuOutOfRangeError = 99;
 
 void PrintMenu()
 {
