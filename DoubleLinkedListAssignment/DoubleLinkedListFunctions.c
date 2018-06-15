@@ -88,50 +88,6 @@ void PrintList(HEADER* head)
 // prints NbItems from list headed by head starting at position pos
 // returns pointer to element last printed
 // this assumes list is not empty and pos is an item of list
-static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItems)
-{
-    printf("[");
-    if(*pos == head->first)
-	{
-	    printf("     ");
-	}
-    bool PrintFinished = 0;
-    bool LastReached = 0;
-    bool ChunkAllPrinted = 0;
-    int i = 1;
-    if(*pos != head->first)
-	{
-	    printf("..., ");
-	}
-    while(!PrintFinished)
-	{
-	    printf("%4d", (*pos)->val);
-	    LastReached = (*pos == head->last);
-	    ChunkAllPrinted = (i == NbItems);
-	    PrintFinished = (LastReached || ChunkAllPrinted);
-	    if(!PrintFinished)
-		{
-		    i++;
-		    *pos = (*pos)->fwd;
-		}
-	    if(!LastReached)
-		{
-		    printf(", ");
-		}
-	}
-    // Print is finished
-    if(!LastReached)
-	{
-	    // there are still elements to print
-	    printf("...");
-	}
-    printf("]\n");
-    return LastReached;
-}
-
-// prints NbItems from list headed by head starting at position pos
-// returns pointer to element last printed
-// this assumes list is not empty and pos is an item of list
 static LISTITEM* PrintNItemsFromPos(HEADER* head, LISTITEM* pos, int NbItems)
 {
     printf("[");
@@ -174,6 +130,52 @@ static LISTITEM* PrintNItemsFromPos(HEADER* head, LISTITEM* pos, int NbItems)
     return pos;
 }
 
+// prints NbItems from list headed by head starting at position pos
+// returns boolean true if the last element printed was head->last (print finished)
+// updates the incoming pos pointer to the last element printed
+// this assumes list is not empty and pos is an item of list
+static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItems)
+{
+    printf("[");
+    if(*pos == head->first)
+	{
+	    printf("     ");
+	}
+    bool PrintFinished = 0;
+    bool LastReached = 0;
+    bool ChunkAllPrinted = 0;
+    int i = 1;
+    if(*pos != head->first)
+	{
+	    printf("..., ");
+	}
+    while(!PrintFinished)
+	{
+	    printf("%4d", (*pos)->val);
+	    LastReached = (*pos == head->last);
+	    ChunkAllPrinted = (i == NbItems);
+	    PrintFinished = (LastReached || ChunkAllPrinted);
+	    if(!PrintFinished)
+		{
+		    i++;
+		    *pos = (*pos)->fwd;
+		}
+	    if(!LastReached)
+		{
+		    printf(", ");
+		}
+	}
+    // Print is finished
+    if(!LastReached)
+	{
+	    // there are still elements to print
+	    printf("...");
+	}
+    printf("]\n");
+    return LastReached;
+}
+
+
 // Prints whole list headed by head in chunks of size NbItems
 void PrintByChunks(HEADER* head, int NbItems)
 {
@@ -184,6 +186,7 @@ void PrintByChunks(HEADER* head, int NbItems)
 	    while(!LastReached)
 		{
 		    // pos = PrintNItemsFromPos(head, pos, NbItems);
+			// LastReached = (pos == head->last);
 		    LastReached = PrintNItemsFromPosAndUpdate(head, &pos, NbItems);
 		    if(!LastReached)
 			{
