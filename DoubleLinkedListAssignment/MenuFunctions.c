@@ -1,172 +1,195 @@
 //////////////////
-//MENU FUNCTIONS//
+// MENU FUNCTIONS//
 //////////////////
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Types.h"
-#include "ParameterConstants.h"
-#include "ErrorCodes.h"
 #include "DoubleLinkedListFunctions.h"
+#include "ErrorCodes.h"
 #include "MenuFunctions.h"
+#include "ParameterConstants.h"
 #include "Tests.h"
+#include "Types.h"
 
-
-void PrintMenu() {
-	system("cls");
-	printf("*****Double Linked List Program*****\n");
-	printf("Please choose from the following options : \n");
-	printf("	1 : Insert Value In List\n");
-	printf("	2 : Delete Value From List\n");
-	printf("	3 : Print List\n");
-	printf("	4 : Clear List\n");
-	printf("	5 : Input Multiple values in List\n");
-	printf("	6 : Delete Multiple values in List\n");
-	printf("	7 : Input Range in List\n");
-	printf("	8 : Delete Range in List\n");
-	printf("	0 : Exit Program\n");
+void PrintMenu()
+{
+    system("cls");
+    printf("*****Double Linked List Program*****\n");
+    printf("Please choose from the following options : \n");
+    printf("	1 : Insert Value In List\n");
+    printf("	2 : Delete Value From List\n");
+    printf("	3 : Print List\n");
+    printf("	4 : Clear List\n");
+    printf("	5 : Input Multiple values in List\n");
+    printf("	6 : Delete Multiple values in List\n");
+    printf("	7 : Input Range in List\n");
+    printf("	8 : Delete Range in List\n");
+    printf("	0 : Exit Program\n");
 }
 
 // gets input from keyboard and convert to integer if possible
 // updates error status pointer errstatus to 0 if input invalid
-int getInputValAsInt(int *errstatus) {
-	char charinput[10];
-	char *garbagestring;
-	bool invalidinput = 1;
-	int inputval;
+int getInputValAsInt(int* errstatus)
+{
+    char charinput[10];
+    char* garbagestring;
+    bool invalidinput = 1;
+    int inputval;
 
-	scanf_s("%9s", &charinput, 9);
-	inputval = strtol(charinput, &garbagestring, 10);
-	//printf("Your choice was : %d!\n", choice);
-	//PressEnterToContinue();
-	//input is invalid if the invalid part of input is equal to the whole input
-	invalidinput = (garbagestring == charinput);
-	if (invalidinput) {
-		printf("invalidinput = %s, the input was invalid.", garbagestring);
-		*errstatus = 0;
+    scanf_s("%9s", &charinput, 9);
+    inputval = strtol(charinput, &garbagestring, 10);
+    // printf("Your choice was : %d!\n", choice);
+    // PressEnterToContinue();
+    // input is invalid if the invalid part of input is equal to the whole input
+    invalidinput = (garbagestring == charinput);
+    if(invalidinput)
+	{
+	    printf("invalidinput = %s, the input was invalid.", garbagestring);
+	    *errstatus = 0;
 	}
-	else {
-		*errstatus = 1;
+    else
+	{
+	    *errstatus = 1;
 	}
 
-	return inputval;
+    return inputval;
 }
 
-int getMenuChoice(int *errstatus) {
-	printf("Menu choice : ");
-	int output = getInputValAsInt(errstatus);
-	printf("\n");
-	//catching additional error that the input while integer is outside of range allowed for menu choices
-	if (*errstatus == 1) {
-		if ((output<0) || (output>8)) {
-			*errstatus = MenuOutOfRangeError;
+int getMenuChoice(int* errstatus)
+{
+    printf("Menu choice : ");
+    int output = getInputValAsInt(errstatus);
+    printf("\n");
+    // catching additional error that the input while integer is outside of range allowed for menu choices
+    if(*errstatus == 1)
+	{
+	    if((output < 0) || (output > 8))
+		{
+		    *errstatus = MenuOutOfRangeError;
 		}
 	}
-	return output;
+    return output;
 }
 
-//flushes buffer and wait for getchar to resume
-void PressEnterToContinue() {
-	int c;
-	do {
-		c = getchar();
-	} while (c != '\n' && c != EOF);
-	printf("Press ENTER to continue.\n");
-	getchar();
+// flushes buffer and wait for getchar to resume
+void PressEnterToContinue()
+{
+    int c;
+    do
+	{
+	    c = getchar();
+	}
+    while(c != '\n' && c != EOF);
+    printf("Press ENTER to continue.\n");
+    getchar();
 }
 
-//Carry out choice from user input
-void carryOutChoice(HEADER* head, int choice) {
-	int errstatus;
-	int inputval;
-	switch (choice) {
+// Carry out choice from user input
+void carryOutChoice(HEADER* head, int choice)
+{
+    int errstatus;
+    int inputval;
+    switch(choice)
+	{
 	case 0:
-		printf("Exiting Program.\n");
-		break;
+	    printf("Exiting Program.\n");
+	    break;
 	case 1:
-		printf("Input Single Value to Insert:  ");
-		inputval = getInputValAsInt(&errstatus);
-		if (errstatus == 1) {
-			InsertElementForwardByVal(head, inputval);
-			printf("Value Inserted.\n");
+	    printf("Input Single Value to Insert:  ");
+	    inputval = getInputValAsInt(&errstatus);
+	    if(errstatus == 1)
+		{
+		    InsertElementForwardByVal(head, inputval);
+		    printf("Value Inserted.\n");
 		}
-		else {
-			printf("Input error. No value Inserted.\n");
+	    else
+		{
+		    printf("Input error. No value Inserted.\n");
 		}
-		break;
+	    break;
 	case 2:
-		printf("Input Single Value to Delete:  ");
-		inputval = getInputValAsInt(&errstatus);
-		if (errstatus == 1) {
-			DeleteElementByVal(head, inputval);
-			printf("Value Deleted.\n");
+	    printf("Input Single Value to Delete:  ");
+	    inputval = getInputValAsInt(&errstatus);
+	    if(errstatus == 1)
+		{
+		    DeleteElementByVal(head, inputval);
+		    printf("Value Deleted.\n");
 		}
-		else {
-			printf("Input error. No value Deleted.\n");
+	    else
+		{
+		    printf("Input error. No value Deleted.\n");
 		}
-		break;
+	    break;
 	case 3:
-		//PrintList(head);
-		PrintByChunks(head, ChunkSize);
-		printf("List Printed.\n");
-		break;
+	    // PrintList(head);
+	    PrintByChunks(head, ChunkSize);
+	    printf("List Printed.\n");
+	    break;
 	case 4:
-		CreateEmptyList();
-		printf("List Cleared.\n");
-		break;
+	    CreateEmptyList();
+	    printf("List Cleared.\n");
+	    break;
 	case 5:
-		printf("Input Number of Values to Insert:  ");
-		int NbValToInsert = getInputValAsInt(&errstatus);
-		for (int i = 0; i<NbValToInsert; i++) {
-			printf("Input Value %d / %d: ", i + 1, NbValToInsert);
-			inputval = getInputValAsInt(&errstatus);
-			if (errstatus == 1) {
-				InsertElementForwardByVal(head, inputval);
+	    printf("Input Number of Values to Insert:  ");
+	    int NbValToInsert = getInputValAsInt(&errstatus);
+	    for(int i = 0; i < NbValToInsert; i++)
+		{
+		    printf("Input Value %d / %d: ", i + 1, NbValToInsert);
+		    inputval = getInputValAsInt(&errstatus);
+		    if(errstatus == 1)
+			{
+			    InsertElementForwardByVal(head, inputval);
 			}
-			else {
-				printf("\nInput error. Value will not be inserted.\n");
+		    else
+			{
+			    printf("\nInput error. Value will not be inserted.\n");
 			}
 		}
-		printf("Input of values to insert over.\n");
-		break;
+	    printf("Input of values to insert over.\n");
+	    break;
 	case 6:
-		printf("Input Number of Values to Delete:  ");
-		int NbValToDelete = getInputValAsInt(&errstatus);
-		for (int i = 0; i<NbValToDelete; i++) {
-			printf("Value To Be Deleted %d / %d: ", i + 1, NbValToDelete);
-			inputval = getInputValAsInt(&errstatus);
-			if (errstatus == 1) {
-				DeleteElementByVal(head, inputval);
+	    printf("Input Number of Values to Delete:  ");
+	    int NbValToDelete = getInputValAsInt(&errstatus);
+	    for(int i = 0; i < NbValToDelete; i++)
+		{
+		    printf("Value To Be Deleted %d / %d: ", i + 1, NbValToDelete);
+		    inputval = getInputValAsInt(&errstatus);
+		    if(errstatus == 1)
+			{
+			    DeleteElementByVal(head, inputval);
 			}
-			else {
-				printf("\nInput error. No value will be deleted.\n");
+		    else
+			{
+			    printf("\nInput error. No value will be deleted.\n");
 			}
 		}
-		printf("Input of values to be deleted over.\n");
-		break;
+	    printf("Input of values to be deleted over.\n");
+	    break;
 	case 7:
-		printf("Input Start of Range - inclusive - to Insert:  ");
-		int RangeStartForIns = getInputValAsInt(&errstatus);
-		printf("\n");
-		printf("Input End of Range - exclusive - to Insert:  ");
-		int RangeEndForIns = getInputValAsInt(&errstatus);
-		for (int i = RangeStartForIns; i<RangeEndForIns; i++) {
-			InsertElementForwardByVal(head, i);
+	    printf("Input Start of Range - inclusive - to Insert:  ");
+	    int RangeStartForIns = getInputValAsInt(&errstatus);
+	    printf("\n");
+	    printf("Input End of Range - exclusive - to Insert:  ");
+	    int RangeEndForIns = getInputValAsInt(&errstatus);
+	    for(int i = RangeStartForIns; i < RangeEndForIns; i++)
+		{
+		    InsertElementForwardByVal(head, i);
 		}
-		printf("Range to be Inserted Defined.\n");
-		break;
+	    printf("Range to be Inserted Defined.\n");
+	    break;
 	case 8:
-		printf("Input Start of Range - inclusive - to Delete:  ");
-		int RangeStartForDel = getInputValAsInt(&errstatus);
-		printf("\n");
-		printf("Input End of Range - exclusive - to Delete:  ");
-		int RangeEndForDel = getInputValAsInt(&errstatus);
-		for (int i = RangeStartForDel; i<RangeEndForDel; i++) {
-			DeleteElementByVal(head, i);
+	    printf("Input Start of Range - inclusive - to Delete:  ");
+	    int RangeStartForDel = getInputValAsInt(&errstatus);
+	    printf("\n");
+	    printf("Input End of Range - exclusive - to Delete:  ");
+	    int RangeEndForDel = getInputValAsInt(&errstatus);
+	    for(int i = RangeStartForDel; i < RangeEndForDel; i++)
+		{
+		    DeleteElementByVal(head, i);
 		}
-		printf("Range to be Deleted Defined.\n");
-		break;
+	    printf("Range to be Deleted Defined.\n");
+	    break;
 	}
-	PressEnterToContinue();
+    PressEnterToContinue();
 }
