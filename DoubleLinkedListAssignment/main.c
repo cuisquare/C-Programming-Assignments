@@ -5,9 +5,11 @@
 
 #include "Types.h"
 #include "MenuFunctions.h"
+#include "Tests.h"
 
 int main()
 {
 	MenuLoop();
+	//TestReverse();
     return 0;
 }

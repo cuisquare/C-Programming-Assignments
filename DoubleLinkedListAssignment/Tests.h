@@ -7,4 +7,7 @@ void TestHeadRefTry();
 
 void TestUpdatePos();
 
+//Testing ReverseList function
+void TestReverse();
+
 #endif

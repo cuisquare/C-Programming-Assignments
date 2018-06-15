@@ -168,7 +168,7 @@ void PrintByChunks(HEADER* head)
 HEADER* CreateEmptyList()
 {
     HEADER* head = malloc(sizeof(HEADER));
-	//head->order = asc;
+	head->order = asc;
     head->first = (LISTITEM*)head;
     head->last = head->first;
     return head;

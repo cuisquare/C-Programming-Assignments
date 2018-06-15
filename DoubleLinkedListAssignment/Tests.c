@@ -86,3 +86,96 @@ void TestUpdatePos()
     printf("Press Enter to Continue...");
     getchar();
 }
+
+// Reverses order of list
+static HEADER* ReverseList(HEADER* head) {
+	
+	bool LastReached = 0;
+	bool FirstReached = 0;
+	LISTITEM* temp = head->first;
+	while (!LastReached) {
+		printf("Before the change...\n");
+		printf("temp val = %d\n", temp->val);
+		printf("temp val next = %d\n", temp->fwd->val);
+		printf("temp val prev = %d\n", temp->bck->val);
+		LastReached= (temp = head->last);
+		temp->bck = temp->fwd;
+		if(!LastReached) 
+		{
+			temp = temp->fwd;
+		}
+		else 
+		{
+			temp->bck = NULL;
+		}
+		printf("After the change...\n");
+		printf("temp val = %d\n", temp->val);
+		printf("temp val next = %d\n", temp->fwd->val);
+		printf("temp val prev = %d\n", temp->bck->val);
+	}
+	temp = head->last;
+	while (!FirstReached) {
+		printf("Before the change...\n");
+		printf("temp val = %d\n", temp->val);
+		printf("temp val next = %d\n", temp->fwd->val);
+		printf("temp val prev = %d\n", temp->bck->val);
+		FirstReached = (temp = head->first);
+		temp->fwd = temp->bck;
+		if(!FirstReached) 
+		{
+			temp = temp->bck;
+		}
+		else
+		{
+			temp->fwd = NULL;
+		}
+		printf("After the change...\n");
+		printf("temp val = %d\n", temp->val);
+		printf("temp val next = %d\n", temp->fwd->val);
+		printf("temp val prev = %d\n", temp->bck->val);
+	}
+	temp = head->first;
+	head->first = head->last;
+	head->last = temp;
+	head->order = desc;
+	return head;
+}
+
+static HEADER* ReverseListNEW(HEADER* head) {
+	
+	HEADER* headoutput;
+	headoutput->first = head->last;
+	headoutput->last = head->first;
+	
+	LISTITEM* temp = head->first;
+	bool Finished = 0;
+	while (!Finished) 
+	{
+		Finished = (temp == head->last);
+		LISTITEM* temp2 = malloc(sizeof(LISTITEM));
+		temp2->val = temp->val;
+		temp2->fwd = temp->bck;
+		temp2->bck = temp->fwd;
+		if (!Finished) 
+		{
+			temp = temp->fwd;
+		}
+	}
+	 
+	
+	return headoutput;
+}
+
+//Testing ReverseList function
+void TestReverse() {
+	HEADER* head = CreateEmptyList();
+    for(int i = 1; i < 4; i++)
+	{
+	    InsertElementForwardByVal(head, i);
+	}
+	printf("Before Reversing : \n");
+	PrintListVerbose(head);
+	HEADER* head2 = ReverseList(head);
+	printf("After Reversing : \n");
+	PrintListVerbose(head2);
+}
