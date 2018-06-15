@@ -5,12 +5,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "DoubleLinkedListFunctions.h"
-#include "ErrorCodes.h"
-#include "MenuFunctions.h"
-#include "ParameterConstants.h"
-#include "Tests.h"
 #include "Types.h"
+#include "ParameterConstants.h"
+#include "ErrorCodes.h"
+
+#include "DoubleLinkedListFunctions.h"
+#include "MenuFunctions.h"
+#include "Tests.h"
+
+//continues looping through menu after invalid menu choice 1 - or not
+static int ContinueDefault = 1; 
 
 void PrintMenu()
 {
@@ -123,7 +127,7 @@ void carryOutChoice(HEADER* head, int choice)
 	    break;
 	case 3:
 	    // PrintList(head);
-	    PrintByChunks(head, ChunkSize);
+	    PrintByChunks(head);
 	    printf("List Printed.\n");
 	    break;
 	case 4:
@@ -192,4 +196,37 @@ void carryOutChoice(HEADER* head, int choice)
 	    break;
 	}
     PressEnterToContinue();
+}
+
+// Menu Loop for program : 
+// Prints out Menu then accepts inputs until 0 is pressed
+void MenuLoop() {
+    HEADER* head = CreateEmptyList();
+
+    int choice;
+    int errstatus;
+    do
+	{
+	    PrintMenu();
+	    choice = getMenuChoice(&errstatus);
+	    if(errstatus == 1)
+		{
+		    carryOutChoice(head, choice);
+		}
+	    else
+		{
+		    if(errstatus == MenuOutOfRangeError)
+			{
+			    printf("Menu Input Error: Menu Input was integer but not between 0 and 8.\n");
+			}
+		    else
+			{
+			    printf("Menu Input Error: Menu Input could not succesfully be interpreted as integer "
+			           "value.\n");
+			}
+		    choice = ContinueDefault;
+		    PressEnterToContinue();
+		}
+	}
+    while(choice != 0);
 }

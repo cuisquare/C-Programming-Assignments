@@ -2,9 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "DoubleLinkedListFunctions.h"
-#include "ParameterConstants.h"
 #include "Types.h"
+#include "ParameterConstants.h"
+#include "DoubleLinkedListFunctions.h"
+
+//Maximum number of elements to print out
+static int NMaxPrint = 100;
+
+//Maximum number of elements to print out in each line
+static int ChunkSize = 10;
 
 // Checks whether a list is empty
 bool IsEmptyList(HEADER* head)
@@ -86,51 +92,6 @@ void PrintList(HEADER* head)
 }
 
 // prints NbItems from list headed by head starting at position pos
-// returns pointer to element last printed
-// this assumes list is not empty and pos is an item of list
-static LISTITEM* PrintNItemsFromPos(HEADER* head, LISTITEM* pos, int NbItems)
-{
-    printf("[");
-    if(pos == head->first)
-	{
-	    printf("     ");
-	}
-    bool PrintFinished = 0;
-    bool LastReached = 0;
-    bool ChunkAllPrinted = 0;
-    int i = 1;
-    if(pos != head->first)
-	{
-	    printf("..., ");
-	}
-    while(!PrintFinished)
-	{
-	    printf("%4d", pos->val);
-	    LastReached = (pos == head->last);
-	    ChunkAllPrinted = (i == NbItems);
-	    PrintFinished = (LastReached || ChunkAllPrinted);
-	    if(!PrintFinished)
-		{
-		    i++;
-		    pos = pos->fwd;
-		}
-	    if(!LastReached)
-		{
-		    printf(", ");
-		}
-	}
-    // Print is finished
-    if(!LastReached)
-	{
-	    // there are still elements to print
-	    printf("...");
-	}
-    printf("]\n");
-
-    return pos;
-}
-
-// prints NbItems from list headed by head starting at position pos
 // returns boolean true if the last element printed was head->last (print finished)
 // updates the incoming pos pointer to the last element printed
 // this assumes list is not empty and pos is an item of list
@@ -177,7 +138,7 @@ static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItem
 
 
 // Prints whole list headed by head in chunks of size NbItems
-void PrintByChunks(HEADER* head, int NbItems)
+void PrintByNbItemsChunks(HEADER* head, int NbItems)
 {
     if(!IsEmptyList(head))
 	{
@@ -185,8 +146,6 @@ void PrintByChunks(HEADER* head, int NbItems)
 	    bool LastReached = 0;
 	    while(!LastReached)
 		{
-		    // pos = PrintNItemsFromPos(head, pos, NbItems);
-			// LastReached = (pos == head->last);
 		    LastReached = PrintNItemsFromPosAndUpdate(head, &pos, NbItems);
 		    if(!LastReached)
 			{
@@ -201,17 +160,24 @@ void PrintByChunks(HEADER* head, int NbItems)
 	}
 }
 
+// Prints whole list headed by head in chunks of size Chunksize
+void PrintByChunks(HEADER* head)
+{
+    PrintByNbItemsChunks(head, ChunkSize);
+}
+
 // Creates an Empty List
 HEADER* CreateEmptyList()
 {
     HEADER* head = malloc(sizeof(HEADER));
+	//head->order = asc;
     head->first = (LISTITEM*)head;
     head->last = head->first;
     return head;
 }
 
 // Creates new LISTITEM elt containing value val
-static LISTITEM* CreateEltFromVal(val)
+static LISTITEM* CreateEltFromVal(int val)
 {
     LISTITEM* newelt = malloc(sizeof(LISTITEM));
     newelt->val = val;

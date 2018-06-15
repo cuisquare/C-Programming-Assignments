@@ -4,11 +4,17 @@
 //Checks whether a list is empty
 bool IsEmptyList(HEADER* head);
 
+// Prints all values of linked list with header head - Verbose
+void PrintListVerbose(HEADER* head);
+
 //Prints all values of linked list with header head
 void PrintList(HEADER* head);
 
-//Prints all values of linked list with header head, by chunks of size ChunkSize
-void PrintByChunks(HEADER* head, int ChunkSize);
+//Prints all values of linked list with header head, by chunks of size NbItems
+void PrintByNbItemsChunks(HEADER* head, int NbItems);
+
+// Prints whole list headed by head in chunks of size Chunksize defined as parameter
+void PrintByChunks(HEADER* head);
 
 //Creates an Empty List
 HEADER* CreateEmptyList();

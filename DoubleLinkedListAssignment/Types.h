@@ -1,6 +1,11 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+//enum defining direction that list goes when moving forward
+// asc means ascending value list going forward
+// desc means descending value list going forward
+//enum Order {asc, desc}
+
 //Struct type for a double linked list element. 
 //Contains:  
 //	integer value - val
@@ -19,6 +24,7 @@ typedef struct listitem {
 typedef struct header {
 	struct listitem *first;
 	struct listitem *last;
+	//enum Order *order;
 } HEADER;
 
 #endif /* TYPES_H */
