@@ -27,6 +27,7 @@ void PrintMenu()
     printf("	6 : Delete Multiple values in List\n");
     printf("	7 : Input Range in List\n");
     printf("	8 : Delete Range in List\n");
+	printf("	9 : Reverse List\n");
     printf("	0 : Exit Program\n");
 }
 
@@ -66,7 +67,7 @@ int getMenuChoice(int* errstatus)
     // catching additional error that the input while integer is outside of range allowed for menu choices
     if(*errstatus == 1)
 	{
-	    if((output < 0) || (output > 8))
+	    if((output < 0) || (output > 9))
 		{
 		    *errstatus = MenuOutOfRangeError;
 		}
@@ -102,7 +103,8 @@ HEADER* carryOutChoice(HEADER* head, int choice)
 	    inputval = getInputValAsInt(&errstatus);
 	    if(errstatus == 1)
 		{
-		    InsertElementForwardByVal(head, inputval);
+		    //InsertElementForwardByVal(head, inputval);
+			head = InsertElementInOrder(head, inputval);
 		    printf("Value Inserted.\n");
 		}
 	    else
@@ -115,7 +117,8 @@ HEADER* carryOutChoice(HEADER* head, int choice)
 	    inputval = getInputValAsInt(&errstatus);
 	    if(errstatus == 1)
 		{
-		    DeleteElementByVal(head, inputval);
+		    //DeleteElementByVal(head, inputval);
+			head = DeleteElementInOrder(head, inputval);
 		    printf("Value Deleted.\n");
 		}
 	    else
@@ -130,6 +133,7 @@ HEADER* carryOutChoice(HEADER* head, int choice)
 	    break;
 	case 4:
 	    head = ClearList(head);
+		//TODO modify so that reaffectation is not necessary
 	    printf("List Cleared.\n");
 	    break;
 	case 5:
@@ -141,7 +145,8 @@ HEADER* carryOutChoice(HEADER* head, int choice)
 		    inputval = getInputValAsInt(&errstatus);
 		    if(errstatus == 1)
 			{
-			    InsertElementForwardByVal(head, inputval);
+				head = InsertElementInOrder(head, inputval);
+			    //InsertElementForwardByVal(head, inputval);
 			}
 		    else
 			{
@@ -159,7 +164,8 @@ HEADER* carryOutChoice(HEADER* head, int choice)
 		    inputval = getInputValAsInt(&errstatus);
 		    if(errstatus == 1)
 			{
-			    DeleteElementByVal(head, inputval);
+			    //DeleteElementByVal(head, inputval);
+				head = DeleteElementInOrder(head, inputval);
 			}
 		    else
 			{
@@ -176,7 +182,8 @@ HEADER* carryOutChoice(HEADER* head, int choice)
 	    int RangeEndForIns = getInputValAsInt(&errstatus);
 	    for(int i = RangeStartForIns; i < RangeEndForIns; i++)
 		{
-		    InsertElementForwardByVal(head, i);
+		    //InsertElementForwardByVal(head, i);
+			head = InsertElementInOrder(head, i);
 		}
 	    printf("Range to be Inserted Defined.\n");
 	    break;
@@ -188,10 +195,15 @@ HEADER* carryOutChoice(HEADER* head, int choice)
 	    int RangeEndForDel = getInputValAsInt(&errstatus);
 	    for(int i = RangeStartForDel; i < RangeEndForDel; i++)
 		{
-		    DeleteElementByVal(head, i);
+		    //DeleteElementByVal(head, i);
+			head = DeleteElementInOrder(head, i);
 		}
 	    printf("Range to be Deleted Defined.\n");
 	    break;
+	case 9:
+		head = ReverseList(head);
+		printf("List Reversed.\n");
+		break;
 	}
     PressEnterToContinue();
 	return(head);

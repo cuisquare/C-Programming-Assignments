@@ -24,7 +24,7 @@ typedef struct listitem {
 typedef struct header {
 	struct listitem *first;
 	struct listitem *last;
-	enum Order *order;
+	enum Order order;
 } HEADER;
 
 #endif /* TYPES_H */

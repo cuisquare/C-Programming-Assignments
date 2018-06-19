@@ -252,6 +252,34 @@ static void InsertAtStart(HEADER* head, int valtoins)
     head->first = newelt;      // newelt is new first element
 }
 
+// outputs new list that is reverse of input list
+// assumes input list has valid element order with respect to claimed order
+HEADER* ReverseList(HEADER* head) {
+
+	HEADER* headoutput = CreateEmptyList();
+	if (head->order == asc) 
+	{
+		headoutput->order = desc;
+	}
+	else
+	{
+		headoutput->order = asc;
+	}
+
+	LISTITEM* temp = head->first;
+	bool Finished = 0;
+	while (!Finished)
+	{
+		Finished = (temp == head->last);
+		InsertAtStart(headoutput, temp->val);
+		if (!Finished)
+		{
+			temp = temp->fwd;
+		}
+	}
+	return headoutput;
+}
+
 // Inserts a new element of value valtoins at the end of the list maintaining branching, without check on value.
 // Static so end user in main cannot insert an element out of order or duplicate.
 static void InsertAtEnd(HEADER* head, int valtoins)
@@ -274,6 +302,7 @@ static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
 }
 
 // Inserts an Element in forward order based on its value, updating branching
+// Assumes list is in ascending order
 void InsertElementForwardByVal(HEADER* head, int valtoins)
 {
     LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
@@ -309,7 +338,21 @@ void InsertElementForwardByVal(HEADER* head, int valtoins)
     // PrintList(head);
 }
 
+// Inserts an Element in correct order based on list order and value to insert its value, updating branching
+HEADER* InsertElementInOrder(HEADER* head, int valtoins) {
+	bool listhasdescorder = (head->order == desc);
+	if (listhasdescorder) {
+		head = ReverseList(head);
+	}
+	InsertElementForwardByVal(head, valtoins);
+	if (listhasdescorder) {
+		head = ReverseList(head);
+	}
+	return head;
+}
+
 // Deletes One Element with value val, updating branching
+//assumes list is in ascending order
 void DeleteElementByVal(HEADER* head, int valtodel)
 {
     // printf("Attemping to delete elt with value %d...\n", valtodel);
@@ -341,4 +384,17 @@ void DeleteElementByVal(HEADER* head, int valtodel)
 	}
     // printf("Updated List: \n");
     // PrintList(head);
+}
+
+// Deletes an Element in correct order based on list order and value to delete, updating branching
+HEADER* DeleteElementInOrder(HEADER* head, int valtoins) {
+	bool listhasdescorder = (head->order == desc);
+	if (listhasdescorder) {
+		head = ReverseList(head);
+	}
+	DeleteElementByVal(head, valtoins);
+	if (listhasdescorder) {
+		head = ReverseList(head);
+	}
+	return head;
 }
