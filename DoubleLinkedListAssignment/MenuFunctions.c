@@ -228,7 +228,7 @@ void MenuLoop() {
 		{
 		    if(errstatus == MenuOutOfRangeError)
 			{
-			    printf("Menu Input Error: Menu Input was integer but not between 0 and 8.\n");
+			    printf("Menu Input Error: Menu Input was integer but not between 0 and 9.\n");
 			}
 		    else
 			{
