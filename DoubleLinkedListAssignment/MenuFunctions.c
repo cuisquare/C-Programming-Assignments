@@ -14,7 +14,7 @@ static int ContinueDefault = 1;
 //error status given if integer not in range for menu items
 static int MenuOutOfRangeError = 99;
 
-void PrintMenu()
+static void PrintMenu()
 {
     system("cls");
     printf("*****Double Linked List Program*****\n");
@@ -33,7 +33,7 @@ void PrintMenu()
 
 // gets input from keyboard and convert to integer if possible
 // updates error status pointer errstatus to 0 if input invalid
-int getInputValAsInt(int* errstatus)
+static int getInputValAsInt(int* errstatus)
 {
     char charinput[10];
     char* garbagestring;
@@ -59,7 +59,7 @@ int getInputValAsInt(int* errstatus)
     return inputval;
 }
 
-int getMenuChoice(int* errstatus)
+static int getMenuChoice(int* errstatus)
 {
     printf("Menu choice : ");
     int output = getInputValAsInt(errstatus);
@@ -76,7 +76,7 @@ int getMenuChoice(int* errstatus)
 }
 
 // flushes buffer and wait for getchar to resume
-void PressEnterToContinue()
+static void PressEnterToContinue()
 {
     int c;
     do
@@ -89,7 +89,7 @@ void PressEnterToContinue()
 }
 
 // Carry out choice from user input
-HEADER* carryOutChoice(HEADER* head, int choice)
+static HEADER* carryOutChoice(HEADER* head, int choice)
 {
     int errstatus;
     int inputval;
