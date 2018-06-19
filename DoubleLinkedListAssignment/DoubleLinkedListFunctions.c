@@ -265,16 +265,18 @@ HEADER* ReverseList(HEADER* head) {
 	{
 		headoutput->order = asc;
 	}
-
-	LISTITEM* temp = head->first;
-	bool Finished = 0;
-	while (!Finished)
+	if (!IsEmptyList(head)) 
 	{
-		Finished = (temp == head->last);
-		InsertAtStart(headoutput, temp->val);
-		if (!Finished)
+		LISTITEM* temp = head->first;
+		bool Finished = 0;
+		while (!Finished)
 		{
-			temp = temp->fwd;
+			Finished = (temp == head->last);
+			InsertAtStart(headoutput, temp->val);
+			if (!Finished)
+			{
+				temp = temp->fwd;
+			}
 		}
 	}
 	return headoutput;
