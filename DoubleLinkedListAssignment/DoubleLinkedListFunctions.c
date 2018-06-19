@@ -305,7 +305,7 @@ static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
 
 // Inserts an Element in forward order based on its value, updating branching
 // Assumes list is in ascending order
-void InsertElementForwardByVal(HEADER* head, int valtoins)
+static void InsertElementForwardByVal(HEADER* head, int valtoins)
 {
     LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
     // printf("Attemping to insert elt with value %d...\n", valtoins);
@@ -355,7 +355,7 @@ HEADER* InsertElementInOrder(HEADER* head, int valtoins) {
 
 // Deletes One Element with value val, updating branching
 //assumes list is in ascending order
-void DeleteElementByVal(HEADER* head, int valtodel)
+static void DeleteElementByVal(HEADER* head, int valtodel)
 {
     // printf("Attemping to delete elt with value %d...\n", valtodel);
     LISTITEM* elttodel = GetSmallestGreaterEltByVal(head, valtodel);

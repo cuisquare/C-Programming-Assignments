@@ -34,14 +34,6 @@ HEADER* ReverseList(HEADER* head);
 // Inserts an Element in correct order based on list order and value to insert its value, updating branching
 HEADER* InsertElementInOrder(HEADER* head, int valtoins);
 
-// Inserts an Element in forward order based on its value, updating branching
-// Assumes list is in ascending order
-void InsertElementForwardByVal(HEADER* head, int valtoins);
-
-//Deletes One Element with value val, updating branching
-//assumes list is in ascending order
-void DeleteElementByVal(HEADER* head, int valtodel);
-
 // Deletes an Element in correct order based on list order and value to delete, updating branching
 HEADER* DeleteElementInOrder(HEADER* head, int valtoins);
 
