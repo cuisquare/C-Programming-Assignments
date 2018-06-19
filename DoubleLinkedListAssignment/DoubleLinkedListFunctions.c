@@ -208,7 +208,7 @@ LISTITEM* CreateEltFromVal(int val)
 }
 
 // Returns element in head that has smallest value greater or equal to val
-LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
+static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 {
     LISTITEM* temp;
     if((IsEmptyList(head)) || head->last->val < val)
