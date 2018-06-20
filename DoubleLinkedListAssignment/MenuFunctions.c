@@ -23,10 +23,10 @@ static void PrintMenu()
     printf("	2 : Delete Value From List\n");
     printf("	3 : Print List\n");
     printf("	4 : Clear List\n");
-    printf("	5 : Input Multiple values in List\n");
-    printf("	6 : Delete Multiple values in List\n");
-    printf("	7 : Input Range in List\n");
-    printf("	8 : Delete Range in List\n");
+    printf("	5 : Insert Multiple values in List\n");
+    printf("	6 : Delete Multiple values from List\n");
+    printf("	7 : Insert Range in List\n");
+    printf("	8 : Delete Range from List\n");
 	printf("	9 : Reverse List\n");
     printf("	0 : Exit Program\n");
 }

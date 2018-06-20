@@ -199,6 +199,12 @@ HEADER* ClearList(HEADER* head)
 	return head;
 }
 
+// Fully Deletes a List
+static void DeleteList(HEADER* head) {
+	ClearList(head);
+	free(head);
+}
+
 // Creates new LISTITEM elt containing value val
 LISTITEM* CreateEltFromVal(int val)
 {
@@ -208,6 +214,7 @@ LISTITEM* CreateEltFromVal(int val)
 }
 
 // Returns element in head that has smallest value greater or equal to val
+// static as it requires list to be in ascending order
 static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 {
     LISTITEM* temp;
@@ -279,6 +286,7 @@ HEADER* ReverseList(HEADER* head) {
 			}
 		}
 	}
+	DeleteList(head);
 	return headoutput;
 }
 
@@ -304,8 +312,8 @@ static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
 }
 
 // Inserts an Element in forward order based on its value, updating branching
-// Assumes list is in ascending order
-static void InsertElementForwardByVal(HEADER* head, int valtoins)
+// Requires list to be in ascending order
+static void InsertElementByAscVal(HEADER* head, int valtoins)
 {
     LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
     // printf("Attemping to insert elt with value %d...\n", valtoins);
@@ -346,7 +354,7 @@ HEADER* InsertElementInOrder(HEADER* head, int valtoins) {
 	if (listhasdescorder) {
 		head = ReverseList(head);
 	}
-	InsertElementForwardByVal(head, valtoins);
+	InsertElementByAscVal(head, valtoins);
 	if (listhasdescorder) {
 		head = ReverseList(head);
 	}
@@ -354,8 +362,8 @@ HEADER* InsertElementInOrder(HEADER* head, int valtoins) {
 }
 
 // Deletes One Element with value val, updating branching
-//assumes list is in ascending order
-static void DeleteElementByVal(HEADER* head, int valtodel)
+// requires list to be in ascending order because of use of GetSmallestGreaterEltByVal to get to element
+static void DeleteElementByAscVal(HEADER* head, int valtodel)
 {
     // printf("Attemping to delete elt with value %d...\n", valtodel);
     LISTITEM* elttodel = GetSmallestGreaterEltByVal(head, valtodel);
@@ -382,7 +390,7 @@ static void DeleteElementByVal(HEADER* head, int valtodel)
 		    elttodel->fwd->bck = elttodel->bck; // branch backward around element to be deleted - elttodel now
 		                                        // inacessible going backward through list
 		}
-	    free(elttodel); // free memory previously held by elttodel
+	    free(elttodel); // free memory still held by elttodel
 	}
     // printf("Updated List: \n");
     // PrintList(head);
@@ -394,7 +402,7 @@ HEADER* DeleteElementInOrder(HEADER* head, int valtoins) {
 	if (listhasdescorder) {
 		head = ReverseList(head);
 	}
-	DeleteElementByVal(head, valtoins);
+	DeleteElementByAscVal(head, valtoins);
 	if (listhasdescorder) {
 		head = ReverseList(head);
 	}
