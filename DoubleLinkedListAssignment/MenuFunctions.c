@@ -19,16 +19,17 @@ static void PrintMenu()
     system("cls");
     printf("*****Double Linked List Program*****\n");
     printf("Please choose from the following options : \n");
-    printf("	1 : Insert Value In List\n");
-    printf("	2 : Delete Value From List\n");
-    printf("	3 : Print List\n");
-    printf("	4 : Clear List\n");
-    printf("	5 : Insert Multiple values in List\n");
-    printf("	6 : Delete Multiple values from List\n");
-    printf("	7 : Insert Range in List\n");
-    printf("	8 : Delete Range from List\n");
-	printf("	9 : Reverse List\n");
-    printf("	0 : Exit Program\n");
+	printf("	 0 : Exit Program\n");
+    printf("	 1 : Insert Value In List\n");
+    printf("	 2 : Delete Value From List\n");
+    printf("	 3 : Print List\n");
+    printf("	 4 : Clear List\n");
+    printf("	 5 : Insert Multiple values in List\n");
+    printf("	 6 : Delete Multiple values from List\n");
+    printf("	 7 : Insert Range in List\n");
+    printf("	 8 : Delete Range from List\n");
+	printf("	 9 : Reverse List\n");
+	printf("	10 : List Info\n");
 }
 
 // gets input from keyboard and convert to integer if possible
@@ -67,7 +68,7 @@ static int getMenuChoice(int* errstatus)
     // catching additional error that the input while integer is outside of range allowed for menu choices
     if(*errstatus == 1)
 	{
-	    if((output < 0) || (output > 9))
+	    if((output < 0) || (output > 10))
 		{
 		    *errstatus = MenuOutOfRangeError;
 		}
@@ -198,6 +199,9 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 		head = ReverseList(head);
 		printf("List Reversed.\n");
 		break;
+	case 10:
+		PrintListInfo(head);
+		break;
 	}
     PressEnterToContinue();
 	return(head);
@@ -222,7 +226,7 @@ void MenuLoop() {
 		{
 		    if(errstatus == MenuOutOfRangeError)
 			{
-			    printf("Menu Input Error: Menu Input was integer but not between 0 and 9.\n");
+			    printf("Menu Input Error: Menu Input was integer but not between 0 and 10.\n");
 			}
 		    else
 			{

@@ -408,3 +408,40 @@ HEADER* DeleteElementInOrder(HEADER* head, int valtoins) {
 	}
 	return head;
 }
+
+// Gets descriptive string for list order
+static char* GetOrderDesc(enum Order order) 
+{
+	char* output;
+	if (order == asc) 
+	{
+		output = "Ascending";
+	}
+	if (order == desc)
+	{
+		output = "Descending";
+	}
+	return output;
+}
+
+// Gets number of elements in list
+static int GetListLength(HEADER* head)
+{
+	int output = 0;
+	if (!IsEmptyList(head))
+	{
+		for (LISTITEM* temp = head->first; temp != head->last; temp = temp->fwd)
+		{
+			output++;
+		}
+		output++;
+	}
+	return output;
+}
+
+// Prints out info on list head
+void PrintListInfo(HEADER* head) 
+{
+	printf("Order: %s\n", GetOrderDesc(head->order));
+	printf("Number of elements: %d\n", GetListLength(head));
+}

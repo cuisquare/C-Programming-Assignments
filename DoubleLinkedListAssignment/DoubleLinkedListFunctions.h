@@ -34,4 +34,7 @@ HEADER* InsertElementInOrder(HEADER* head, int valtoins);
 // Deletes an Element in correct order based on list order and value to delete, updating branching
 HEADER* DeleteElementInOrder(HEADER* head, int valtoins);
 
+// Prints out info on list head
+void PrintListInfo(HEADER* head);
+
 #endif /* DOUBLELINKEDLISTFUNCTIONS_H */
