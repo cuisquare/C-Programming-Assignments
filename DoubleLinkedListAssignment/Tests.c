@@ -24,7 +24,7 @@ void TestUpdatePos()
 	    InsertElementInOrder(head, i);
 	}
     int NbMoves = 5;
-    LISTITEM* pos = head->first;
+    LISTITEM* pos = head->smallest;
     pos = pos->fwd;
     printf("Before Move, pos val = %d\n", pos->val);
     MovePosFwdBy(head, &pos, NbMoves);

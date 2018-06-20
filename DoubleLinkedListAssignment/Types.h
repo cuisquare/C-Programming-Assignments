@@ -22,8 +22,8 @@ typedef struct listitem {
 //	pointer to first element in list - *first
 //	pointer to last element in list - *last
 typedef struct header {
-	struct listitem *first;
-	struct listitem *last;
+	struct listitem *smallest;
+	struct listitem *greatest;
 	enum Order order;
 } HEADER;
 

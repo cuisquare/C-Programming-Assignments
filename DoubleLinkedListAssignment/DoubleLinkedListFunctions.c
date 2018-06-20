@@ -10,10 +10,61 @@ static int NMaxPrint = 100;
 //Maximum number of elements to print out in each line
 static int ChunkSize = 10;
 
+// Gets next element depending on order
+LISTITEM* GetNext(HEADER* head, LISTITEM* item)
+{
+	if (head->order == asc) 
+	{
+		return item->fwd;
+	}
+	else if (head->order == asc) 
+	{
+		return item->bck;
+	}
+	else
+	{
+		return (LISTITEM*)NULL;
+	}
+}
+
+// Gets first element in list depending on order
+LISTITEM* GetFirst(HEADER* head) 
+{
+	if (head->order == asc) 
+	{
+		return head->smallest;
+	}
+	else if (head->order == asc) 
+	{
+		return head->greatest;
+	}
+	else
+	{
+		return (LISTITEM*)NULL;
+	}
+}
+
+// Gets last element in list depending on order
+LISTITEM* GetLast(HEADER* head) 
+{
+	if (head->order == asc) 
+	{
+		return head->greatest;
+	}
+	else if (head->order == asc) 
+	{
+		return head->smallest;
+	}
+	else
+	{
+		return (LISTITEM*)NULL;
+	}
+}
+
 // Checks whether a list is empty
 bool IsEmptyList(HEADER* head)
 {
-    return ((head->first == (LISTITEM*)head));
+    return ((head->smallest == (LISTITEM*)head));
 }
 
 // Prints all values of linked list with header head - Verbose
@@ -22,19 +73,19 @@ void PrintListVerbose(HEADER* head)
     printf("***START PRINT*** \n");
     if(!IsEmptyList(head))
 	{
-	    LISTITEM* temp = head->first;
+	    LISTITEM* temp = head->smallest;
 	    int i = 0;
 	    while(i < NMaxPrint)
 		{
 		    printf("Val number %d = %d\n", i + 1, temp->val);
-		    if(temp == head->last)
+		    if(temp == head->greatest)
 			{
 			    break;
 			}
 		    else
 			{
 			    i++;
-			    temp = temp->fwd;
+			    temp = GetNext(head,temp);
 			}
 		}
 	    if(i == NMaxPrint)
@@ -56,19 +107,19 @@ void PrintList(HEADER* head)
     printf("[");
     if(!IsEmptyList(head))
 	{
-	    LISTITEM* temp = head->first;
+	    LISTITEM* temp = head->smallest;
 	    int i = 0;
 	    while(i < NMaxPrint)
 		{
 		    printf("%d", temp->val);
-		    if(temp == head->last)
+		    if(temp == head->greatest)
 			{
 			    break;
 			}
 		    else
 			{
 			    i++;
-			    temp = temp->fwd;
+			    temp = GetNext(head,temp);
 			    printf(", ");
 			}
 		}
@@ -90,13 +141,13 @@ void PrintList(HEADER* head)
 }
 
 // prints NbItems from list headed by head starting at position pos
-// returns boolean true if the last element printed was head->last (print finished)
+// returns boolean true if the last element printed was head->greatest (print finished)
 // updates the incoming pos pointer to the last element printed
 // this assumes list is not empty and pos is an item of list
 static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItems)
 {
     printf("[");
-    if(*pos == head->first)
+    if(*pos == head->smallest)
 	{
 	    printf("     ");
 	}
@@ -104,14 +155,14 @@ static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItem
     bool LastReached = 0;
     bool ChunkAllPrinted = 0;
     int i = 1;
-    if(*pos != head->first)
+    if(*pos != head->smallest)
 	{
 	    printf("..., ");
 	}
     while(!PrintFinished)
 	{
 	    printf("%4d", (*pos)->val);
-	    LastReached = (*pos == head->last);
+	    LastReached = (*pos == head->greatest);
 	    ChunkAllPrinted = (i == NbItems);
 	    PrintFinished = (LastReached || ChunkAllPrinted);
 	    if(!PrintFinished)
@@ -140,7 +191,7 @@ void PrintByNbItemsChunks(HEADER* head, int NbItems)
 {
     if(!IsEmptyList(head))
 	{
-	    LISTITEM* pos = head->first;
+	    LISTITEM* pos = head->smallest;
 	    bool LastReached = 0;
 	    while(!LastReached)
 		{
@@ -169,8 +220,8 @@ HEADER* CreateEmptyList()
 {
     HEADER* head = malloc(sizeof(HEADER));
 	head->order = asc;
-    head->first = (LISTITEM*)head;
-    head->last = head->first;
+    head->smallest = (LISTITEM*)head;
+    head->greatest = head->smallest;
     return head;
 }
 
@@ -179,13 +230,13 @@ HEADER* ClearList(HEADER* head)
 {
 	if (!IsEmptyList(head))
 	{
-		if (head->first!=head->last) 
+		if (head->smallest!=head->greatest) 
 		{
-			LISTITEM* temp = head->first->fwd;
+			LISTITEM* temp = head->smallest->fwd;
 			bool ListFinished = 0;
 			while (!ListFinished)
 			{
-				ListFinished = (temp == head->last);
+				ListFinished = (temp == head->greatest);
 				free(temp->bck);
 				if (!ListFinished)
 				{
@@ -193,7 +244,7 @@ HEADER* ClearList(HEADER* head)
 				}
 			}
 		}
-		free(head->last);
+		free(head->greatest);
 	}
 	enum Order saveheadorder = head->order;
 	head = CreateEmptyList();
@@ -220,7 +271,7 @@ LISTITEM* CreateEltFromVal(int val)
 static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 {
     LISTITEM* temp;
-    if((IsEmptyList(head)) || head->last->val < val)
+    if((IsEmptyList(head)) || head->greatest->val < val)
 	{
 	    // If List is empty, or all elements in list are smaller than val (aka there is no elements greater in
 	    // list), we return pointer to NULL  this works only if list is ordered by ascending val going forward through
@@ -234,12 +285,12 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 	    bool loopedthrough = 0;
 	    bool searchfinished = 0;
 
-	    temp = head->first;
+	    temp = head->smallest;
 	    // enter loop if search is not finished
 	    while(!searchfinished)
 		{
 		    posfound = (temp->val >= val); // elt found if its value is greater or equal than value searched
-		    loopedthrough = (temp == head->last); // loop through list over if temp is last element in list
+		    loopedthrough = (temp == head->greatest); // loop through list over if temp is last element in list
 		    searchfinished =
 		        (posfound || loopedthrough); // search finished if elt found or loop through list over
 		    if(!searchfinished)
@@ -256,9 +307,9 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 static void InsertAtStart(HEADER* head, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
-    newelt->fwd = head->first; // newelt points forward to soon-to-be-old first element
-    head->first->bck = newelt; // soon-to-be-old first element points back to newelt
-    head->first = newelt;      // newelt is new first element
+    newelt->fwd = head->smallest; // newelt points forward to soon-to-be-old first element
+    head->smallest->bck = newelt; // soon-to-be-old first element points back to newelt
+    head->smallest = newelt;      // newelt is new first element
 }
 
 // outputs new list that is reverse of input list
@@ -276,11 +327,11 @@ HEADER* ReverseList(HEADER* head) {
 	}
 	if (!IsEmptyList(head)) 
 	{
-		LISTITEM* temp = head->first;
+		LISTITEM* temp = head->smallest;
 		bool Finished = 0;
 		while (!Finished)
 		{
-			Finished = (temp == head->last);
+			Finished = (temp == head->greatest);
 			InsertAtStart(headoutput, temp->val);
 			if (!Finished)
 			{
@@ -297,9 +348,9 @@ HEADER* ReverseList(HEADER* head) {
 static void InsertAtEnd(HEADER* head, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
-    newelt->bck = head->last; // newelt points backward to soon-to-be-old last element
-    head->last->fwd = newelt; // soon-to-be-old last element points forward to newelt
-    head->last = newelt;      // newelt is new last element
+    newelt->bck = head->greatest; // newelt points backward to soon-to-be-old last element
+    head->greatest->fwd = newelt; // soon-to-be-old last element points forward to newelt
+    head->greatest = newelt;      // newelt is new last element
 }
 
 // Inserts an element before element nextelt. Assumes that nextelt exists in list.
@@ -333,7 +384,7 @@ static void InsertElementByAscVal(HEADER* head, int valtoins)
 	}
     else
 	{
-	    if(nextelt == head->first)
+	    if(nextelt == head->smallest)
 		{
 		    // First element in the list is greater than val to insert
 		    // Therefore : Insert Element at Start
@@ -375,14 +426,14 @@ static void DeleteElementByAscVal(HEADER* head, int valtodel)
 	}
     else
 	{
-	    if(elttodel == head->first)
+	    if(elttodel == head->smallest)
 		{
-		    head->first = elttodel->fwd; // branch head first to old 2nd element - elttodel now inaccessible
+		    head->smallest = elttodel->fwd; // branch head first to old 2nd element - elttodel now inaccessible
 		                                 // going through list
 		}
-	    else if(elttodel == head->last)
+	    else if(elttodel == head->greatest)
 		{
-		    head->last = elttodel->bck; // branch head last to old one but last element - elttodel now
+		    head->greatest = elttodel->bck; // branch head last to old one but last element - elttodel now
 		                                // inaccessible going through list
 		}
 	    else
@@ -432,7 +483,7 @@ static int GetListLength(HEADER* head)
 	int output = 0;
 	if (!IsEmptyList(head))
 	{
-		for (LISTITEM* temp = head->first; temp != head->last; temp = temp->fwd)
+		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
 		{
 			output++;
 		}
