@@ -195,7 +195,9 @@ HEADER* ClearList(HEADER* head)
 		}
 		free(head->last);
 	}
+	enum Order saveheadorder = head->order;
 	head = CreateEmptyList();
+	head->order = saveheadorder;
 	return head;
 }
 
