@@ -19,18 +19,17 @@ static int NBMENUITEMS = 11;
 
 enum Action
 {
-	
 	ActionExit,
+	ActionPrintList,
+	ActionPrintListInfo,
 	ActionInsertSingleValue,
 	ActionDeleteSingleValue,
-	ActionPrintList,
-	ActionClearList,
 	ActionInsertMultipleValues,
 	ActionDeleteMultipleValues,
 	ActionInsertRange,
 	ActionDeleteRange,
 	ActionReverseList,
-	ActionPrintListInfo
+	ActionClearList
 };
 
 char* GetActionsDesc(enum Action action)
@@ -94,26 +93,8 @@ static void PrintMenu()
 	printf("Please choose from the following options : \n");
 	for (int i = 0; i < NBMENUITEMS; i++)
 	{
-		printf("	 %d : %s\n", i, GetActionsDesc(i));
+		printf("	 %2d : %s\n", i, GetActionsDesc(i));
 	}
-}
-
-static void PrintMenuOld()
-{
-    system("cls");
-    printf("*****Double Linked List Program*****\n");
-    printf("Please choose from the following options : \n");
-	printf("	 0 : Exit Program\n");
-    printf("	 1 : Insert Value In List\n");
-    printf("	 2 : Delete Value From List\n");
-    printf("	 3 : Print List\n");
-    printf("	 4 : Clear List\n");
-    printf("	 5 : Insert Multiple values in List\n");
-    printf("	 6 : Delete Multiple values from List\n");
-    printf("	 7 : Insert Range in List\n");
-    printf("	 8 : Delete Range from List\n");
-	printf("	 9 : Reverse List\n");
-	printf("	10 : List Info\n");
 }
 
 // gets input from keyboard and convert to integer if possible
@@ -404,49 +385,6 @@ static HEADER* carryOutChoice(HEADER* head, enum Actions choice)
 		break;
 	}
     PressEnterToContinue();
-	return(head);
-}
-
-// Carry out choice from user input
-static HEADER* carryOutChoiceOLD(HEADER* head, int choice)
-{
-	switch (choice)
-	{
-	case 0:
-		printf("Exiting Program.\n");
-		break;
-	case 1:
-		head = MenuActionInsertSingleValue(head);
-		break;
-	case 2:
-		head = MenuActionDeleteSingleValue(head);
-		break;
-	case 3:
-		MenuActionPrintList(head);
-		break;
-	case 4:
-		head = MenuActionClearList(head);
-		break;
-	case 5:
-		head = MenuActionInsertMultipleValues(head);
-		break;
-	case 6:
-		head = MenuActionDeleteMultipleValues(head);
-		break;
-	case 7:
-		head = MenuActionInsertRange(head);
-		break;
-	case 8:
-		head = MenuActionDeleteRange(head);
-		break;
-	case 9:
-		head = MenuActionReverseList(head);
-		break;
-	case 10:
-		MenuActionPrintListInfo(head);
-		break;
-	}
-	PressEnterToContinue();
 	return(head);
 }
 
