@@ -14,7 +14,91 @@ static int ContinueDefault = 1;
 //error status given if integer not in range for menu items
 static int MenuOutOfRangeError = 99;
 
+// number of menu items
+static int NBMENUITEMS = 11;
+
+enum Action
+{
+	
+	ActionExit,
+	ActionInsertSingleValue,
+	ActionDeleteSingleValue,
+	ActionPrintList,
+	ActionClearList,
+	ActionInsertMultipleValues,
+	ActionDeleteMultipleValues,
+	ActionInsertRange,
+	ActionDeleteRange,
+	ActionReverseList,
+	ActionPrintListInfo
+};
+
+char* GetActionsDesc(enum Action action)
+{
+	char* output;
+	if (action == ActionExit)
+	{
+		output = "Exit Program";
+	}
+	else if (action == ActionInsertSingleValue)
+	{
+		output = "Insert Value In List";
+	}
+	else if (action == ActionDeleteSingleValue)
+	{
+		output = "Delete Value From List";
+	}
+	else if (action == ActionPrintList)
+	{
+		output = "Print List";
+	}
+	else if (action == ActionClearList)
+	{
+		output = "Clear List";
+	}
+	else if (action == ActionInsertMultipleValues)
+	{
+		output = "Insert Multiple values in List";
+	}
+	else if (action == ActionDeleteMultipleValues)
+	{
+		output = "Delete Multiple values from List";
+	}
+	else if (action == ActionInsertRange)
+	{
+		output = "Insert Range in List";
+	}
+	else if (action == ActionDeleteRange)
+	{
+		output = "Delete Range from List";
+	}
+	else if (action == ActionReverseList)
+	{
+		output = "Reverse List";
+	}
+	else if (action == ActionPrintListInfo)
+	{
+		output = "Print List Info";
+	}
+	else
+	{
+		output = "Unknown Action";
+	}
+	return output;
+}
+
 static void PrintMenu()
+{
+	system("cls");
+	printf("*****Double Linked List Program*****\n");
+	printf("Please choose from the following options : \n");
+	for (int i = 0; i < NBMENUITEMS; i++)
+	{
+		printf("	 %d : %s\n", i, GetActionsDesc(i));
+	}
+}
+
+static void PrintMenuOld()
 {
     system("cls");
     printf("*****Double Linked List Program*****\n");
@@ -142,7 +226,6 @@ static HEADER* MenuActionInsertMultipleValues(HEADER* head)
 
 static HEADER* MenuActionInsertRange(HEADER* head)
 {
-	int inputval;
 	int errstatus;
 	printf("Input Start of Range - inclusive - to Insert:  ");
 	int RangeStartForIns = getInputValAsInt(&errstatus);
@@ -225,7 +308,6 @@ static HEADER* MenuActionDeleteMultipleValues(HEADER* head)
 
 static HEADER* MenuActionDeleteRange(HEADER* head)
 {
-	int inputval;
 	int errstatus;
 	printf("Input Start of Range - inclusive - to Delete:  ");
 	int RangeStartForDel = getInputValAsInt(&errstatus);
