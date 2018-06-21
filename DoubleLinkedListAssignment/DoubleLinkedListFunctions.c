@@ -153,7 +153,7 @@ static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItem
 	}
     bool PrintFinished = 0;
     bool LastReached = 0;
-    bool ChunkAllPrinted = 0;
+    bool NItemsPrinted = 0;
     int i = 1;
     if(*pos != GetFirst(head))
 	{
@@ -162,14 +162,20 @@ static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItem
     while(!PrintFinished)
 	{
 	    printf("%4d", (*pos)->val);
+		//we reached the last element in the list?
 	    LastReached = (*pos == GetLast(head));
-	    ChunkAllPrinted = (i == NbItems);
-	    PrintFinished = (LastReached || ChunkAllPrinted);
+		//NbItems have been printed?
+	    NItemsPrinted = (i == NbItems);
+		//The print is finished if either we reached the last element in the list, or NbItems have been printed
+	    PrintFinished = (LastReached || NItemsPrinted);
+		//if the print is not finished, update i and pos
 	    if(!PrintFinished)
 		{
 		    i++;
 		    *pos = GetNext(head,*pos);
 		}
+		// there are still elements to print in the list, that will be printed at the next iteration
+		// so we print ", " to separate with next value
 	    if(!LastReached)
 		{
 		    printf(", ");
@@ -178,7 +184,8 @@ static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItem
     // Print is finished
     if(!LastReached)
 	{
-	    // there are still elements to print
+	    // there are still elements to print in the list, that will not be printed here (PrintFinished = true)
+		// so we print "..." to reflect that situation
 	    printf("...");
 	}
     printf("]\n");
