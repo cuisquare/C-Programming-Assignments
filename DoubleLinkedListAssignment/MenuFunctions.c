@@ -136,40 +136,54 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 	    printf("List Cleared.\n");
 	    break;
 	case 5:
-	    printf("Input Number of Values to Insert:  ");
+	    printf("Input Number of Values to Insert:  \n");
 	    int NbValToInsert = getInputValAsInt(&errstatus);
-	    for(int i = 0; i < NbValToInsert; i++)
+		if (errstatus == 1)
 		{
-		    printf("Input Value %d / %d: ", i + 1, NbValToInsert);
-		    inputval = getInputValAsInt(&errstatus);
-		    if(errstatus == 1)
+			for (int i = 0; i < NbValToInsert; i++)
 			{
-				head = InsertElement(head, inputval);
+				printf("Input Value %d / %d: ", i + 1, NbValToInsert);
+				inputval = getInputValAsInt(&errstatus);
+				if (errstatus == 1)
+				{
+					head = InsertElement(head, inputval);
+				}
+				else
+				{
+					printf("\nInput error. Value will not be inserted.\n");
+				}
 			}
-		    else
-			{
-			    printf("\nInput error. Value will not be inserted.\n");
-			}
+			printf("Valid values Inserted.\n");
 		}
-	    printf("Values Inserted.\n");
+		else
+		{
+			printf("\nInput error. No value will be inserted.\n");
+		}
 	    break;
 	case 6:
 	    printf("Input Number of Values to Delete:  ");
 	    int NbValToDelete = getInputValAsInt(&errstatus);
-	    for(int i = 0; i < NbValToDelete; i++)
+		if (errstatus == 1)
 		{
-		    printf("Value To Be Deleted %d / %d: ", i + 1, NbValToDelete);
-		    inputval = getInputValAsInt(&errstatus);
-		    if(errstatus == 1)
+			for (int i = 0; i < NbValToDelete; i++)
 			{
-				head = DeleteElement(head, inputval);
+				printf("Value To Be Deleted %d / %d: ", i + 1, NbValToDelete);
+				inputval = getInputValAsInt(&errstatus);
+				if (errstatus == 1)
+				{
+					head = DeleteElement(head, inputval);
+				}
+				else
+				{
+					printf("\nInput error. Value will not be deleted.\n");
+				}
 			}
-		    else
-			{
-			    printf("\nInput error. No value will be deleted.\n");
-			}
+			printf("Valid values Deleted.\n");
 		}
-		printf("Values Deleted.\n");
+		else
+		{
+			printf("\nInput error. No value will be deleted.\n");
+		}
 	    break;
 	case 7:
 	    printf("Input Start of Range - inclusive - to Insert:  ");
