@@ -104,7 +104,7 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 	    inputval = getInputValAsInt(&errstatus);
 	    if(errstatus == 1)
 		{
-			head = InsertElementInOrder(head, inputval);
+			head = InsertElement(head, inputval);
 		    printf("Value Inserted.\n");
 		}
 	    else
@@ -117,7 +117,7 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 	    inputval = getInputValAsInt(&errstatus);
 	    if(errstatus == 1)
 		{
-			head = DeleteElementInOrder(head, inputval);
+			head = DeleteElement(head, inputval);
 		    printf("Value Deleted.\n");
 		}
 	    else
@@ -144,7 +144,7 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 		    inputval = getInputValAsInt(&errstatus);
 		    if(errstatus == 1)
 			{
-				head = InsertElementInOrder(head, inputval);
+				head = InsertElement(head, inputval);
 			}
 		    else
 			{
@@ -162,7 +162,7 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 		    inputval = getInputValAsInt(&errstatus);
 		    if(errstatus == 1)
 			{
-				head = DeleteElementInOrder(head, inputval);
+				head = DeleteElement(head, inputval);
 			}
 		    else
 			{
@@ -179,7 +179,7 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 	    int RangeEndForIns = getInputValAsInt(&errstatus);
 	    for(int i = RangeStartForIns; i < RangeEndForIns; i++)
 		{
-			head = InsertElementInOrder(head, i);
+			head = InsertElement(head, i);
 		}
 	    printf("Range to be Inserted Defined.\n");
 	    break;
@@ -191,7 +191,7 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 	    int RangeEndForDel = getInputValAsInt(&errstatus);
 	    for(int i = RangeStartForDel; i < RangeEndForDel; i++)
 		{
-			head = DeleteElementInOrder(head, i);
+			head = DeleteElement(head, i);
 		}
 	    printf("Range to be Deleted Defined.\n");
 	    break;

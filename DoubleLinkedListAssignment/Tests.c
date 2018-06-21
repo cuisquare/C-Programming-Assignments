@@ -21,7 +21,7 @@ void TestUpdatePos()
     HEADER* head = CreateEmptyList();
     for(int i = 1; i < 21; i++)
 	{
-	    InsertElementInOrder(head, i);
+	    InsertElement(head, i);
 	}
     int NbMoves = 5;
     LISTITEM* pos = head->smallest;
@@ -39,7 +39,7 @@ void TestReverse() {
 	HEADER* head = CreateEmptyList();
     for(int i = 10; i < 20; i++)
 	{
-	    InsertElementInOrder(head, i);
+	    InsertElement(head, i);
 	}
 	printf("Before Reversing, head: : \n");
 	PrintListVerbose(head);
@@ -51,15 +51,15 @@ void TestReverse() {
 
 	//Inserting new value in head2
 	printf("INSERTING 5 in head...\n");
-	head = InsertElementInOrder(head, 5);
+	head = InsertElement(head, 5);
 	printf("INSERTING 3 in head...\n");
-	head = InsertElementInOrder(head, 3);
+	head = InsertElement(head, 3);
 	printf("After Inserting new values 5 then 3, head : \n");
 	PrintListVerbose(head);
 	printf("INSERTING 25 in head2...\n");
-	head2 = InsertElementInOrder(head2, 25);
+	head2 = InsertElement(head2, 25);
 	printf("INSERTING 23 in head2...\n");
-	head2 = InsertElementInOrder(head2, 23);
+	head2 = InsertElement(head2, 23);
 	printf("After Inserting new values 25 then 23, head2 : \n");
 	PrintListVerbose(head2);
 }

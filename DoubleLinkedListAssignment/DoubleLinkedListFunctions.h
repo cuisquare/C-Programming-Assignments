@@ -28,11 +28,13 @@ LISTITEM* CreateEltFromVal(int val);
 // outputs new list that is reverse of input list
 HEADER* ReverseList(HEADER* head);
 
-// Inserts an Element in correct order based on list order and value to insert its value, updating branching
-HEADER* InsertElementInOrder(HEADER* head, int valtoins);
+// Inserts an Element in forward order based on its value, updating branching
+// Requires list values to be in ascending order going forward
+HEADER* InsertElement(HEADER* head, int valtoins);
 
-// Deletes an Element in correct order based on list order and value to delete, updating branching
-HEADER* DeleteElementInOrder(HEADER* head, int valtoins);
+// Deletes One Element with value val, updating branching
+// requires list to be in ascending order because of use of GetSmallestGreaterEltByVal to get to element
+HEADER* DeleteElement(HEADER* head, int valtodel);
 
 // Prints out info on list head
 void PrintListInfo(HEADER* head);

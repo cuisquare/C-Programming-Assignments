@@ -11,13 +11,13 @@ static int NMaxPrint = 100;
 static int ChunkSize = 10;
 
 // Gets next element depending on order
-LISTITEM* GetNext(HEADER* head, LISTITEM* item)
+static LISTITEM* GetNext(HEADER* head, LISTITEM* item)
 {
 	if (head->order == asc) 
 	{
 		return item->fwd;
 	}
-	else if (head->order == asc) 
+	else if (head->order == desc) 
 	{
 		return item->bck;
 	}
@@ -28,13 +28,13 @@ LISTITEM* GetNext(HEADER* head, LISTITEM* item)
 }
 
 // Gets first element in list depending on order
-LISTITEM* GetFirst(HEADER* head) 
+static LISTITEM* GetFirst(HEADER* head) 
 {
 	if (head->order == asc) 
 	{
 		return head->smallest;
 	}
-	else if (head->order == asc) 
+	else if (head->order == desc) 
 	{
 		return head->greatest;
 	}
@@ -45,13 +45,13 @@ LISTITEM* GetFirst(HEADER* head)
 }
 
 // Gets last element in list depending on order
-LISTITEM* GetLast(HEADER* head) 
+static LISTITEM* GetLast(HEADER* head) 
 {
 	if (head->order == asc) 
 	{
 		return head->greatest;
 	}
-	else if (head->order == asc) 
+	else if (head->order == desc) 
 	{
 		return head->smallest;
 	}
@@ -147,7 +147,7 @@ void PrintList(HEADER* head)
 static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItems)
 {
     printf("[");
-    if(*pos == head->smallest)
+    if(*pos == GetFirst(head))
 	{
 	    printf("     ");
 	}
@@ -155,20 +155,20 @@ static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItem
     bool LastReached = 0;
     bool ChunkAllPrinted = 0;
     int i = 1;
-    if(*pos != head->smallest)
+    if(*pos != GetFirst(head))
 	{
 	    printf("..., ");
 	}
     while(!PrintFinished)
 	{
 	    printf("%4d", (*pos)->val);
-	    LastReached = (*pos == head->greatest);
+	    LastReached = (*pos == GetLast(head));
 	    ChunkAllPrinted = (i == NbItems);
 	    PrintFinished = (LastReached || ChunkAllPrinted);
 	    if(!PrintFinished)
 		{
 		    i++;
-		    *pos = (*pos)->fwd;
+		    *pos = GetNext(head,*pos);
 		}
 	    if(!LastReached)
 		{
@@ -191,7 +191,7 @@ void PrintByNbItemsChunks(HEADER* head, int NbItems)
 {
     if(!IsEmptyList(head))
 	{
-	    LISTITEM* pos = head->smallest;
+	    LISTITEM* pos = GetFirst(head);
 	    bool LastReached = 0;
 	    while(!LastReached)
 		{
@@ -199,7 +199,7 @@ void PrintByNbItemsChunks(HEADER* head, int NbItems)
 		    if(!LastReached)
 			{
 			    // we move pos to the element to be printed first in the next chunk
-			    pos = pos->fwd;
+			    pos = GetNext(head,pos);
 			}
 		}
 	}
@@ -314,33 +314,17 @@ static void InsertAtStart(HEADER* head, int valtoins)
 
 // outputs new list that is reverse of input list
 // assumes input list has valid element order with respect to claimed order
-HEADER* ReverseList(HEADER* head) {
-
-	HEADER* headoutput = CreateEmptyList();
-	if (head->order == asc) 
+HEADER* ReverseList(HEADER* head)
+{
+	if (head->order == asc)
 	{
-		headoutput->order = desc;
+		head->order = desc;
 	}
-	else
+	else if (head->order == desc)
 	{
-		headoutput->order = asc;
+		head->order = asc;
 	}
-	if (!IsEmptyList(head)) 
-	{
-		LISTITEM* temp = head->smallest;
-		bool Finished = 0;
-		while (!Finished)
-		{
-			Finished = (temp == head->greatest);
-			InsertAtStart(headoutput, temp->val);
-			if (!Finished)
-			{
-				temp = temp->fwd;
-			}
-		}
-	}
-	DeleteList(head);
-	return headoutput;
+	return head;
 }
 
 // Inserts a new element of value valtoins at the end of the list maintaining branching, without check on value.
@@ -365,8 +349,8 @@ static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
 }
 
 // Inserts an Element in forward order based on its value, updating branching
-// Requires list to be in ascending order
-static void InsertElementByAscVal(HEADER* head, int valtoins)
+// Requires list values to be in ascending order going forward
+HEADER* InsertElement(HEADER* head, int valtoins)
 {
     LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
     // printf("Attemping to insert elt with value %d...\n", valtoins);
@@ -399,24 +383,12 @@ static void InsertElementByAscVal(HEADER* head, int valtoins)
 	}
     // printf("Updated List: \n");
     // PrintList(head);
-}
-
-// Inserts an Element in correct order based on list order and value to insert its value, updating branching
-HEADER* InsertElementInOrder(HEADER* head, int valtoins) {
-	bool listhasdescorder = (head->order == desc);
-	if (listhasdescorder) {
-		head = ReverseList(head);
-	}
-	InsertElementByAscVal(head, valtoins);
-	if (listhasdescorder) {
-		head = ReverseList(head);
-	}
 	return head;
 }
 
 // Deletes One Element with value val, updating branching
 // requires list to be in ascending order because of use of GetSmallestGreaterEltByVal to get to element
-static void DeleteElementByAscVal(HEADER* head, int valtodel)
+HEADER* DeleteElement(HEADER* head, int valtodel)
 {
     // printf("Attemping to delete elt with value %d...\n", valtodel);
     LISTITEM* elttodel = GetSmallestGreaterEltByVal(head, valtodel);
@@ -447,18 +419,6 @@ static void DeleteElementByAscVal(HEADER* head, int valtodel)
 	}
     // printf("Updated List: \n");
     // PrintList(head);
-}
-
-// Deletes an Element in correct order based on list order and value to delete, updating branching
-HEADER* DeleteElementInOrder(HEADER* head, int valtoins) {
-	bool listhasdescorder = (head->order == desc);
-	if (listhasdescorder) {
-		head = ReverseList(head);
-	}
-	DeleteElementByAscVal(head, valtoins);
-	if (listhasdescorder) {
-		head = ReverseList(head);
-	}
 	return head;
 }
 
