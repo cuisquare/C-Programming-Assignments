@@ -274,7 +274,7 @@ LISTITEM* CreateEltFromVal(int val)
 }
 
 // Returns element in head that has smallest value greater or equal to val
-// static as it requires list to be in ascending order
+// static as it requires list to be in ascending order of values going forward through list
 static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 {
     LISTITEM* temp;
@@ -287,7 +287,7 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 	}
     else
 	{
-	    // the list is not empty and there is an elt in it with value greater or equal than val
+	    // the list is not empty and there is an elt in it with value greater than, or equal to val
 	    bool posfound = 0;
 	    bool loopedthrough = 0;
 	    bool searchfinished = 0;
@@ -297,7 +297,7 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 	    while(!searchfinished)
 		{
 		    posfound = (temp->val >= val); // elt found if its value is greater or equal than value searched
-		    loopedthrough = (temp == head->greatest); // loop through list over if temp is last element in list
+		    loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
 		    searchfinished =
 		        (posfound || loopedthrough); // search finished if elt found or loop through list over
 		    if(!searchfinished)
@@ -311,7 +311,7 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 
 // Inserts a new element of value valtoins at the start of the list maintaining branching, without check on value.
 // Static so end user in main cannot insert an element out of order or duplicate.
-static void InsertAtStart(HEADER* head, int valtoins)
+static void InsertSmallest(HEADER* head, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
     newelt->fwd = head->smallest; // newelt points forward to soon-to-be-old first element
@@ -319,8 +319,7 @@ static void InsertAtStart(HEADER* head, int valtoins)
     head->smallest = newelt;      // newelt is new first element
 }
 
-// outputs new list that is reverse of input list
-// assumes input list has valid element order with respect to claimed order
+// changes order of head
 HEADER* ReverseList(HEADER* head)
 {
 	if (head->order == asc)
@@ -336,7 +335,7 @@ HEADER* ReverseList(HEADER* head)
 
 // Inserts a new element of value valtoins at the end of the list maintaining branching, without check on value.
 // Static so end user in main cannot insert an element out of order or duplicate.
-static void InsertAtEnd(HEADER* head, int valtoins)
+static void InsertGreatest(HEADER* head, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
     newelt->bck = head->greatest; // newelt points backward to soon-to-be-old last element
@@ -364,8 +363,8 @@ HEADER* InsertElement(HEADER* head, int valtoins)
     if(nextelt == NULL)
 	{
 	    // there is no element in list greater than the one to insert.
-	    // Therefore : Insert Element at End
-	    InsertAtEnd(head, valtoins);
+	    // Therefore : Insert Element as new greatest
+	    InsertGreatest(head, valtoins);
 	}
     else if(nextelt->val == valtoins)
 	{
@@ -378,8 +377,8 @@ HEADER* InsertElement(HEADER* head, int valtoins)
 	    if(nextelt == head->smallest)
 		{
 		    // First element in the list is greater than val to insert
-		    // Therefore : Insert Element at Start
-		    InsertAtStart(head, valtoins);
+		    // Therefore : Insert Element as new smallest element
+		    InsertSmallest(head, valtoins);
 		}
 	    else
 		{
@@ -407,12 +406,12 @@ HEADER* DeleteElement(HEADER* head, int valtodel)
 	{
 	    if(elttodel == head->smallest)
 		{
-		    head->smallest = elttodel->fwd; // branch head first to old 2nd element - elttodel now inaccessible
+		    head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
 		                                 // going through list
 		}
 	    else if(elttodel == head->greatest)
 		{
-		    head->greatest = elttodel->bck; // branch head last to old one but last element - elttodel now
+		    head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
 		                                // inaccessible going through list
 		}
 	    else

@@ -151,7 +151,7 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 			    printf("\nInput error. Value will not be inserted.\n");
 			}
 		}
-	    printf("Input of values to insert over.\n");
+	    printf("Values Inserted.\n");
 	    break;
 	case 6:
 	    printf("Input Number of Values to Delete:  ");
@@ -169,31 +169,61 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 			    printf("\nInput error. No value will be deleted.\n");
 			}
 		}
-	    printf("Input of values to be deleted over.\n");
+		printf("Values Deleted.\n");
 	    break;
 	case 7:
 	    printf("Input Start of Range - inclusive - to Insert:  ");
 	    int RangeStartForIns = getInputValAsInt(&errstatus);
-	    printf("\n");
-	    printf("Input End of Range - exclusive - to Insert:  ");
-	    int RangeEndForIns = getInputValAsInt(&errstatus);
-	    for(int i = RangeStartForIns; i < RangeEndForIns; i++)
+		if (errstatus == 1)
 		{
-			head = InsertElement(head, i);
+			printf("\n");
+			printf("Input End of Range - exclusive - to Insert:  ");
+			int RangeEndForIns = getInputValAsInt(&errstatus);
+			if (errstatus == 1)
+			{
+				printf("Range to be Inserted Defined.\n");
+				for (int i = RangeStartForIns; i < RangeEndForIns; i++)
+				{
+					head = InsertElement(head, i);
+				}
+				printf("Range Inserted.\n");
+			}
+			else
+			{
+				printf("\nInput error for End Range. No value will be inserted.\n");
+			}
 		}
-	    printf("Range to be Inserted Defined.\n");
+		else
+		{
+			printf("\nInput error for Start Range. No value will be inserted.\n");
+		}
 	    break;
 	case 8:
 	    printf("Input Start of Range - inclusive - to Delete:  ");
 	    int RangeStartForDel = getInputValAsInt(&errstatus);
-	    printf("\n");
-	    printf("Input End of Range - exclusive - to Delete:  ");
-	    int RangeEndForDel = getInputValAsInt(&errstatus);
-	    for(int i = RangeStartForDel; i < RangeEndForDel; i++)
+		if (errstatus == 1)
 		{
-			head = DeleteElement(head, i);
+			printf("\n");
+			printf("Input End of Range - exclusive - to Delete:  ");
+			int RangeEndForDel = getInputValAsInt(&errstatus);
+			if (errstatus == 1)
+			{
+				printf("Range to be Deleted Succesfully Defined.\n");
+				for (int i = RangeStartForDel; i < RangeEndForDel; i++)
+				{
+					head = DeleteElement(head, i);
+				}
+				printf("Range Deleted.\n");
+			}
+			else 
+			{
+				printf("\nInput error for End Range. No value will be deleted.\n");
+			}
 		}
-	    printf("Range to be Deleted Defined.\n");
+		else
+		{
+			printf("\nInput error for Start Range. No value will be deleted.\n");
+		}
 	    break;
 	case 9:
 		head = ReverseList(head);
