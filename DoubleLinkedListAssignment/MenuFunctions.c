@@ -365,37 +365,80 @@ static HEADER* MenuActionClearList(HEADER* head)
 
 
 // Carry out choice from user input
-static HEADER* carryOutChoice(HEADER* head, int choice)
+static HEADER* carryOutChoice(HEADER* head, enum Actions choice)
 {
     switch(choice)
 	{
-	case 0:
+	case ActionExit:
 	    printf("Exiting Program.\n");
 	    break;
-	case 1:
+	case ActionInsertSingleValue:
 		head = MenuActionInsertSingleValue(head);
 	    break;
-	case 2:
+	case ActionDeleteSingleValue:
 		head = MenuActionDeleteSingleValue(head);
 	    break;
-	case 3:
+	case ActionPrintList:
 		MenuActionPrintList(head);
 	    break;
-	case 4:
+	case ActionClearList:
 		head = MenuActionClearList(head);
 	    break;
-	case 5:
+	case ActionInsertMultipleValues:
 		head = MenuActionInsertMultipleValues(head);
 	    break;
-	case 6:
+	case ActionDeleteMultipleValues:
 		head = MenuActionDeleteMultipleValues(head);
 	    break;
-	case 7:
+	case ActionInsertRange:
 		head = MenuActionInsertRange(head);
 	    break;
-	case 8:
+	case ActionDeleteRange:
 		head = MenuActionDeleteRange(head);
 	    break;
+	case ActionReverseList:
+		head = MenuActionReverseList(head);
+		break;
+	case ActionPrintListInfo:
+		MenuActionPrintListInfo(head);
+		break;
+	}
+    PressEnterToContinue();
+	return(head);
+}
+
+// Carry out choice from user input
+static HEADER* carryOutChoiceOLD(HEADER* head, int choice)
+{
+	switch (choice)
+	{
+	case 0:
+		printf("Exiting Program.\n");
+		break;
+	case 1:
+		head = MenuActionInsertSingleValue(head);
+		break;
+	case 2:
+		head = MenuActionDeleteSingleValue(head);
+		break;
+	case 3:
+		MenuActionPrintList(head);
+		break;
+	case 4:
+		head = MenuActionClearList(head);
+		break;
+	case 5:
+		head = MenuActionInsertMultipleValues(head);
+		break;
+	case 6:
+		head = MenuActionDeleteMultipleValues(head);
+		break;
+	case 7:
+		head = MenuActionInsertRange(head);
+		break;
+	case 8:
+		head = MenuActionDeleteRange(head);
+		break;
 	case 9:
 		head = MenuActionReverseList(head);
 		break;
@@ -403,7 +446,7 @@ static HEADER* carryOutChoice(HEADER* head, int choice)
 		MenuActionPrintListInfo(head);
 		break;
 	}
-    PressEnterToContinue();
+	PressEnterToContinue();
 	return(head);
 }
 
