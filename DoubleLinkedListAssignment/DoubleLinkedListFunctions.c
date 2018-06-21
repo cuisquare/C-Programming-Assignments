@@ -73,12 +73,12 @@ void PrintListVerbose(HEADER* head)
     printf("***START PRINT*** \n");
     if(!IsEmptyList(head))
 	{
-	    LISTITEM* temp = head->smallest;
+	    LISTITEM* temp = GetFirst(head);
 	    int i = 0;
 	    while(i < NMaxPrint)
 		{
 		    printf("Val number %d = %d\n", i + 1, temp->val);
-		    if(temp == head->greatest)
+		    if(temp == GetLast(head))
 			{
 			    break;
 			}
@@ -107,12 +107,12 @@ void PrintList(HEADER* head)
     printf("[");
     if(!IsEmptyList(head))
 	{
-	    LISTITEM* temp = head->smallest;
+	    LISTITEM* temp = GetFirst(head);
 	    int i = 0;
 	    while(i < NMaxPrint)
 		{
 		    printf("%d", temp->val);
-		    if(temp == head->greatest)
+		    if(temp == GetLast(head))
 			{
 			    break;
 			}

@@ -9,10 +9,12 @@
 
 int main()
 {
-	MenuLoop();
+	//MenuLoop();
 	//TODO look into head as modified by function
 	//TODO menu item to give history of actions carried out so far
 	//TODO menu item to cancel operations previously carried out
 	//Add random comment to observe on git GUI
+	//TestReverse();
+
 	return 0;
 }
