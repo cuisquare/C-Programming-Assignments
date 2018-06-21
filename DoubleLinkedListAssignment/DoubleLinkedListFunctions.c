@@ -404,24 +404,34 @@ HEADER* DeleteElement(HEADER* head, int valtodel)
 	}
     else
 	{
-	    if(elttodel == head->smallest)
+		if (GetListLength(head) > 1)
 		{
-		    head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
-		                                 // going through list
+			if (elttodel == head->smallest)
+			{
+				head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
+											 // going through list
+			}
+			else if (elttodel == head->greatest)
+			{
+				head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
+											// inaccessible going through list
+			}
+			else
+			{
+				elttodel->bck->fwd = elttodel->fwd; // branch forward around element deleted - elttodel is now
+													// inaccessible going forward through list
+				elttodel->fwd->bck = elttodel->bck; // branch backward around element to be deleted - elttodel now
+													// inacessible going backward through list
+			}
+			free(elttodel); // free memory still held by elttodel
 		}
-	    else if(elttodel == head->greatest)
+		else
 		{
-		    head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
-		                                // inaccessible going through list
+			//there is only one element left in the list, we revert the list to an Empty list of same order.
+			enum Order saveheadorder = head->order;
+			head = CreateEmptyList();
+			head->order = saveheadorder;
 		}
-	    else
-		{
-		    elttodel->bck->fwd = elttodel->fwd; // branch forward around element deleted - elttodel is now
-		                                        // inaccessible going forward through list
-		    elttodel->fwd->bck = elttodel->bck; // branch backward around element to be deleted - elttodel now
-		                                        // inacessible going backward through list
-		}
-	    free(elttodel); // free memory still held by elttodel
 	}
     // printf("Updated List: \n");
     // PrintList(head);
