@@ -427,10 +427,9 @@ HEADER* DeleteElement(HEADER* head, int valtodel)
 		}
 		else
 		{
-			//there is only one element left in the list, we revert the list to an Empty list of same order.
-			enum Order saveheadorder = head->order;
-			head = CreateEmptyList();
-			head->order = saveheadorder;
+			//there is only one element left in the list, we clear the list which includes 
+			//reverting head->smallest and head->greatest to empty list attributes.
+			head = ClearList(head);
 		}
 	}
     // printf("Updated List: \n");
