@@ -392,6 +392,21 @@ HEADER* InsertElement(HEADER* head, int valtoins)
 	return head;
 }
 
+// Gets number of elements in list
+static int GetListLength(HEADER* head)
+{
+	int output = 0;
+	if (!IsEmptyList(head))
+	{
+		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
+		{
+			output++;
+		}
+		output++;
+	}
+	return output;
+}
+
 // Deletes One Element with value val, updating branching
 // requires list to be in ascending order because of use of GetSmallestGreaterEltByVal to get to element
 HEADER* DeleteElement(HEADER* head, int valtodel)
@@ -448,21 +463,6 @@ static char* GetOrderDesc(enum Order order)
 	if (order == desc)
 	{
 		output = "Descending";
-	}
-	return output;
-}
-
-// Gets number of elements in list
-static int GetListLength(HEADER* head)
-{
-	int output = 0;
-	if (!IsEmptyList(head))
-	{
-		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
-		{
-			output++;
-		}
-		output++;
 	}
 	return output;
 }
