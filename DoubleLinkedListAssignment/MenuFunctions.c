@@ -89,162 +89,236 @@ static void PressEnterToContinue()
     getchar();
 }
 
+static HEADER* MenuActionInsertSingleValue(HEADER* head) 
+{
+	int inputval;
+	int errstatus;
+	printf("Input Single Value to Insert:  ");
+	inputval = getInputValAsInt(&errstatus);
+	if (errstatus == 1)
+	{
+		printf("\nInserting value: %d...", inputval);
+		head = InsertElement(head, inputval);
+		printf("\nValue Inserted.\n");
+	}
+	else
+	{
+		printf("\nInput error. No value Inserted.\n");
+	}
+	return head;
+}
+
+static HEADER* MenuActionInsertMultipleValues(HEADER* head)
+{
+	int inputval;
+	int errstatus;
+	printf("Input Number of Values to Insert:  \n");
+	int NbValToInsert = getInputValAsInt(&errstatus);
+	if (errstatus == 1)
+	{
+		for (int i = 0; i < NbValToInsert; i++)
+		{
+			printf("\nInput Value %d / %d: ", i + 1, NbValToInsert);
+			inputval = getInputValAsInt(&errstatus);
+			if (errstatus == 1)
+			{
+				printf("\nInserting value: %d...", inputval);
+				head = InsertElement(head, inputval);
+				printf("\nValue Inserted.");
+			}
+			else
+			{
+				printf("\nInput error. Value will not be inserted.");
+			}
+		}
+		printf("\nValid values Inserted.\n");
+	}
+	else
+	{
+		printf("\nInput error. No value will be inserted.\n");
+	}
+	return head;
+}
+
+static HEADER* MenuActionInsertRange(HEADER* head)
+{
+	int inputval;
+	int errstatus;
+	printf("Input Start of Range - inclusive - to Insert:  ");
+	int RangeStartForIns = getInputValAsInt(&errstatus);
+	if (errstatus == 1)
+	{
+		printf("\n");
+		printf("Input End of Range - exclusive - to Insert:  ");
+		int RangeEndForIns = getInputValAsInt(&errstatus);
+		if (errstatus == 1)
+		{
+			printf("\nRange to be Inserted Defined as [%d - %d[.\n", RangeStartForIns, RangeEndForIns);
+			for (int i = RangeStartForIns; i < RangeEndForIns; i++)
+			{
+				head = InsertElement(head, i);
+			}
+			printf("\nRange Inserted.\n");
+		}
+		else
+		{
+			printf("\nInput error for End Range. No value will be inserted.\n");
+		}
+	}
+	else
+	{
+		printf("\nInput error for Start Range. No value will be inserted.\n");
+	}
+	return head;
+}
+
+static HEADER* MenuActionDeleteSingleValue(HEADER* head)
+{
+	int inputval;
+	int errstatus;
+	printf("Input Single Value to Delete:  ");
+	inputval = getInputValAsInt(&errstatus);
+	if (errstatus == 1)
+	{
+		printf("\nDeleting value: %d...", inputval);
+		head = DeleteElement(head, inputval);
+		printf("\nValue Deleted.\n");
+	}
+	else
+	{
+		printf("Input error. No value Deleted.\n");
+	}
+	return head;
+}
+
+static HEADER* MenuActionDeleteMultipleValues(HEADER* head)
+{
+	int inputval;
+	int errstatus;
+	printf("Input Number of Values to Delete:  ");
+	int NbValToDelete = getInputValAsInt(&errstatus);
+	if (errstatus == 1)
+	{
+		for (int i = 0; i < NbValToDelete; i++)
+		{
+			printf("\nValue To Be Deleted %d / %d: ", i + 1, NbValToDelete);
+			inputval = getInputValAsInt(&errstatus);
+			if (errstatus == 1)
+			{
+				printf("\nDeleting value: %d...", inputval);
+				head = DeleteElement(head, inputval);
+				printf("\nValue Deleted.\n");
+			}
+			else
+			{
+				printf("\nInput error. Value will not be deleted.\n");
+			}
+		}
+		printf("\nValid values Deleted.\n");
+	}
+	else
+	{
+		printf("\nInput error. No value will be deleted.\n");
+	}
+	return head;
+}
+
+static HEADER* MenuActionDeleteRange(HEADER* head)
+{
+	int inputval;
+	int errstatus;
+	printf("Input Start of Range - inclusive - to Delete:  ");
+	int RangeStartForDel = getInputValAsInt(&errstatus);
+	if (errstatus == 1)
+	{
+		printf("\nInput End of Range - exclusive - to Delete:  ");
+		int RangeEndForDel = getInputValAsInt(&errstatus);
+		if (errstatus == 1)
+		{
+			printf("\nRange to be Deleted Defined as [%d - %d[.\n", RangeStartForDel, RangeEndForDel);
+			for (int i = RangeStartForDel; i < RangeEndForDel; i++)
+			{
+				head = DeleteElement(head, i);
+			}
+			printf("\nRange Deleted.\n");
+		}
+		else
+		{
+			printf("\nInput error for End Range. No value will be deleted.\n");
+		}
+	}
+	else
+	{
+		printf("\nInput error for Start Range. No value will be deleted.\n");
+	}
+	return head;
+}
+
+static void MenuActionPrintList(HEADER* head)
+{
+	// PrintList(head);
+	PrintByChunks(head);
+	printf("List Printed.\n");
+}
+
+static HEADER* MenuActionReverseList(HEADER* head)
+{
+	head = ReverseList(head);
+	printf("List Reversed.\n");
+	return head;
+}
+
+static void MenuActionPrintListInfo(HEADER* head)
+{
+	PrintListInfo(head);
+}
+
+static HEADER* MenuActionClearList(HEADER* head)
+{
+	head = ClearList(head);
+	//TODO modify so that reaffectation is not necessary
+	printf("List Cleared.\n");
+	return head;
+}
+
+
 // Carry out choice from user input
 static HEADER* carryOutChoice(HEADER* head, int choice)
 {
-    int errstatus;
-    int inputval;
     switch(choice)
 	{
 	case 0:
 	    printf("Exiting Program.\n");
 	    break;
 	case 1:
-	    printf("Input Single Value to Insert:  ");
-	    inputval = getInputValAsInt(&errstatus);
-	    if(errstatus == 1)
-		{
-			head = InsertElement(head, inputval);
-		    printf("Value Inserted.\n");
-		}
-	    else
-		{
-		    printf("Input error. No value Inserted.\n");
-		}
+		head = MenuActionInsertSingleValue(head);
 	    break;
 	case 2:
-	    printf("Input Single Value to Delete:  ");
-	    inputval = getInputValAsInt(&errstatus);
-	    if(errstatus == 1)
-		{
-			head = DeleteElement(head, inputval);
-		    printf("Value Deleted.\n");
-		}
-	    else
-		{
-		    printf("Input error. No value Deleted.\n");
-		}
+		head = MenuActionDeleteSingleValue(head);
 	    break;
 	case 3:
-	    // PrintList(head);
-	    PrintByChunks(head);
-	    printf("List Printed.\n");
+		MenuActionPrintList(head);
 	    break;
 	case 4:
-	    head = ClearList(head);
-		//TODO modify so that reaffectation is not necessary
-	    printf("List Cleared.\n");
+		head = MenuActionClearList(head);
 	    break;
 	case 5:
-	    printf("Input Number of Values to Insert:  \n");
-	    int NbValToInsert = getInputValAsInt(&errstatus);
-		if (errstatus == 1)
-		{
-			for (int i = 0; i < NbValToInsert; i++)
-			{
-				printf("Input Value %d / %d: ", i + 1, NbValToInsert);
-				inputval = getInputValAsInt(&errstatus);
-				if (errstatus == 1)
-				{
-					head = InsertElement(head, inputval);
-				}
-				else
-				{
-					printf("\nInput error. Value will not be inserted.\n");
-				}
-			}
-			printf("Valid values Inserted.\n");
-		}
-		else
-		{
-			printf("\nInput error. No value will be inserted.\n");
-		}
+		head = MenuActionInsertMultipleValues(head);
 	    break;
 	case 6:
-	    printf("Input Number of Values to Delete:  ");
-	    int NbValToDelete = getInputValAsInt(&errstatus);
-		if (errstatus == 1)
-		{
-			for (int i = 0; i < NbValToDelete; i++)
-			{
-				printf("Value To Be Deleted %d / %d: ", i + 1, NbValToDelete);
-				inputval = getInputValAsInt(&errstatus);
-				if (errstatus == 1)
-				{
-					head = DeleteElement(head, inputval);
-				}
-				else
-				{
-					printf("\nInput error. Value will not be deleted.\n");
-				}
-			}
-			printf("Valid values Deleted.\n");
-		}
-		else
-		{
-			printf("\nInput error. No value will be deleted.\n");
-		}
+		head = MenuActionDeleteMultipleValues(head);
 	    break;
 	case 7:
-	    printf("Input Start of Range - inclusive - to Insert:  ");
-	    int RangeStartForIns = getInputValAsInt(&errstatus);
-		if (errstatus == 1)
-		{
-			printf("\n");
-			printf("Input End of Range - exclusive - to Insert:  ");
-			int RangeEndForIns = getInputValAsInt(&errstatus);
-			if (errstatus == 1)
-			{
-				printf("Range to be Inserted Defined.\n");
-				for (int i = RangeStartForIns; i < RangeEndForIns; i++)
-				{
-					head = InsertElement(head, i);
-				}
-				printf("Range Inserted.\n");
-			}
-			else
-			{
-				printf("\nInput error for End Range. No value will be inserted.\n");
-			}
-		}
-		else
-		{
-			printf("\nInput error for Start Range. No value will be inserted.\n");
-		}
+		head = MenuActionInsertRange(head);
 	    break;
 	case 8:
-	    printf("Input Start of Range - inclusive - to Delete:  ");
-	    int RangeStartForDel = getInputValAsInt(&errstatus);
-		if (errstatus == 1)
-		{
-			printf("\n");
-			printf("Input End of Range - exclusive - to Delete:  ");
-			int RangeEndForDel = getInputValAsInt(&errstatus);
-			if (errstatus == 1)
-			{
-				printf("Range to be Deleted Succesfully Defined.\n");
-				for (int i = RangeStartForDel; i < RangeEndForDel; i++)
-				{
-					head = DeleteElement(head, i);
-				}
-				printf("Range Deleted.\n");
-			}
-			else 
-			{
-				printf("\nInput error for End Range. No value will be deleted.\n");
-			}
-		}
-		else
-		{
-			printf("\nInput error for Start Range. No value will be deleted.\n");
-		}
+		head = MenuActionDeleteRange(head);
 	    break;
 	case 9:
-		head = ReverseList(head);
-		printf("List Reversed.\n");
+		head = MenuActionReverseList(head);
 		break;
 	case 10:
-		PrintListInfo(head);
+		MenuActionPrintListInfo(head);
 		break;
 	}
     PressEnterToContinue();
