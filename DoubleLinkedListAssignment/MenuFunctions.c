@@ -17,6 +17,7 @@ static int MenuOutOfRangeError = 99;
 // number of menu items
 static int NBMENUITEMS = 11;
 
+//Actions available, order will determine order of print in PrintMenu. 
 typedef enum 
 {
 	ActionExit,
@@ -86,6 +87,7 @@ char* GetActionsDesc(Action action)
 	return output;
 }
 
+//Order of Menu dictated by enum Actions order and fact that loop is going from 0 to NBMENUITEMS ascending
 static void PrintMenu()
 {
 	system("cls");
