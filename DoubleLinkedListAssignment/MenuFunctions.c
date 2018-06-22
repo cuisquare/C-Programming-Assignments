@@ -17,7 +17,7 @@ static int MenuOutOfRangeError = 99;
 // number of menu items
 static int NBMENUITEMS = 11;
 
-enum Action
+typedef enum 
 {
 	ActionExit,
 	ActionPrintList,
@@ -30,9 +30,9 @@ enum Action
 	ActionDeleteRange,
 	ActionReverseList,
 	ActionClearList
-};
+} Action;
 
-char* GetActionsDesc(enum Action action)
+char* GetActionsDesc(Action action)
 {
 	char* output;
 	if (action == ActionExit)
@@ -346,7 +346,7 @@ static HEADER* MenuActionClearList(HEADER* head)
 
 
 // Carry out choice from user input
-static HEADER* carryOutChoice(HEADER* head, enum Actions choice)
+static HEADER* carryOutChoice(HEADER* head, Action choice)
 {
     switch(choice)
 	{
