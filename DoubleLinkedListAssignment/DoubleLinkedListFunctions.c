@@ -67,6 +67,24 @@ bool IsEmptyList(HEADER* head)
     return ((head->smallest == (LISTITEM*)head));
 }
 
+// Checks if a list is valid in ascending order
+bool IsAValidOrderedList(HEADER* head)
+{
+	bool output = true;
+	if (!IsEmptyList(head))
+	{
+		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
+		{
+			if (temp->val >= (temp->fwd)->val)
+			{
+				output = false;
+				break;
+			}
+		}
+	}
+	return output;
+}
+
 // Prints all values of linked list with header head - Verbose
 void PrintListVerbose(HEADER* head)
 {
@@ -273,40 +291,87 @@ LISTITEM* CreateEltFromVal(int val)
     return newelt;
 }
 
+// Returns element in head that has value equal to val
+static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int val)
+{
+	LISTITEM* output = NULL;
+	if (!IsAValidOrderedList(head))
+	{
+		printf("Warning: the List is not validly ordered - any value found might have a duplicate.\n");
+	}
+	// the list is not empty and there is an elt in it with value greater than, or equal to val
+	if (IsEmptyList(head))
+	{
+		// If List is empty, we return pointer to NULL
+	}
+	else
+	{
+		// the list is not empty
+		bool posfound = 0;
+		bool loopedthrough = 0;
+		bool searchfinished = 0;
+
+		LISTITEM* temp = head->smallest;
+		// enter loop if search is not finished
+		while (!searchfinished)
+		{
+			posfound = (temp->val == val); // elt found if its value is equal to value searched
+			loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
+			searchfinished =
+				(posfound || loopedthrough); // search finished if elt found or loop through list over
+			if (!searchfinished)
+			{ // proceed to next elt in list ifsearch is not finished //&& !loopedthrough
+				temp = temp->fwd;
+			}
+		}
+		if (posfound)
+		{
+			output = temp;
+		}
+	}
+	return output;
+}
+
 // Returns element in head that has smallest value greater or equal to val
 // static as it requires list to be in ascending order of values going forward through list
 static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 {
-    LISTITEM* temp;
-    if((IsEmptyList(head)) || head->greatest->val < val)
+	LISTITEM* temp = NULL;
+	if (IsAValidOrderedList(head)) 
 	{
-	    // If List is empty, or all elements in list are smaller than val (aka there is no elements greater in
-	    // list), we return pointer to NULL  this works only if list is ordered by ascending val going forward through
-	    // list
-	    temp = NULL;
-	}
-    else
-	{
-	    // the list is not empty and there is an elt in it with value greater than, or equal to val
-	    bool posfound = 0;
-	    bool loopedthrough = 0;
-	    bool searchfinished = 0;
-
-	    temp = head->smallest;
-	    // enter loop if search is not finished
-	    while(!searchfinished)
+		if((IsEmptyList(head)) || head->greatest->val < val)
 		{
-		    posfound = (temp->val >= val); // elt found if its value is greater or equal than value searched
-		    loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
-		    searchfinished =
-		        (posfound || loopedthrough); // search finished if elt found or loop through list over
-		    if(!searchfinished)
-			{ // proceed to next elt in list ifsearch is not finished //&& !loopedthrough
-			    temp = temp->fwd;
+			// If List is empty, or all elements in list are smaller than val (aka there is no elements greater in
+			// list), we return pointer to NULL  this works only if list is ordered by ascending val going forward through
+			// list
+		}
+		else
+		{
+			// the list is not empty and there is an elt in it with value greater than, or equal to val
+			bool posfound = 0;
+			bool loopedthrough = 0;
+			bool searchfinished = 0;
+
+			temp = head->smallest;
+			// enter loop if search is not finished
+			while(!searchfinished)
+			{
+				posfound = (temp->val >= val); // elt found if its value is greater or equal than value searched
+				loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
+				searchfinished =
+					(posfound || loopedthrough); // search finished if elt found or loop through list over
+				if(!searchfinished)
+				{ // proceed to next elt in list ifsearch is not finished //&& !loopedthrough
+					temp = temp->fwd;
+				}
 			}
 		}
 	}
-    return temp;
+	else
+	{
+		printf("Warning: the List is not validly ordered. Output will be NULL.");
+	}
+	return temp;
 }
 
 // Inserts a new element of value valtoins at the start of the list maintaining branching, without check on value.
@@ -418,39 +483,50 @@ static int GetListLength(HEADER* head)
 HEADER* DeleteElement(HEADER* head, int valtodel)
 {
     // printf("Attemping to delete elt with value %d...\n", valtodel);
-    LISTITEM* elttodel = GetSmallestGreaterEltByVal(head, valtodel);
-    if((elttodel == NULL) || (elttodel->val != valtodel))
-	{
-	    printf("There is no element with value %d in the list.\n", valtodel);
-	}
-    else
-	{
-		if (GetListLength(head) > 1)
+	bool FinishedDeleting = false;
+	bool DeletedAtLeastOne = false;
+	while (!FinishedDeleting)
+	{ 
+		LISTITEM* elttodel = GetFirstEqualEltByVal(head, valtodel);
+		FinishedDeleting = (elttodel == NULL);
+		if ((elttodel == NULL))
 		{
-			if (elttodel == head->smallest)
+			if (!DeletedAtLeastOne)
 			{
-				head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
-											 // going through list
+				printf("There is no element with value %d in the list.\n", valtodel);
 			}
-			else if (elttodel == head->greatest)
-			{
-				head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
-											// inaccessible going through list
-			}
-			else
-			{
-				elttodel->bck->fwd = elttodel->fwd; // branch forward around element deleted - elttodel is now
-													// inaccessible going forward through list
-				elttodel->fwd->bck = elttodel->bck; // branch backward around element to be deleted - elttodel now
-													// inacessible going backward through list
-			}
-			free(elttodel); // free memory still held by elttodel
 		}
 		else
 		{
-			//there is only one element left in the list, we clear the list which includes 
-			//reverting head->smallest and head->greatest to empty list attributes.
-			head = ClearList(head);
+			if (GetListLength(head) > 1)
+			{
+				if (elttodel == head->smallest)
+				{
+					head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
+												 // going through list
+				}
+				else if (elttodel == head->greatest)
+				{
+					head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
+												// inaccessible going through list
+				}
+				else
+				{
+					elttodel->bck->fwd = elttodel->fwd; // branch forward around element deleted - elttodel is now
+														// inaccessible going forward through list
+					elttodel->fwd->bck = elttodel->bck; // branch backward around element to be deleted - elttodel now
+														// inacessible going backward through list
+				}
+				free(elttodel); // free memory still held by elttodel
+			}
+			else
+			{
+				//there is only one element left in the list, we clear the list which includes 
+				//reverting head->smallest and head->greatest to empty list attributes.
+				head = ClearList(head);
+			}
+			DeletedAtLeastOne = true;
+			printf("Deleted one instance of %d.\n", valtodel);
 		}
 	}
     // printf("Updated List: \n");
@@ -469,24 +545,6 @@ static char* GetOrderDesc(enum Order order)
 	if (order == desc)
 	{
 		output = "Descending";
-	}
-	return output;
-}
-
-// Checks if a list is valid in ascending order
-bool IsAValidOrderedList(HEADER* head) 
-{
-	bool output = true;
-	if (!IsEmptyList(head))
-	{
-		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
-		{
-			if (temp->val >= (temp->fwd)->val)
-			{
-				output = false;
-				break;
-			}
-		}
 	}
 	return output;
 }
