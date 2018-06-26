@@ -29,6 +29,8 @@ typedef enum
 	ActionDeleteRange,
 	ActionReverseList,
 	ActionClearList,
+	ActionInsertAtEndUnsafe,
+	ActionMakeValidOrderedList,
 	NbActions
 } Action;
 
@@ -78,6 +80,14 @@ char* GetActionsDesc(Action action)
 	else if (action == ActionPrintListInfo)
 	{
 		output = "Print List Info";
+	}
+	else if (action == ActionInsertAtEndUnsafe)
+	{
+		output = "Insert at End - Unsafe, order not checked!";
+	}
+	else if (action == ActionMakeValidOrderedList)
+	{
+		output = "Change List to Valid Ordered List if not Valid";
 	}
 	else
 	{
@@ -135,7 +145,7 @@ static int getMenuChoice(int* errstatus)
     // catching additional error that the input while integer is outside of range allowed for menu choices
     if(*errstatus == 1)
 	{
-	    if((output < 0) || (output > 10))
+	    if((output < 0) || (output > NbActions))
 		{
 		    *errstatus = MenuOutOfRangeError;
 		}
@@ -172,6 +182,34 @@ static HEADER* MenuActionInsertSingleValue(HEADER* head)
 	{
 		printf("\nInput error. No value Inserted.\n");
 	}
+	return head;
+}
+
+static HEADER* MenuActionInsertAtEndUnsafe(HEADER* head)
+{
+	int inputval;
+	int errstatus;
+	printf("Warning : Inserting a value at end will not check for order of values.\n ");
+	printf("Input Single Value to Insert At End:  ");
+	inputval = getInputValAsInt(&errstatus);
+	if (errstatus == 1)
+	{
+		printf("\nInserting value at End: %d...", inputval);
+		head = InsertAtEndUnsafe(head, inputval);
+		printf("\nValue Inserted at End.\n");
+	}
+	else
+	{
+		printf("\nInput error. No value Inserted.\n");
+	}
+	return head;
+}
+
+
+static HEADER* MenuActionMakeValidOrderedList(HEADER* head)
+{
+	head = MakeValidOrderedList(head);
+	printf("\nList Reordered.\n");
 	return head;
 }
 
@@ -347,6 +385,7 @@ static HEADER* MenuActionClearList(HEADER* head)
 }
 
 
+
 // Carry out choice from user input
 static HEADER* carryOutChoice(HEADER* head, Action choice)
 {
@@ -384,6 +423,12 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 		break;
 	case ActionPrintListInfo:
 		MenuActionPrintListInfo(head);
+		break;
+	case ActionInsertAtEndUnsafe:
+		MenuActionInsertAtEndUnsafe(head);
+		break;
+	case ActionMakeValidOrderedList:
+		head = MenuActionMakeValidOrderedList(head);
 		break;
 	}
     PressEnterToContinue();

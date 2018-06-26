@@ -343,6 +343,12 @@ static void InsertGreatest(HEADER* head, int valtoins)
     head->greatest = newelt;      // newelt is new last element
 }
 
+HEADER* InsertAtEndUnsafe(HEADER* head, int valtoins)
+{
+	InsertGreatest(head, valtoins);
+	return head;
+}
+
 // Inserts an element before element nextelt. Assumes that nextelt exists in list.
 // Static so end user in main cannot insert an element out of order or duplicate.
 static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
@@ -467,9 +473,50 @@ static char* GetOrderDesc(enum Order order)
 	return output;
 }
 
+// Checks if a list is valid in ascending order
+bool IsAValidOrderedList(HEADER* head) 
+{
+	bool output = true;
+	if (!IsEmptyList(head))
+	{
+		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
+		{
+			if (temp->val >= (temp->fwd)->val)
+			{
+				output = false;
+				break;
+			}
+		}
+	}
+	return output;
+}
+
+// Takes a list in input and outputs a valid ordered list
+HEADER* MakeValidOrderedList(HEADER* head)
+{
+	HEADER* outputhead = head;
+	if (!IsAValidOrderedList(head))
+	{
+		outputhead = CreateEmptyList();
+		for (LISTITEM* temp = head->smallest;temp!=head->greatest;temp = temp->fwd) 
+		{
+			outputhead = InsertElement(outputhead,temp->val);
+		}
+		outputhead = InsertElement(outputhead,(head->greatest)->val);
+		ClearList(head);
+	}
+	else
+	{
+		printf("List was already ordered. No action taken.\n");
+	}
+	return outputhead;
+}
+
+
 // Prints out info on list head
-void PrintListInfo(HEADER* head) 
+void PrintListInfo(HEADER* head)
 {
 	printf("Order: %s\n", GetOrderDesc(head->order));
 	printf("Number of elements: %d\n", GetListLength(head));
+	printf("Valid ordered List: %d\n", IsAValidOrderedList(head));
 }

@@ -28,6 +28,12 @@ LISTITEM* CreateEltFromVal(int val);
 // outputs new list that is reverse of input list
 HEADER* ReverseList(HEADER* head);
 
+//Unsafe insert of value at end of list
+HEADER* InsertAtEndUnsafe(HEADER* head, int valtoins);
+
+// Takes a list in input and outputs a valid ordered list
+HEADER* MakeValidOrderedList(HEADER* head);
+
 // Inserts an Element in forward order based on its value, updating branching
 // Requires list values to be in ascending order going forward
 HEADER* InsertElement(HEADER* head, int valtoins);
