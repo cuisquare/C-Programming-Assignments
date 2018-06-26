@@ -29,7 +29,7 @@ LISTITEM* CreateEltFromVal(int val);
 HEADER* ReverseList(HEADER* head);
 
 //Unsafe insert of value at end of list
-HEADER* InsertAtEndUnsafe(HEADER* head, int valtoins);
+HEADER* InsertAtEndUnordered(HEADER* head, int valtoins);
 
 // Takes a list in input and outputs a valid ordered list
 HEADER* MakeValidOrderedList(HEADER* head);

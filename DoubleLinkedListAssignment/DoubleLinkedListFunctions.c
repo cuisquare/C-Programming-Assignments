@@ -424,7 +424,7 @@ static void InsertGreatest(HEADER* head, int valtoins)
     head->greatest = newelt;      // newelt is new last element
 }
 
-HEADER* InsertAtEndUnsafe(HEADER* head, int valtoins)
+HEADER* InsertAtEndUnordered(HEADER* head, int valtoins)
 {
 	InsertGreatest(head, valtoins);
 	if (!IsAValidOrderedList(head))

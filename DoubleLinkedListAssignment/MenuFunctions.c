@@ -29,7 +29,7 @@ typedef enum
 	ActionDeleteRange,
 	ActionReverseList,
 	ActionClearList,
-	ActionInsertAtEndUnsafe,
+	ActionInsertAtEndUnordered,
 	ActionMakeValidOrderedList,
 	NbActions
 } Action;
@@ -81,9 +81,9 @@ char* GetActionsDesc(Action action)
 	{
 		output = "Print List Info";
 	}
-	else if (action == ActionInsertAtEndUnsafe)
+	else if (action == ActionInsertAtEndUnordered)
 	{
-		output = "Insert at End - Unsafe, order not checked!";
+		output = "Insert at End Without check on Order.";
 	}
 	else if (action == ActionMakeValidOrderedList)
 	{
@@ -185,7 +185,7 @@ static HEADER* MenuActionInsertSingleValue(HEADER* head)
 	return head;
 }
 
-static HEADER* MenuActionInsertAtEndUnsafe(HEADER* head)
+static HEADER* MenuActionInsertAtEndUnordered(HEADER* head)
 {
 	int inputval;
 	int errstatus;
@@ -195,7 +195,7 @@ static HEADER* MenuActionInsertAtEndUnsafe(HEADER* head)
 	if (errstatus == 1)
 	{
 		printf("\nInserting value at End: %d...", inputval);
-		head = InsertAtEndUnsafe(head, inputval);
+		head = InsertAtEndUnordered(head, inputval);
 		printf("\nValue Inserted at End.\n");
 	}
 	else
@@ -424,8 +424,8 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 	case ActionPrintListInfo:
 		MenuActionPrintListInfo(head);
 		break;
-	case ActionInsertAtEndUnsafe:
-		MenuActionInsertAtEndUnsafe(head);
+	case ActionInsertAtEndUnordered:
+		MenuActionInsertAtEndUnordered(head);
 		break;
 	case ActionMakeValidOrderedList:
 		head = MenuActionMakeValidOrderedList(head);
