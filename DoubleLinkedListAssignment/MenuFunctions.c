@@ -14,13 +14,11 @@ static int ContinueDefault = 1;
 //error status given if integer not in range for menu items
 static int MenuOutOfRangeError = 99;
 
-// number of menu items
-static int NBMENUITEMS = 11;
-
-//Actions available, order will determine order of print in PrintMenu. 
+// Actions available, order will determine order of print in PrintMenu. 
+// Enum is defined to start at 0 then a dummy action NbAction is added at the end that will be equal to the number of relevant actions
 typedef enum 
 {
-	ActionExit,
+	ActionExit=0,
 	ActionPrintList,
 	ActionPrintListInfo,
 	ActionInsertSingleValue,
@@ -30,7 +28,8 @@ typedef enum
 	ActionInsertRange,
 	ActionDeleteRange,
 	ActionReverseList,
-	ActionClearList
+	ActionClearList,
+	NbActions
 } Action;
 
 char* GetActionsDesc(Action action)
@@ -82,7 +81,7 @@ char* GetActionsDesc(Action action)
 	}
 	else
 	{
-		output = "Unknown Action";
+		output = "Unattributed Action";
 	}
 	return output;
 }
@@ -93,9 +92,10 @@ static void PrintMenu()
 	system("cls");
 	printf("*****Double Linked List Program*****\n");
 	printf("Please choose from the following options : \n");
-	for (int i = 0; i < NBMENUITEMS; i++)
+	//NbAction last element of enum Action, dummy action used to access the number of relevant element in Actiont 
+	for (Action action = 0; action < NbActions; action++)
 	{
-		printf("	 %2d : %s\n", i, GetActionsDesc(i));
+		printf("	 %2d : %s\n", action, GetActionsDesc(action));
 	}
 }
 
