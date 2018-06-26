@@ -21,6 +21,10 @@ static LISTITEM* GetNext(HEADER* head, LISTITEM* item)
 	{
 		return item->bck;
 	}
+	else if (head->order == unordered)
+	{
+		return item->fwd;
+	}
 	else
 	{
 		return (LISTITEM*)NULL;
@@ -38,6 +42,10 @@ static LISTITEM* GetFirst(HEADER* head)
 	{
 		return head->greatest;
 	}
+	else if (head->order == unordered)
+	{
+		return head->smallest;
+	}
 	else
 	{
 		return (LISTITEM*)NULL;
@@ -54,6 +62,10 @@ static LISTITEM* GetLast(HEADER* head)
 	else if (head->order == desc) 
 	{
 		return head->smallest;
+	}
+	else if (head->order == unordered)
+	{
+		return head->greatest;
 	}
 	else
 	{
@@ -395,6 +407,10 @@ HEADER* ReverseList(HEADER* head)
 	{
 		head->order = asc;
 	}
+	else if (head->order == unordered)
+	{
+		printf("Will not change order as list is unordered.\n");
+	}
 	return head;
 }
 
@@ -411,6 +427,10 @@ static void InsertGreatest(HEADER* head, int valtoins)
 HEADER* InsertAtEndUnsafe(HEADER* head, int valtoins)
 {
 	InsertGreatest(head, valtoins);
+	if (!IsAValidOrderedList(head))
+	{
+		head->order = unordered;
+	}
 	return head;
 }
 
@@ -426,14 +446,15 @@ static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
 }
 
 // Inserts an Element in forward order based on its value, updating branching
-// Requires list values to be in ascending order going forward
+// Requires list values to be in ascending order going forward for the order to be meaningful
+// if list is not ordered, element is added at the end. 
 HEADER* InsertElement(HEADER* head, int valtoins)
 {
     LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
     // printf("Attemping to insert elt with value %d...\n", valtoins);
     if(nextelt == NULL)
 	{
-	    // there is no element in list greater than the one to insert.
+	    // there is no element in list greater than the one to insert or list is not validly ordered
 	    // Therefore : Insert Element as new greatest
 	    InsertGreatest(head, valtoins);
 	}
@@ -535,19 +556,24 @@ HEADER* DeleteElement(HEADER* head, int valtodel)
 }
 
 // Gets descriptive string for list order
-static char* GetOrderDesc(enum Order order) 
+char* GetOrderDesc(Order order)
 {
 	char* output;
-	if (order == asc) 
+	switch (order)
 	{
+	case asc:
 		output = "Ascending";
-	}
-	if (order == desc)
-	{
+		break;
+	case desc:
 		output = "Descending";
+		break;
+	case unordered:
+		output = "Unordered";
+		break;
 	}
 	return output;
 }
+
 
 // Takes a list in input and outputs a valid ordered list
 HEADER* MakeValidOrderedList(HEADER* head)
@@ -569,6 +595,7 @@ HEADER* MakeValidOrderedList(HEADER* head)
 	}
 	return outputhead;
 }
+
 
 
 // Prints out info on list head

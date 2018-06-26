@@ -6,7 +6,12 @@
 // desc means first element is greatest, last is smallest and next is descending
 // in memory the list will however be stored in ascending order going fwd and this will remain unchanged
 // only used effectively in print functions
-enum Order {asc, desc};
+typedef enum 
+{
+	asc, 
+	desc, 
+	unordered
+} Order;
 
 //Struct type for a double linked list element. 
 //Contains:  
@@ -26,7 +31,7 @@ typedef struct listitem {
 typedef struct header {
 	struct listitem *smallest;
 	struct listitem *greatest;
-	enum Order order;
+	Order order;
 } HEADER;
 
 #endif /* TYPES_H */
