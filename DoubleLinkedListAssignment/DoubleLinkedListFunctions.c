@@ -309,7 +309,7 @@ static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int val)
 	LISTITEM* output = NULL;
 	if (!IsAValidOrderedList(head))
 	{
-		printf("Warning: the List is not validly ordered - any value found might have a duplicate.\n");
+		printf("Warning: the List is not validly ordered - any value found might have a duplicate further in the list.\n");
 	}
 	// the list is not empty and there is an elt in it with value greater than, or equal to val
 	if (IsEmptyList(head))
