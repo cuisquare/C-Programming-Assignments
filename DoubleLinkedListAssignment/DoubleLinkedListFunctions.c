@@ -283,7 +283,7 @@ HEADER* ClearList(HEADER* head)
 		}
 		free(head->greatest);
 	}
-	enum Order saveheadorder = head->order;
+	Order saveheadorder = head->order;
 	head = CreateEmptyList();
 	head->order = saveheadorder;
 	return head;
