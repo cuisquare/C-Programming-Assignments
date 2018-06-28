@@ -31,8 +31,8 @@ HEADER* ReverseList(HEADER* head);
 //Unsafe insert of value at end of list
 HEADER* InsertAtEndUnchecked(HEADER* head, int valtoins);
 
-// Takes a list in input and outputs a valid ordered list
-HEADER* MakeValidDirectionedList(HEADER* head);
+// Takes a list in input and outputs a valid Ordered list
+HEADER* MakeValidOrderedList(HEADER* head);
 
 // Inserts an Element in forward order based on its value, updating branching
 // Requires list values to be in ascending order going forward

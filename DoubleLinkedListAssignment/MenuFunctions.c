@@ -30,7 +30,7 @@ typedef enum
 	ActionReverseList,
 	ActionClearList,
 	ActionInsertAtEndUnchecked,
-	ActionMakeValidDirectionedList,
+	ActionMakeValidOrderedList,
 	NbActions
 } Action;
 
@@ -85,9 +85,9 @@ char* GetActionsbck(Action action)
 	{
 		output = "Insert at End Without check on Direction.";
 	}
-	else if (action == ActionMakeValidDirectionedList)
+	else if (action == ActionMakeValidOrderedList)
 	{
-		output = "Change List to Valid Directioned List if not Valid";
+		output = "Change List to Valid Ordered List if not Valid";
 	}
 	else
 	{
@@ -206,10 +206,10 @@ static HEADER* MenuActionInsertAtEndUnchecked(HEADER* head)
 }
 
 
-static HEADER* MenuActionMakeValidDirectionedList(HEADER* head)
+static HEADER* MenuActionMakeValidOrderedList(HEADER* head)
 {
-	head = MakeValidDirectionedList(head);
-	printf("\nList ReDirectioned.\n");
+	head = MakeValidOrderedList(head);
+	printf("\nList Made Valid (duplicates removed, reordered).\n");
 	return head;
 }
 
@@ -367,7 +367,7 @@ static void MenuActionPrintList(HEADER* head)
 static HEADER* MenuActionReverseList(HEADER* head)
 {
 	head = ReverseList(head);
-	printf("List Reversed.\n");
+	printf("List Print Direction Reversed.\n");
 	return head;
 }
 
@@ -427,8 +427,8 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 	case ActionInsertAtEndUnchecked:
 		MenuActionInsertAtEndUnchecked(head);
 		break;
-	case ActionMakeValidDirectionedList:
-		head = MenuActionMakeValidDirectionedList(head);
+	case ActionMakeValidOrderedList:
+		head = MenuActionMakeValidOrderedList(head);
 		break;
 	default: 
 		printf("Not a valid choice.\n");

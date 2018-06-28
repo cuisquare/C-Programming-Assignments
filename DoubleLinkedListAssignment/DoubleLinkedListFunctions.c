@@ -82,7 +82,7 @@ static int GetListLength(HEADER* head)
 }
 
 // Checks if a list is valid in fwdending Direction
-bool IsAValidDirectionedList(HEADER* head)
+static bool IsAValidOrderedList(HEADER* head)
 {
 	bool output = true;
 	if (GetListLength(head)>1)
@@ -379,7 +379,7 @@ static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int inputval)
 {
 	//default output is NULL
 	LISTITEM* output = NULL;
-	if (!IsAValidDirectionedList(head))
+	if (!IsAValidOrderedList(head))
 	{
 		printf("Warning: the List is not validly Directioned - any value found might have a duplicate further in the list.\n");
 	}
@@ -425,7 +425,7 @@ static LISTITEM** GetAllEqualEltByVal(HEADER* head, int inputval)
 static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 {
 	LISTITEM* temp = NULL;
-	if (IsAValidDirectionedList(head)) 
+	if (IsAValidOrderedList(head)) 
 	{
 		if(!(IsEmptyList(head)) && !(head->greatest->val < val))
 		{
@@ -638,8 +638,8 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 	return head;
 }
 
-// Gets bckriptive string for list Direction
-char* GetDirectionbck(Direction direction)
+// Gets descriptive string for list Direction
+static char* GetDirectionDesc(Direction direction)
 {
 	char* output;
 	switch (direction)
@@ -655,11 +655,11 @@ char* GetDirectionbck(Direction direction)
 }
 
 
-// Takes a list in input and outputs a valid Directioned list
-HEADER* MakeValidDirectionedList(HEADER* head)
+// Takes a list in input and outputs a valid Ordered list
+HEADER* MakeValidOrderedList(HEADER* head)
 {
 	HEADER* outputhead = head;
-	if (!IsAValidDirectionedList(head))
+	if (!IsAValidOrderedList(head))
 	{
 		outputhead = CreateEmptyList();
 		for (LISTITEM* temp = head->smallest;temp!=head->greatest;temp = temp->fwd) 
@@ -681,7 +681,7 @@ HEADER* MakeValidDirectionedList(HEADER* head)
 // Prints out info on list head
 void PrintListInfo(HEADER* head)
 {
-	printf("Direction: %s\n", GetDirectionbck(head->direction));
 	printf("Number of elements: %d\n", GetListLength(head));
-	printf("Valid Directioned List: %d\n", IsAValidDirectionedList(head));
+	printf("Valid Ordered List: %d\n", IsAValidOrderedList(head));
+	printf("Print Direction: %s\n", GetDirectionDesc(head->direction));
 }
