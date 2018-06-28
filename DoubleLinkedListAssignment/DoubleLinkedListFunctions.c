@@ -206,34 +206,36 @@ void PrintList(HEADER* head)
 // returns boolean true if the last element printed was head->greatest (print finished)
 // updates the incoming pos pointer to the last element printed
 // this assumes list is not empty and pos is an item of list
-static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItems)
+static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItemsToPrint)
 {
     printf("[");
     if(*pos == GetFirst(head))
 	{
 	    printf("     ");
 	}
-    bool PrintFinished = 0;
-    bool LastReached = 0;
-    bool NItemsPrinted = 0;
-    int i = 1;
-    if(*pos != GetFirst(head))
+	else
 	{
 	    printf("..., ");
 	}
-    while(!PrintFinished)
+	
+    bool ChunkPrintFinished = 0;
+    bool LastReached = 0;
+    bool NbItemsToPrintPrinted = 0;
+    int i = 0;
+
+    while(!ChunkPrintFinished)
 	{
 	    printf("%4d", (*pos)->val);
+		i++;
 		//we reached the last element in the list?
 	    LastReached = (*pos == GetLast(head));
 		//NbItems have been printed?
-	    NItemsPrinted = (i == NbItems);
+	    NbItemsToPrintPrinted = (i == NbItemsToPrint);
 		//The print is finished if either we reached the last element in the list, or NbItems have been printed
-	    PrintFinished = (LastReached || NItemsPrinted);
+	    ChunkPrintFinished = (LastReached || NbItemsToPrintPrinted);
 		//if the print is not finished, update i and pos
-	    if(!PrintFinished)
+	    if(!ChunkPrintFinished)
 		{
-		    i++;
 		    *pos = GetNext(head,*pos);
 		}
 		// there are still elements to print in the list, that will be printed at the next iteration
@@ -243,7 +245,7 @@ static bool PrintNItemsFromPosAndUpdate(HEADER* head, LISTITEM** pos, int NbItem
 		    printf(", ");
 		}
 	}
-    // Print is finished
+    // Print of Chunk is finished
     if(!LastReached)
 	{
 	    // there are still elements to print in the list, that will not be printed here (PrintFinished = true)
@@ -285,7 +287,7 @@ void PrintByChunks(HEADER* head)
 }
 
 //Reset already existing list without erasing possible previously linked element
-HEADER* ResetListNoCLear(HEADER* head)
+HEADER* ResetListNoClear(HEADER* head)
 {
 	head->smallest = (LISTITEM*) NULL;
     head->greatest = (LISTITEM*) NULL; 
@@ -298,7 +300,7 @@ HEADER* CreateEmptyList()
     HEADER* head = malloc(sizeof(HEADER));
 	//default order is asc. 
 	head->order = asc;
-    head = ResetListNoCLear(head);
+    head = ResetListNoClear(head);
     return head;
 }
 
