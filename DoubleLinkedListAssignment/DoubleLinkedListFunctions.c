@@ -10,66 +10,54 @@ static int NMaxPrint = 100;
 //Maximum number of elements to print out in each line
 static int ChunkSize = 10;
 
-// Gets next element depending on order
+// Gets next element depending on Direction
 static LISTITEM* GetNext(HEADER* head, LISTITEM* item)
 {
-	if (head->order == asc) 
+	if (head->direction == fwd) 
 	{
 		return item->fwd;
 	}
-	else if (head->order == desc) 
+	else if (head->direction == bck) 
 	{
 		return item->bck;
 	}
-	else if (head->order == unordered)
+	else
 	{
 		return item->fwd;
 	}
-	else
-	{
-		return (LISTITEM*)NULL;
-	}
 }
 
-// Gets first element in list depending on order
+// Gets first element in list depending on Direction
 static LISTITEM* GetFirst(HEADER* head) 
 {
-	if (head->order == asc) 
+	if (head->direction == fwd) 
 	{
 		return head->smallest;
 	}
-	else if (head->order == desc) 
+	else if (head->direction == bck) 
 	{
 		return head->greatest;
 	}
-	else if (head->order == unordered)
-	{
-		return head->smallest;
-	}
 	else
 	{
-		return (LISTITEM*)NULL;
+		return head->smallest;
 	}
 }
 
-// Gets last element in list depending on order
+// Gets last element in list depending on Direction
 static LISTITEM* GetLast(HEADER* head) 
 {
-	if (head->order == asc) 
+	if (head->direction == fwd) 
 	{
 		return head->greatest;
 	}
-	else if (head->order == desc) 
+	else if (head->direction == bck) 
 	{
 		return head->smallest;
 	}
-	else if (head->order == unordered)
-	{
-		return head->greatest;
-	}
 	else
 	{
-		return (LISTITEM*)NULL;
+		return head->greatest;
 	}
 }
 
@@ -93,8 +81,8 @@ static int GetListLength(HEADER* head)
 	return ListLength;
 }
 
-// Checks if a list is valid in ascending order
-bool IsAValidOrderedList(HEADER* head)
+// Checks if a list is valid in fwdending Direction
+bool IsAValidDirectionedList(HEADER* head)
 {
 	bool output = true;
 	if (GetListLength(head)>1)
@@ -111,20 +99,20 @@ bool IsAValidOrderedList(HEADER* head)
 	return output;
 }
 
-// changes order of head
+// changes Direction of head
 HEADER* ReverseList(HEADER* head)
 {
-	if (head->order == asc)
+	if (head->direction == fwd)
 	{
-		head->order = desc;
+		head->direction = bck;
 	}
-	else if (head->order == desc)
+	else if (head->direction == bck)
 	{
-		head->order = asc;
+		head->direction = fwd;
 	}
-	else if (head->order == unordered)
+	else if (head->direction == undirectioned)
 	{
-		printf("Will not change order as list is unordered.\n");
+		printf("Will not change Direction as list is unDirectioned.\n");
 	}
 	return head;
 }
@@ -298,8 +286,8 @@ HEADER* ResetListNoClear(HEADER* head)
 HEADER* CreateEmptyList()
 {
     HEADER* head = malloc(sizeof(HEADER));
-	//default order is asc. 
-	head->order = asc;
+	//default Direction is fwd. 
+	head->direction = fwd;
     head = ResetListNoClear(head);
     return head;
 }
@@ -395,9 +383,9 @@ static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int inputval)
 {
 	//default output is NULL
 	LISTITEM* output = NULL;
-	if (!IsAValidOrderedList(head))
+	if (!IsAValidDirectionedList(head))
 	{
-		printf("Warning: the List is not validly ordered - any value found might have a duplicate further in the list.\n");
+		printf("Warning: the List is not validly Directioned - any value found might have a duplicate further in the list.\n");
 	}
 	// the list is not empty and there is an elt in it with value greater than, or equal to val
 	if (!IsEmptyList(head))
@@ -437,11 +425,11 @@ static LISTITEM** GetAllEqualEltByVal(HEADER* head, int inputval)
 }
 
 // Returns element in head that has smallest value greater or equal to val
-// static as it requires list to be in ascending order of values going forward through list
+// static as it requires list to be in fwdending Direction of values going forward through list
 static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 {
 	LISTITEM* temp = NULL;
-	if (IsAValidOrderedList(head)) 
+	if (IsAValidDirectionedList(head)) 
 	{
 		if(!(IsEmptyList(head)) && !(head->greatest->val < val))
 		{
@@ -457,13 +445,13 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 	}
 	else
 	{
-		printf("Warning: the List is not validly ordered. Output of GetSmallestGreaterEltByVal will be NULL.");
+		printf("Warning: the List is not validly Directioned. Output of GetSmallestGreaterEltByVal will be NULL.");
 	}
 	return temp;
 }
 
 // Inserts a new element of value valtoins at the start of the list maintaining branching, without check on value.
-// Static so end user in main cannot insert an element out of order or duplicate.
+// Static so end user in main cannot insert an element out of Direction or duplicate.
 static void InsertSmallest(HEADER* head, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
@@ -481,7 +469,7 @@ static void InsertSmallest(HEADER* head, int valtoins)
 }
 
 // Inserts a new element of value valtoins at the end of the list maintaining branching, without check on value.
-// Static so end user in main cannot insert an element out of order or duplicate.
+// Static so end user in main cannot insert an element out of Direction or duplicate.
 static void InsertGreatest(HEADER* head, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
@@ -499,18 +487,18 @@ static void InsertGreatest(HEADER* head, int valtoins)
 	}
 }
 
-HEADER* InsertAtEndUnordered(HEADER* head, int valtoins)
+HEADER* InsertAtEndUnDirectioned(HEADER* head, int valtoins)
 {
 	InsertGreatest(head, valtoins);
-	if (!IsAValidOrderedList(head))
+	if (!IsAValidDirectionedList(head))
 	{
-		head->order = unordered;
+		head->direction = undirectioned;
 	}
 	return head;
 }
 
 // Inserts an element before element nextelt. Assumes that nextelt exists in list.
-// Static so end user in main cannot insert an element out of order or duplicate.
+// Static so end user in main cannot insert an element out of Direction or duplicate.
 static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
@@ -520,16 +508,16 @@ static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
     nextelt->bck = newelt;      // branches next element back to new element
 }
 
-// Inserts an Element in forward order based on its value, updating branching
-// Requires list values to be in ascending order going forward for the order to be meaningful
-// if list is not ordered, element is added at the end. 
+// Inserts an Element in forward Direction based on its value, updating branching
+// Requires list values to be in fwdending Direction going forward for the Direction to be meaningful
+// if list is not Directioned, element is added at the end. 
 HEADER* InsertElement(HEADER* head, int valtoins)
 {
     LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
     // printf("Attemping to insert elt with value %d...\n", valtoins);
     if(nextelt == NULL)
 	{
-	    // there is no element in list greater than the one to insert or list is not validly ordered
+	    // there is no element in list greater than the one to insert or list is not validly Directioned
 	    // Therefore : Insert Element as new greatest
 	    InsertGreatest(head, valtoins);
 	}
@@ -658,31 +646,31 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 	return head;
 }
 
-// Gets descriptive string for list order
-char* GetOrderDesc(Order order)
+// Gets bckriptive string for list Direction
+char* GetDirectionbck(Direction Direction)
 {
 	char* output;
-	switch (order)
+	switch (Direction)
 	{
-	case asc:
-		output = "Ascending";
+	case fwd:
+		output = "fwdending";
 		break;
-	case desc:
-		output = "Descending";
+	case bck:
+		output = "bckending";
 		break;
-	case unordered:
-		output = "Unordered";
+	case undirectioned:
+		output = "UnDirectioned";
 		break;
 	}
 	return output;
 }
 
 
-// Takes a list in input and outputs a valid ordered list
-HEADER* MakeValidOrderedList(HEADER* head)
+// Takes a list in input and outputs a valid Directioned list
+HEADER* MakeValidDirectionedList(HEADER* head)
 {
 	HEADER* outputhead = head;
-	if (!IsAValidOrderedList(head))
+	if (!IsAValidDirectionedList(head))
 	{
 		outputhead = CreateEmptyList();
 		for (LISTITEM* temp = head->smallest;temp!=head->greatest;temp = temp->fwd) 
@@ -694,7 +682,7 @@ HEADER* MakeValidOrderedList(HEADER* head)
 	}
 	else
 	{
-		printf("List was already ordered. No action taken.\n");
+		printf("List was already Directioned. No action taken.\n");
 	}
 	return outputhead;
 }
@@ -704,7 +692,7 @@ HEADER* MakeValidOrderedList(HEADER* head)
 // Prints out info on list head
 void PrintListInfo(HEADER* head)
 {
-	printf("Order: %s\n", GetOrderDesc(head->order));
+	printf("Direction: %s\n", GetDirectionbck(head->direction));
 	printf("Number of elements: %d\n", GetListLength(head));
-	printf("Valid ordered List: %d\n", IsAValidOrderedList(head));
+	printf("Valid Directioned List: %d\n", IsAValidDirectionedList(head));
 }

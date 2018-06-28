@@ -14,7 +14,7 @@ static int ContinueDefault = 1;
 //error status given if integer not in range for menu items
 static int MenuOutOfRangeError = 99;
 
-// Actions available, order will determine order of print in PrintMenu. 
+// Actions available, Direction will determine Direction of print in PrintMenu. 
 // Enum is defined to start at 0 then a dummy action NbAction is added at the end that will be equal to the number of relevant actions
 typedef enum 
 {
@@ -29,12 +29,12 @@ typedef enum
 	ActionDeleteRange,
 	ActionReverseList,
 	ActionClearList,
-	ActionInsertAtEndUnordered,
-	ActionMakeValidOrderedList,
+	ActionInsertAtEndUnDirectioned,
+	ActionMakeValidDirectionedList,
 	NbActions
 } Action;
 
-char* GetActionsDesc(Action action)
+char* GetActionsbck(Action action)
 {
 	char* output;
 	if (action == ActionExit)
@@ -81,13 +81,13 @@ char* GetActionsDesc(Action action)
 	{
 		output = "Print List Info";
 	}
-	else if (action == ActionInsertAtEndUnordered)
+	else if (action == ActionInsertAtEndUnDirectioned)
 	{
-		output = "Insert at End Without check on Order.";
+		output = "Insert at End Without check on Direction.";
 	}
-	else if (action == ActionMakeValidOrderedList)
+	else if (action == ActionMakeValidDirectionedList)
 	{
-		output = "Change List to Valid Ordered List if not Valid";
+		output = "Change List to Valid Directioned List if not Valid";
 	}
 	else
 	{
@@ -96,7 +96,7 @@ char* GetActionsDesc(Action action)
 	return output;
 }
 
-//Order of Menu dictated by enum Actions order and fact that loop is going from 0 to NBMENUITEMS ascending
+//Direction of Menu dictated by enum Actions Direction and fact that loop is going from 0 to NBMENUITEMS fwdending
 static void PrintMenu()
 {
 	system("cls");
@@ -105,7 +105,7 @@ static void PrintMenu()
 	//NbAction last element of enum Action, dummy action used to access the number of relevant element in Actiont 
 	for (Action action = 0; action < NbActions; action++)
 	{
-		printf("	 %2d : %s\n", action, GetActionsDesc(action));
+		printf("	 %2d : %s\n", action, GetActionsbck(action));
 	}
 }
 
@@ -185,17 +185,17 @@ static HEADER* MenuActionInsertSingleValue(HEADER* head)
 	return head;
 }
 
-static HEADER* MenuActionInsertAtEndUnordered(HEADER* head)
+static HEADER* MenuActionInsertAtEndUnDirectioned(HEADER* head)
 {
 	int inputval;
 	int errstatus;
-	printf("Warning : Inserting a value at end will not check for order of values.\n ");
+	printf("Warning : Inserting a value at end will not check for Direction of values.\n ");
 	printf("Input Single Value to Insert At End:  ");
 	inputval = getInputValAsInt(&errstatus);
 	if (errstatus == 1)
 	{
 		printf("\nInserting value at End: %d...", inputval);
-		head = InsertAtEndUnordered(head, inputval);
+		head = InsertAtEndUnDirectioned(head, inputval);
 		printf("\nValue Inserted at End.\n");
 	}
 	else
@@ -206,10 +206,10 @@ static HEADER* MenuActionInsertAtEndUnordered(HEADER* head)
 }
 
 
-static HEADER* MenuActionMakeValidOrderedList(HEADER* head)
+static HEADER* MenuActionMakeValidDirectionedList(HEADER* head)
 {
-	head = MakeValidOrderedList(head);
-	printf("\nList Reordered.\n");
+	head = MakeValidDirectionedList(head);
+	printf("\nList ReDirectioned.\n");
 	return head;
 }
 
@@ -424,11 +424,11 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 	case ActionPrintListInfo:
 		MenuActionPrintListInfo(head);
 		break;
-	case ActionInsertAtEndUnordered:
-		MenuActionInsertAtEndUnordered(head);
+	case ActionInsertAtEndUnDirectioned:
+		MenuActionInsertAtEndUnDirectioned(head);
 		break;
-	case ActionMakeValidOrderedList:
-		head = MenuActionMakeValidOrderedList(head);
+	case ActionMakeValidDirectionedList:
+		head = MenuActionMakeValidDirectionedList(head);
 		break;
 	default: 
 		printf("Not a valid choice.\n");

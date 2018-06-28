@@ -8,10 +8,10 @@
 // only used effectively in print functions
 typedef enum 
 {
-	asc, 
-	desc, 
-	unordered
-} Order;
+	fwd, 
+	bck,
+	undirectioned
+} Direction;
 
 //Struct type for a double linked list element. 
 //Contains:  
@@ -31,7 +31,7 @@ typedef struct listitem {
 typedef struct header {
 	struct listitem *smallest;
 	struct listitem *greatest;
-	Order order;
+	Direction direction;
 } HEADER;
 
 #endif /* TYPES_H */
