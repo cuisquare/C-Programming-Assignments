@@ -312,7 +312,7 @@ HEADER* ClearList(HEADER* head)
 		if (GetListLength(head)>1)
 		{
 			LISTITEM* temp = head->smallest->fwd;
-			while (temp!=NULL)
+			while (temp)
 			{
 				free(temp->bck);
 				temp = temp->fwd;
@@ -347,7 +347,7 @@ static int GetIndexFromElt(HEADER* head, LISTITEM* item)
 {
 	int outputint = 0;
 	bool ItemFound = 0;
-	for (LISTITEM* temp = head->smallest;temp!=NULL;temp = temp->fwd)
+	for (LISTITEM* temp = head->smallest;temp;temp = temp->fwd)
 	{
 		if (temp == item)
 		{
@@ -373,7 +373,7 @@ static LISTITEM* GetEltByIndex(HEADER* head, int IndexSearched)
 	{
 		LISTITEM* temp = head->smallest;
 		int i = 0;
-		for(temp= head->smallest; temp!=NULL;temp=temp->fwd)
+		for(temp= head->smallest; temp;temp=temp->fwd)
 		{
 			if (i==IndexSearched)
 			{
@@ -404,7 +404,7 @@ static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int inputval)
 	{
 		// the list is not empty, a value might be found in list with val equal to inputval
 		LISTITEM* temp;
-		for (temp = head->smallest;temp!=NULL;temp = temp->fwd)
+		for (temp = head->smallest;temp;temp = temp->fwd)
 		{
 			if (temp->val == inputval) 
 			{
@@ -423,7 +423,7 @@ static LISTITEM** GetAllEqualEltByVal(HEADER* head, int inputval)
 	//LISTITEM* MatchingElements[GetListLength(head)];
 	int i = 0;	
 	LISTITEM* temp;
-	for (temp = head->smallest;temp!=NULL;temp = temp->fwd)
+	for (temp = head->smallest;temp;temp = temp->fwd)
 	{
 		if (temp->val == inputval)
 		{
@@ -446,7 +446,7 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 		if(!(IsEmptyList(head)) && !(head->greatest->val < val))
 		{
 			// here the list is not empty and there is an elt in it with value greater than, or equal to val.
-			for (temp = head->smallest;temp!=NULL;temp = temp->fwd)
+			for (temp = head->smallest;temp;temp = temp->fwd)
 			{
 				if (temp->val >= val)
 				{
@@ -634,7 +634,7 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 	LISTITEM** EltsToDel = GetAllEqualEltByVal(head, valtodel);
 	LISTITEM* temp = EltsToDel[0];
 	int i = 0;
-	while (temp!=NULL)
+	while (temp)
 	{ 
 		if (GetListLength(head) > 1)
 		{
