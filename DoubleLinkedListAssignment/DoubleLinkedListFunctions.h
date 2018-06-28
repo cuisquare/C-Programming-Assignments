@@ -40,7 +40,7 @@ HEADER* InsertElement(HEADER* head, int valtoins);
 
 // Deletes One Element with value val, updating branching
 // requires list to be in ascending order because of use of GetSmallestGreaterEltByVal to get to element
-HEADER* DeleteElement(HEADER* head, int valtodel);
+HEADER* DeleteElementByVal(HEADER* head, int valtodel);
 
 // Prints out info on list head
 void PrintListInfo(HEADER* head);

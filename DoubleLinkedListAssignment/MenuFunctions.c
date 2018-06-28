@@ -285,7 +285,7 @@ static HEADER* MenuActionDeleteSingleValue(HEADER* head)
 	if (errstatus == 1)
 	{
 		printf("\nDeleting value: %d...", inputval);
-		head = DeleteElement(head, inputval);
+		head = DeleteElementByVal(head, inputval);
 		printf("\nValue Deleted.\n");
 	}
 	else
@@ -310,7 +310,7 @@ static HEADER* MenuActionDeleteMultipleValues(HEADER* head)
 			if (errstatus == 1)
 			{
 				printf("\nDeleting value: %d...", inputval);
-				head = DeleteElement(head, inputval);
+				head = DeleteElementByVal(head, inputval);
 				printf("\nValue Deleted.\n");
 			}
 			else
@@ -341,7 +341,7 @@ static HEADER* MenuActionDeleteRange(HEADER* head)
 			printf("\nRange to be Deleted Defined as [%d - %d[.\n", RangeStartForDel, RangeEndForDel);
 			for (int i = RangeStartForDel; i < RangeEndForDel; i++)
 			{
-				head = DeleteElement(head, i);
+				head = DeleteElementByVal(head, i);
 			}
 			printf("\nRange Deleted.\n");
 		}
@@ -430,6 +430,8 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 	case ActionMakeValidOrderedList:
 		head = MenuActionMakeValidOrderedList(head);
 		break;
+	default: 
+		printf("Not a valid choice.\n");
 	}
     PressEnterToContinue();
 	return(head);

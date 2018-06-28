@@ -303,8 +303,46 @@ LISTITEM* CreateEltFromVal(int val)
     return newelt;
 }
 
+// outputs integer matching index of searched item
+// with index defined as 0 for head->smallest and incremented going fwd the list
+// returns -1 if the element was not found in the list
+static int GetEltIndex(HEADER* head, LISTITEM* item) 
+{
+	int outputint = 0;
+	bool ItemFound = 0;
+	for (LISTITEM* temp = head->smallest;temp!=head->greatest;temp = temp->fwd)
+	{
+		if (temp == item)
+		{
+			ItemFound = 1;
+			break;
+		}
+		outputint++;
+	}
+	if ((!ItemFound) && (head->greatest != item))
+	{
+		outputint = -1;
+	}
+	return outputint;
+}
+
+// Gets number of elements in list
+static int GetListLength(HEADER* head)
+{
+	int output = 0;
+	if (!IsEmptyList(head))
+	{
+		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
+		{
+			output++;
+		}
+		output++;
+	}
+	return output;
+}
+
 // Returns element in head that has value equal to val
-static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int val)
+static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int inputval)
 {
 	LISTITEM* output = NULL;
 	if (!IsAValidOrderedList(head))
@@ -327,7 +365,7 @@ static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int val)
 		// enter loop if search is not finished
 		while (!searchfinished)
 		{
-			posfound = (temp->val == val); // elt found if its value is equal to value searched
+			posfound = (temp->val == inputval); // elt found if its value is equal to value searched
 			loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
 			searchfinished =
 				(posfound || loopedthrough); // search finished if elt found or loop through list over
@@ -342,6 +380,35 @@ static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int val)
 		}
 	}
 	return output;
+}
+
+// outputs pointer to list of pointer to all elements in list head with val matching inputval
+static LISTITEM** GetAllEqualEltByVal(HEADER* head, int inputval)
+{
+	LISTITEM** MatchingElements= malloc(GetListLength(head)*sizeof(LISTITEM*)); // or -static +GetListLength(head) gives warning "function returns address of local variable"
+	//LISTITEM* MatchingElements[GetListLength(head)];
+	bool ValFound = 0;
+	bool loopedthrough = 0;
+	int i = 0;	
+	LISTITEM* temp = head->smallest;
+	// enter loop if search is not finished
+	while (!loopedthrough)
+	{
+		ValFound = (temp->val == inputval); // elt found if its value is equal to value searched
+		if (ValFound)
+		{
+			MatchingElements[i]=temp;
+			i++;
+		}
+		loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
+		if (!loopedthrough)
+		{ // proceed to next elt in list ifsearch is not finished //&& !loopedthrough
+			temp = temp->fwd;
+		}
+	}
+	realloc(MatchingElements,(i+1)*sizeof(LISTITEM*)); //reallocate size to match actual content of MatchingElements list
+	MatchingElements[i]= (LISTITEM*) NULL;
+	return MatchingElements;
 }
 
 // Returns element in head that has smallest value greater or equal to val
@@ -484,24 +551,35 @@ HEADER* InsertElement(HEADER* head, int valtoins)
 	return head;
 }
 
-// Gets number of elements in list
-static int GetListLength(HEADER* head)
+// deletes element in list
+// requires that elettodel exists in the list otherwise meaningless
+static HEADER* DeleteElementByRef(HEADER* head, LISTITEM* elttodel)
 {
-	int output = 0;
-	if (!IsEmptyList(head))
-	{
-		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
+	if (elttodel == head->smallest)
 		{
-			output++;
+			head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
+											// going through list
 		}
-		output++;
+	else if (elttodel == head->greatest)
+		{
+			head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
+											// inaccessible going through list
+		}
+	else
+	{
+		elttodel->bck->fwd = elttodel->fwd; // branch forward around element deleted - elttodel is now
+											// inaccessible going forward through list
+		elttodel->fwd->bck = elttodel->bck; // branch backward around element to be deleted - elttodel now
+											// inacessible going backward through list
 	}
-	return output;
+	free(elttodel); // free memory still held by elttodel
+	return head;
 }
 
+
 // Deletes One Element with value val, updating branching
-// requires list to be in ascending order because of use of GetSmallestGreaterEltByVal to get to element
-HEADER* DeleteElement(HEADER* head, int valtodel)
+// Multiple searches single deletion at each pass
+static HEADER* DeleteElementByValMultipleSearch(HEADER* head, int valtodel)
 {
     // printf("Attemping to delete elt with value %d...\n", valtodel);
 	bool FinishedDeleting = false;
@@ -510,7 +588,7 @@ HEADER* DeleteElement(HEADER* head, int valtodel)
 	{ 
 		LISTITEM* elttodel = GetFirstEqualEltByVal(head, valtodel);
 		FinishedDeleting = (elttodel == NULL);
-		if ((elttodel == NULL))
+		if (FinishedDeleting)
 		{
 			if (!DeletedAtLeastOne)
 			{
@@ -521,24 +599,7 @@ HEADER* DeleteElement(HEADER* head, int valtodel)
 		{
 			if (GetListLength(head) > 1)
 			{
-				if (elttodel == head->smallest)
-				{
-					head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
-												 // going through list
-				}
-				else if (elttodel == head->greatest)
-				{
-					head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
-												// inaccessible going through list
-				}
-				else
-				{
-					elttodel->bck->fwd = elttodel->fwd; // branch forward around element deleted - elttodel is now
-														// inaccessible going forward through list
-					elttodel->fwd->bck = elttodel->bck; // branch backward around element to be deleted - elttodel now
-														// inacessible going backward through list
-				}
-				free(elttodel); // free memory still held by elttodel
+				head = DeleteElementByRef(head,elttodel);
 			}
 			else
 			{
@@ -552,6 +613,38 @@ HEADER* DeleteElement(HEADER* head, int valtodel)
 	}
     // printf("Updated List: \n");
     // PrintList(head);
+	return head;
+}
+
+// Deletes One Element with value val, updating branching
+// Single search multiple deletions
+HEADER* DeleteElementByVal(HEADER* head, int valtodel)
+{
+	// printf("Attemping to delete elt with value %d...\n", valtodel);
+	LISTITEM** EltsToDel = GetAllEqualEltByVal(head, valtodel);
+	LISTITEM* temp = EltsToDel[0];
+	int i = 0;
+	while (temp!=NULL)
+	{ 
+		if (GetListLength(head) > 1)
+		{
+			head = DeleteElementByRef(head,temp);
+		}
+		else 
+		{
+			//there is only one element left in the list, we clear the list which includes 
+			//reverting head->smallest and head->greatest to empty list attributes.
+			head = ClearList(head);
+		}
+		i++;
+		temp = EltsToDel[i];
+	}
+	printf("Deleted %d element",i);
+	if (i > 0) 
+	{
+		printf("s");
+	}
+	printf(".\n");
 	return head;
 }
 
