@@ -9,8 +9,7 @@
 typedef enum 
 {
 	fwd, 
-	bck,
-	undirectioned
+	bck
 } Direction;
 
 //Struct type for a double linked list element. 

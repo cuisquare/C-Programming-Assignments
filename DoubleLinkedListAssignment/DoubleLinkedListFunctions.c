@@ -110,10 +110,6 @@ HEADER* ReverseList(HEADER* head)
 	{
 		head->direction = fwd;
 	}
-	else if (head->direction == undirectioned)
-	{
-		printf("Will not change Direction as list is unDirectioned.\n");
-	}
 	return head;
 }
 
@@ -487,13 +483,9 @@ static void InsertGreatest(HEADER* head, int valtoins)
 	}
 }
 
-HEADER* InsertAtEndUnDirectioned(HEADER* head, int valtoins)
+HEADER* InsertAtEndUnchecked(HEADER* head, int valtoins)
 {
 	InsertGreatest(head, valtoins);
-	if (!IsAValidDirectionedList(head))
-	{
-		head->direction = undirectioned;
-	}
 	return head;
 }
 
@@ -647,19 +639,16 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 }
 
 // Gets bckriptive string for list Direction
-char* GetDirectionbck(Direction Direction)
+char* GetDirectionbck(Direction direction)
 {
 	char* output;
-	switch (Direction)
+	switch (direction)
 	{
 	case fwd:
-		output = "fwdending";
+		output = "forward";
 		break;
 	case bck:
-		output = "bckending";
-		break;
-	case undirectioned:
-		output = "UnDirectioned";
+		output = "backward";
 		break;
 	}
 	return output;

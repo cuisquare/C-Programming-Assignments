@@ -29,7 +29,7 @@ typedef enum
 	ActionDeleteRange,
 	ActionReverseList,
 	ActionClearList,
-	ActionInsertAtEndUnDirectioned,
+	ActionInsertAtEndUnchecked,
 	ActionMakeValidDirectionedList,
 	NbActions
 } Action;
@@ -81,7 +81,7 @@ char* GetActionsbck(Action action)
 	{
 		output = "Print List Info";
 	}
-	else if (action == ActionInsertAtEndUnDirectioned)
+	else if (action == ActionInsertAtEndUnchecked)
 	{
 		output = "Insert at End Without check on Direction.";
 	}
@@ -185,7 +185,7 @@ static HEADER* MenuActionInsertSingleValue(HEADER* head)
 	return head;
 }
 
-static HEADER* MenuActionInsertAtEndUnDirectioned(HEADER* head)
+static HEADER* MenuActionInsertAtEndUnchecked(HEADER* head)
 {
 	int inputval;
 	int errstatus;
@@ -195,7 +195,7 @@ static HEADER* MenuActionInsertAtEndUnDirectioned(HEADER* head)
 	if (errstatus == 1)
 	{
 		printf("\nInserting value at End: %d...", inputval);
-		head = InsertAtEndUnDirectioned(head, inputval);
+		head = InsertAtEndUnchecked(head, inputval);
 		printf("\nValue Inserted at End.\n");
 	}
 	else
@@ -424,8 +424,8 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 	case ActionPrintListInfo:
 		MenuActionPrintListInfo(head);
 		break;
-	case ActionInsertAtEndUnDirectioned:
-		MenuActionInsertAtEndUnDirectioned(head);
+	case ActionInsertAtEndUnchecked:
+		MenuActionInsertAtEndUnchecked(head);
 		break;
 	case ActionMakeValidDirectionedList:
 		head = MenuActionMakeValidDirectionedList(head);
