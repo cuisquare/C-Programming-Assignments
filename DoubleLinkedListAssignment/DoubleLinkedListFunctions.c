@@ -306,7 +306,7 @@ LISTITEM* CreateEltFromVal(int val)
 // outputs integer matching index of searched item
 // with index defined as 0 for head->smallest and incremented going fwd the list
 // returns -1 if the element was not found in the list
-static int GetEltIndex(HEADER* head, LISTITEM* item) 
+static int GetIndexFromElt(HEADER* head, LISTITEM* item) 
 {
 	int outputint = 0;
 	bool ItemFound = 0;
@@ -324,6 +324,35 @@ static int GetEltIndex(HEADER* head, LISTITEM* item)
 		outputint = -1;
 	}
 	return outputint;
+}
+
+// Gets Element at corresponding Index or NULL if index out of range
+static LISTITEM* GetEltByIndex(HEADER* head, int IndexSearched)
+{
+	LISTITEM* temp;
+	bool IndexWasFound=0;
+	
+	if (!IsEmptyList(head))
+	{
+		LISTITEM* temp = head->smallest;
+		int i = -1;
+		
+		while (temp!=head->greatest)
+		{
+			i++;
+			if (i==IndexSearched)
+			{
+				IndexWasFound = 1;
+				break;
+			}
+		}
+		
+	}
+	if (!IndexWasFound)
+	{
+		temp = NULL;
+	}
+	return temp;
 }
 
 // Gets number of elements in list
