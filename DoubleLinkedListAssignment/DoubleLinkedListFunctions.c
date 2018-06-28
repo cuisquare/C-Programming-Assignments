@@ -76,18 +76,32 @@ static LISTITEM* GetLast(HEADER* head)
 // Checks whether a list is empty
 bool IsEmptyList(HEADER* head)
 {
-    return ((head->smallest == (LISTITEM*)head));
+    return ((head->smallest == (LISTITEM*)NULL));
+}
+
+// Gets number of elements in list
+static int GetListLength(HEADER* head)
+{
+	int ListLength = 0;
+	if (!IsEmptyList(head))
+	{
+		for (LISTITEM* temp = head->smallest; temp != NULL; temp = temp->fwd)
+		{
+			ListLength++;
+		}
+	}
+	return ListLength;
 }
 
 // Checks if a list is valid in ascending order
 bool IsAValidOrderedList(HEADER* head)
 {
 	bool output = true;
-	if (!IsEmptyList(head))
+	if (GetListLength(head)>1)
 	{
-		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
+		for (LISTITEM* temp = head->smallest->fwd; temp != NULL; temp = temp->fwd)
 		{
-			if (temp->val >= (temp->fwd)->val)
+			if (temp->val <= (temp->bck)->val)
 			{
 				output = false;
 				break;
@@ -95,6 +109,24 @@ bool IsAValidOrderedList(HEADER* head)
 		}
 	}
 	return output;
+}
+
+// changes order of head
+HEADER* ReverseList(HEADER* head)
+{
+	if (head->order == asc)
+	{
+		head->order = desc;
+	}
+	else if (head->order == desc)
+	{
+		head->order = asc;
+	}
+	else if (head->order == unordered)
+	{
+		printf("Will not change order as list is unordered.\n");
+	}
+	return head;
 }
 
 // Prints all values of linked list with header head - Verbose
@@ -252,13 +284,21 @@ void PrintByChunks(HEADER* head)
     PrintByNbItemsChunks(head, ChunkSize);
 }
 
+//Reset already existing list without erasing possible previously linked element
+HEADER* ResetListNoCLear(HEADER* head)
+{
+	head->smallest = (LISTITEM*) NULL;
+    head->greatest = (LISTITEM*) NULL; 
+    return head;
+}
+
 // Creates an Empty List
 HEADER* CreateEmptyList()
 {
     HEADER* head = malloc(sizeof(HEADER));
+	//default order is asc. 
 	head->order = asc;
-    head->smallest = (LISTITEM*)head;
-    head->greatest = head->smallest;
+    head = ResetListNoCLear(head);
     return head;
 }
 
@@ -267,25 +307,18 @@ HEADER* ClearList(HEADER* head)
 {
 	if (!IsEmptyList(head))
 	{
-		if (head->smallest!=head->greatest) 
+		if (GetListLength(head)>1)
 		{
 			LISTITEM* temp = head->smallest->fwd;
-			bool ListFinished = 0;
-			while (!ListFinished)
+			while (temp!=NULL)
 			{
-				ListFinished = (temp == head->greatest);
 				free(temp->bck);
-				if (!ListFinished)
-				{
-					temp = temp->fwd;
-				}
+				temp = temp->fwd;
 			}
 		}
 		free(head->greatest);
+		head = CreateEmptyList();
 	}
-	Order saveheadorder = head->order;
-	head = CreateEmptyList();
-	head->order = saveheadorder;
 	return head;
 }
 
@@ -300,6 +333,8 @@ LISTITEM* CreateEltFromVal(int val)
 {
     LISTITEM* newelt = malloc(sizeof(LISTITEM));
     newelt->val = val;
+	newelt->bck = NULL;
+	newelt->fwd= NULL;
     return newelt;
 }
 
@@ -310,7 +345,7 @@ static int GetIndexFromElt(HEADER* head, LISTITEM* item)
 {
 	int outputint = 0;
 	bool ItemFound = 0;
-	for (LISTITEM* temp = head->smallest;temp!=head->greatest;temp = temp->fwd)
+	for (LISTITEM* temp = head->smallest;temp!=NULL;temp = temp->fwd)
 	{
 		if (temp == item)
 		{
@@ -319,7 +354,7 @@ static int GetIndexFromElt(HEADER* head, LISTITEM* item)
 		}
 		outputint++;
 	}
-	if ((!ItemFound) && (head->greatest != item))
+	if (!ItemFound)
 	{
 		outputint = -1;
 	}
@@ -330,82 +365,50 @@ static int GetIndexFromElt(HEADER* head, LISTITEM* item)
 static LISTITEM* GetEltByIndex(HEADER* head, int IndexSearched)
 {
 	LISTITEM* temp;
-	bool IndexWasFound=0;
+	bool IndexFound=0;
 	
 	if (!IsEmptyList(head))
 	{
 		LISTITEM* temp = head->smallest;
-		int i = -1;
-		
-		while (temp!=head->greatest)
+		int i = 0;
+		for(temp= head->smallest; temp!=NULL;temp=temp->fwd)
 		{
-			i++;
 			if (i==IndexSearched)
 			{
-				IndexWasFound = 1;
+				IndexFound = 1;
 				break;
 			}
+			i++;
 		}
-		
 	}
-	if (!IndexWasFound)
+	if (!IndexFound)
 	{
 		temp = NULL;
 	}
 	return temp;
 }
 
-// Gets number of elements in list
-static int GetListLength(HEADER* head)
-{
-	int output = 0;
-	if (!IsEmptyList(head))
-	{
-		for (LISTITEM* temp = head->smallest; temp != head->greatest; temp = temp->fwd)
-		{
-			output++;
-		}
-		output++;
-	}
-	return output;
-}
-
 // Returns element in head that has value equal to val
 static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int inputval)
 {
+	//default output is NULL
 	LISTITEM* output = NULL;
 	if (!IsAValidOrderedList(head))
 	{
 		printf("Warning: the List is not validly ordered - any value found might have a duplicate further in the list.\n");
 	}
 	// the list is not empty and there is an elt in it with value greater than, or equal to val
-	if (IsEmptyList(head))
+	if (!IsEmptyList(head))
 	{
-		// If List is empty, we return pointer to NULL
-	}
-	else
-	{
-		// the list is not empty
-		bool posfound = 0;
-		bool loopedthrough = 0;
-		bool searchfinished = 0;
-
-		LISTITEM* temp = head->smallest;
-		// enter loop if search is not finished
-		while (!searchfinished)
+		// the list is not empty, a value might be found in list with val equal to inputval
+		LISTITEM* temp;
+		for (temp = head->smallest;temp!=NULL;temp = temp->fwd)
 		{
-			posfound = (temp->val == inputval); // elt found if its value is equal to value searched
-			loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
-			searchfinished =
-				(posfound || loopedthrough); // search finished if elt found or loop through list over
-			if (!searchfinished)
-			{ // proceed to next elt in list ifsearch is not finished //&& !loopedthrough
-				temp = temp->fwd;
+			if (temp->val == inputval) 
+			{
+				output = temp;
+				break;
 			}
-		}
-		if (posfound)
-		{
-			output = temp;
 		}
 	}
 	return output;
@@ -416,26 +419,17 @@ static LISTITEM** GetAllEqualEltByVal(HEADER* head, int inputval)
 {
 	LISTITEM** MatchingElements= malloc(GetListLength(head)*sizeof(LISTITEM*)); // or -static +GetListLength(head) gives warning "function returns address of local variable"
 	//LISTITEM* MatchingElements[GetListLength(head)];
-	bool ValFound = 0;
-	bool loopedthrough = 0;
 	int i = 0;	
-	LISTITEM* temp = head->smallest;
-	// enter loop if search is not finished
-	while (!loopedthrough)
+	LISTITEM* temp;
+	for (temp = head->smallest;temp!=NULL;temp = temp->fwd)
 	{
-		ValFound = (temp->val == inputval); // elt found if its value is equal to value searched
-		if (ValFound)
+		if (temp->val == inputval)
 		{
 			MatchingElements[i]=temp;
 			i++;
 		}
-		loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
-		if (!loopedthrough)
-		{ // proceed to next elt in list ifsearch is not finished //&& !loopedthrough
-			temp = temp->fwd;
-		}
 	}
-	realloc(MatchingElements,(i+1)*sizeof(LISTITEM*)); //reallocate size to match actual content of MatchingElements list
+	realloc(MatchingElements,(i+1)*sizeof(LISTITEM*)); //reallocate size to match actual content of MatchingElements list plus 1 element
 	MatchingElements[i]= (LISTITEM*) NULL;
 	return MatchingElements;
 }
@@ -447,37 +441,21 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 	LISTITEM* temp = NULL;
 	if (IsAValidOrderedList(head)) 
 	{
-		if((IsEmptyList(head)) || head->greatest->val < val)
+		if(!(IsEmptyList(head)) && !(head->greatest->val < val))
 		{
-			// If List is empty, or all elements in list are smaller than val (aka there is no elements greater in
-			// list), we return pointer to NULL  this works only if list is ordered by ascending val going forward through
-			// list
-		}
-		else
-		{
-			// the list is not empty and there is an elt in it with value greater than, or equal to val
-			bool posfound = 0;
-			bool loopedthrough = 0;
-			bool searchfinished = 0;
-
-			temp = head->smallest;
-			// enter loop if search is not finished
-			while(!searchfinished)
+			// here the list is not empty and there is an elt in it with value greater than, or equal to val.
+			for (temp = head->smallest;temp!=NULL;temp = temp->fwd)
 			{
-				posfound = (temp->val >= val); // elt found if its value is greater or equal than value searched
-				loopedthrough = (temp == head->greatest); // loop through list over if temp is greatest element in list
-				searchfinished =
-					(posfound || loopedthrough); // search finished if elt found or loop through list over
-				if(!searchfinished)
-				{ // proceed to next elt in list ifsearch is not finished //&& !loopedthrough
-					temp = temp->fwd;
+				if (temp->val >= val)
+				{
+					break;
 				}
 			}
 		}
 	}
 	else
 	{
-		printf("Warning: the List is not validly ordered. Output will be NULL.");
+		printf("Warning: the List is not validly ordered. Output of GetSmallestGreaterEltByVal will be NULL.");
 	}
 	return temp;
 }
@@ -487,27 +465,17 @@ static LISTITEM* GetSmallestGreaterEltByVal(HEADER* head, int val)
 static void InsertSmallest(HEADER* head, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
-    newelt->fwd = head->smallest; // newelt points forward to soon-to-be-old first element
-    head->smallest->bck = newelt; // soon-to-be-old first element points back to newelt
-    head->smallest = newelt;      // newelt is new first element
-}
-
-// changes order of head
-HEADER* ReverseList(HEADER* head)
-{
-	if (head->order == asc)
+	if (IsEmptyList(head))
 	{
-		head->order = desc;
+		head->smallest = newelt;
+		head->greatest = newelt;
 	}
-	else if (head->order == desc)
+	else
 	{
-		head->order = asc;
+		newelt->fwd = head->smallest; // newelt points forward to soon-to-be-old first element
+		head->smallest->bck = newelt; // soon-to-be-old first element points back to newelt
+		head->smallest = newelt;      // newelt is new first element
 	}
-	else if (head->order == unordered)
-	{
-		printf("Will not change order as list is unordered.\n");
-	}
-	return head;
 }
 
 // Inserts a new element of value valtoins at the end of the list maintaining branching, without check on value.
@@ -515,9 +483,18 @@ HEADER* ReverseList(HEADER* head)
 static void InsertGreatest(HEADER* head, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
-    newelt->bck = head->greatest; // newelt points backward to soon-to-be-old last element
-    head->greatest->fwd = newelt; // soon-to-be-old last element points forward to newelt
-    head->greatest = newelt;      // newelt is new last element
+	if (IsEmptyList(head))
+	{
+		head->smallest = newelt;
+		head->greatest = newelt;
+	}
+	else
+	{
+		newelt->bck = head->greatest; // newelt points backward to soon-to-be-old last element
+		head->greatest->fwd = newelt; // soon-to-be-old last element points forward to newelt
+		head->greatest = newelt;      // newelt is new last element
+		//head->greatest->fwd = NULL; //makes next element from greatest NULL for looping //unecessary as bck and fwd of newelt is NULL from CreateEltFromVal
+	}
 }
 
 HEADER* InsertAtEndUnordered(HEADER* head, int valtoins)
@@ -588,11 +565,13 @@ static HEADER* DeleteElementByRef(HEADER* head, LISTITEM* elttodel)
 		{
 			head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
 											// going through list
+			head->smallest->bck = (LISTITEM*) NULL; // necessary as it still points back to old head->smallest
 		}
 	else if (elttodel == head->greatest)
 		{
 			head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
 											// inaccessible going through list
+			head->greatest->fwd = (LISTITEM*) NULL; // necessary as it still points fwd to old head->greatest
 		}
 	else
 	{
