@@ -31,11 +31,11 @@ LISTITEM* CreateEltFromVal(int val);
 // outputs new list that is reverse of input list
 void ReverseDirection(HEADER* head);
 
-//Unsafe insert of value at end of list
+// Uncheked version of Insert, used to test various other functionalities such as MakeValidOrderedList function
 void InsertAtEndUnchecked(HEADER* head, int valtoins);
 
 // Takes a list in input and outputs a valid Ordered list
-HEADER* MakeValidOrderedList(HEADER* head);
+void MakeValidOrderedList(HEADER** head);
 
 // Inserts an Element in forward order based on its value, updating branching
 // Requires list values to be in ascending order going forward

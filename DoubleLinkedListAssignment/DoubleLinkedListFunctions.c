@@ -294,11 +294,10 @@ void PrintByChunks(HEADER* head)
 }
 
 //Reset already existing list without erasing possible previously linked element
-HEADER* ResetListNoClear(HEADER* head)
+void ResetListNoClear(HEADER* head)
 {
 	head->smallest =  NULL;
     head->greatest =  NULL; 
-    return head;
 }
 
 // Creates an Empty List
@@ -307,7 +306,7 @@ HEADER* CreateEmptyList()
     HEADER* head = malloc(sizeof(HEADER));
 	//default Direction is fwd. 
 	head->direction = fwd;
-    head = ResetListNoClear(head);
+    ResetListNoClear(head);
     return head;
 }
 
@@ -480,6 +479,7 @@ static void InsertGreatest(HEADER* head, int valtoins)
 	}
 }
 
+// Uncheked version of Insert, used to test various other functionalities such as MakeValidOrderedList function
 void InsertAtEndUnchecked(HEADER* head, int valtoins)
 {
 	InsertGreatest(head, valtoins);
@@ -627,9 +627,36 @@ static char* GetDirectionDesc(Direction direction)
 	return output;
 }
 
+// Duplicates list header
+HEADER* DuplicateHeader(HEADER* head)
+{
+	return head;
+}
+
+// Takes a list in input and changes it to a Valid Ordered list
+void MakeValidOrderedList(HEADER** head)
+{
+	if (!IsAValidOrderedList(*head))
+	{
+		HEADER* temphead = CreateEmptyList();
+		for (LISTITEM* temp = (*head)->smallest; temp; temp = temp->fwd)
+		{
+			// Insert new element created in heap matching the value of element in list head, and insert in outputhead
+			// the normal checks apply so ouputhead will be valid ordered list
+			InsertNewElementByVal(temphead,temp->val);
+		}
+		*head = ClearList((*head));
+		*head = temphead;
+	}
+	else
+	{
+		printf("List was already Validly Ordered. No action taken.\n");
+	}
+	printf("Comment for debug");
+}
 
 // Takes a list in input and outputs a valid Ordered list
-HEADER* MakeValidOrderedList(HEADER* head)
+HEADER* MakeValidOrderedListOLD(HEADER* head)
 {
 	HEADER* outputhead = head;
 	if (!IsAValidOrderedList(head))
@@ -637,13 +664,15 @@ HEADER* MakeValidOrderedList(HEADER* head)
 		outputhead = CreateEmptyList();		
 		for (LISTITEM* temp = head->smallest; temp; temp = temp->fwd)
 		{
+			// Insert new element created in heap matching the value of element in list head, and insert in outputhead
+			// the normal checks apply so ouputhead will be valid ordered list
 			InsertNewElementByVal(outputhead,temp->val);
 		}
 		ClearList(head);
 	}
 	else
 	{
-		printf("List was already Ordered. No action taken.\n");
+		printf("List was already Validly Ordered. No action taken.\n");
 	}
 	return outputhead;
 }

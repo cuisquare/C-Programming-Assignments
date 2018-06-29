@@ -201,15 +201,13 @@ static void MenuActionInsertAtEndUnchecked(HEADER* head)
 	{
 		printf("\nInput error. No value Inserted.\n");
 	}
-	//return head;
 }
 
 
-static HEADER* MenuActionMakeValidOrderedList(HEADER* head)
+static void MenuActionMakeValidOrderedList(HEADER** head)
 {
-	head = MakeValidOrderedList(head);
+	MakeValidOrderedList(head);
 	printf("\nList Made Valid (duplicates removed, reordered).\n");
-	return head;
 }
 
 static HEADER* MenuActionInsertMultipleValues(HEADER* head)
@@ -423,7 +421,7 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 		MenuActionInsertAtEndUnchecked(head);
 		break;
 	case ActionMakeValidOrderedList:
-		head = MenuActionMakeValidOrderedList(head);
+		MenuActionMakeValidOrderedList(&head);
 		break;
 	default: 
 		printf("Not a valid choice.\n");
