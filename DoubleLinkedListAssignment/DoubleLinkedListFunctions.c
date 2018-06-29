@@ -111,15 +111,15 @@ static bool IsAValidOrderedList(HEADER* head)
 }
 
 // changes Direction of head
-void ReverseDirection(HEADER** headpt)
+void ReverseDirection(HEADER* head)
 {
-	if ((*headpt)->direction == fwd)
+	if (head->direction == fwd)
 	{
-		(*headpt)->direction = bck;
+		head->direction = bck;
 	}
-	else if ((*headpt)->direction == bck)
+	else if (head->direction == bck)
 	{
-		(*headpt)->direction = fwd;
+		head->direction = fwd;
 	}
 }
 

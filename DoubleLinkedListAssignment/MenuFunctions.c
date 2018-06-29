@@ -360,9 +360,9 @@ static void MenuActionPrintList(HEADER* head)
 	printf("List Printed.\n");
 }
 
-static void MenuActionReverseDirection(HEADER** headpt)
+static void MenuActionReverseDirection(HEADER* head)
 {
-	ReverseDirection(headpt);
+	ReverseDirection(head);
 	printf("List Print Direction Reversed.\n");
 	//return head;
 }
@@ -415,7 +415,7 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 		head = MenuActionDeleteRange(head);
 	    break;
 	case ActionReverseDirection:
-		MenuActionReverseDirection(&head);
+		MenuActionReverseDirection(head);
 		break;
 	case ActionPrintListInfo:
 		MenuActionPrintListInfo(head);

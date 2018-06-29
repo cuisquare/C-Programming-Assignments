@@ -44,7 +44,7 @@ void TestReverse() {
 	printf("Before Reversing, head: : \n");
 	PrintListVerbose(head);
 	HEADER* head2 = head;
-	ReverseDirection(&head2);
+	ReverseDirection(head2);
 	printf("After Reversing, head2 : \n");
 	PrintListVerbose(head2);
 	printf("After Reversing, head : \n");
