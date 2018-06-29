@@ -126,7 +126,7 @@ static int getInputValAsInt(int* errstatus)
     invalidinput = (garbagestring == charinput);
     if(invalidinput)
 	{
-	    printf("invalidinput = %s, the input was invalid.", garbagestring);
+	    printf("Input '%s'is invalid.\n", garbagestring);
 	    *errstatus = 0;
 	}
     else
