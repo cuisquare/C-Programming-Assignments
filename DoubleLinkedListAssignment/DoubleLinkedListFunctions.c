@@ -123,19 +123,6 @@ void ReverseDirection(HEADER* head)
 	}
 }
 
-static HEADER* ReverseDirectionOLD(HEADER* head)
-{
-	if (head->direction == fwd)
-	{
-		head->direction = bck;
-	}
-	else if (head->direction == bck)
-	{
-		head->direction = fwd;
-	}
-	return head;
-}
-
 // Prints all values of linked list with header head - Verbose
 void PrintListVerbose(HEADER* head)
 {
@@ -654,30 +641,6 @@ void MakeValidOrderedList(HEADER** head)
 	}
 	printf("Comment for debug");
 }
-
-// Takes a list in input and outputs a valid Ordered list
-HEADER* MakeValidOrderedListOLD(HEADER* head)
-{
-	HEADER* outputhead = head;
-	if (!IsAValidOrderedList(head))
-	{
-		outputhead = CreateEmptyList();		
-		for (LISTITEM* temp = head->smallest; temp; temp = temp->fwd)
-		{
-			// Insert new element created in heap matching the value of element in list head, and insert in outputhead
-			// the normal checks apply so ouputhead will be valid ordered list
-			InsertNewElementByVal(outputhead,temp->val);
-		}
-		ClearList(head);
-	}
-	else
-	{
-		printf("List was already Validly Ordered. No action taken.\n");
-	}
-	return outputhead;
-}
-
-
 
 // Prints out info on list head
 void PrintListInfo(HEADER* head)
