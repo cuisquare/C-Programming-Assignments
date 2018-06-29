@@ -487,8 +487,8 @@ void InsertAtEndUnchecked(HEADER* head, int valtoins)
 }
 
 // Inserts an element before element nextelt. Assumes that nextelt exists in list.
-// Static so end user in main cannot insert an element out of Direction or duplicate.
-static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
+// Static so end user in main cannot insert an element out of Order or duplicate.
+static void InsertBefore(LISTITEM* nextelt, int valtoins)
 {
     LISTITEM* newelt = CreateEltFromVal(valtoins);
     newelt->bck = nextelt->bck; // branch new element back, maintaining link to next element soon-to-be-old prev element
@@ -500,7 +500,7 @@ static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
 // Inserts an Element in forward Direction based on its value, updating branching
 // Requires list values to be in fwdending Direction going forward for the Direction to be meaningful
 // if list is not Directioned, element is added at the end. 
-void InsertElement(HEADER* head, int valtoins)
+void InsertNewElementByVal(HEADER* head, int valtoins)
 {
     LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
     // printf("Attemping to insert elt with value %d...\n", valtoins);
@@ -528,7 +528,7 @@ void InsertElement(HEADER* head, int valtoins)
 		{
 		    // Smallest greater element is list element neither first nor last
 		    // Therefore : insert new element before that element, updating branching
-		    InsertBefore(head, nextelt, valtoins);
+		    InsertBefore(nextelt, valtoins);
 		}
 	}
     // printf("Updated List: \n");
@@ -634,17 +634,16 @@ HEADER* MakeValidOrderedList(HEADER* head)
 	HEADER* outputhead = head;
 	if (!IsAValidOrderedList(head))
 	{
-		outputhead = CreateEmptyList();
-		for (LISTITEM* temp = head->smallest;temp!=head->greatest;temp = temp->fwd) 
+		outputhead = CreateEmptyList();		
+		for (LISTITEM* temp = head->smallest; temp; temp = temp->fwd)
 		{
-			InsertElement(outputhead,temp->val);
+			InsertNewElementByVal(outputhead,temp->val);
 		}
-		InsertElement(outputhead,(head->greatest)->val);
 		ClearList(head);
 	}
 	else
 	{
-		printf("List was already Directioned. No action taken.\n");
+		printf("List was already Ordered. No action taken.\n");
 	}
 	return outputhead;
 }

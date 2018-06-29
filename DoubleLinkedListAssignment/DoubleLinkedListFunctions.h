@@ -39,7 +39,7 @@ HEADER* MakeValidOrderedList(HEADER* head);
 
 // Inserts an Element in forward order based on its value, updating branching
 // Requires list values to be in ascending order going forward
-void InsertElement(HEADER* head, int valtoins);
+void InsertNewElementByVal(HEADER* head, int valtoins);
 
 // Deletes One Element with value val, updating branching
 // requires list to be in ascending order because of use of GetSmallestGreaterEltByVal to get to element

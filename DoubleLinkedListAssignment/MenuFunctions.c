@@ -175,14 +175,13 @@ static void MenuActionInsertSingleValue(HEADER* head)
 	if (errstatus == 1)
 	{
 		printf("\nInserting value: %d...", inputval);
-		InsertElement(head, inputval);
+		InsertNewElementByVal(head, inputval);
 		printf("\nValue Inserted.\n");
 	}
 	else
 	{
 		printf("\nInput error. No value Inserted.\n");
 	}
-	//return head;
 }
 
 static void MenuActionInsertAtEndUnchecked(HEADER* head)
@@ -228,7 +227,7 @@ static HEADER* MenuActionInsertMultipleValues(HEADER* head)
 			if (errstatus == 1)
 			{
 				printf("\nInserting value: %d...", inputval);
-				InsertElement(head, inputval);
+				InsertNewElementByVal(head, inputval);
 				printf("\nValue Inserted.");
 			}
 			else
@@ -260,7 +259,7 @@ static HEADER* MenuActionInsertRange(HEADER* head)
 			printf("\nRange to be Inserted Defined as [%d - %d[.\n", RangeStartForIns, RangeEndForIns);
 			for (int i = RangeStartForIns; i < RangeEndForIns; i++)
 			{
-				InsertElement(head, i);
+				InsertNewElementByVal(head, i);
 			}
 			printf("\nRange Inserted.\n");
 		}
