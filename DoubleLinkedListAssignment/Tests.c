@@ -52,15 +52,15 @@ void TestReverse() {
 
 	//Inserting new value in head2
 	printf("INSERTING 5 in head...\n");
-	head = InsertElement(head, 5);
+	InsertElement(head, 5);
 	printf("INSERTING 3 in head...\n");
-	head = InsertElement(head, 3);
+	InsertElement(head, 3);
 	printf("After Inserting new values 5 then 3, head : \n");
 	PrintListVerbose(head);
 	printf("INSERTING 25 in head2...\n");
-	head2 = InsertElement(head2, 25);
+	InsertElement(head2, 25);
 	printf("INSERTING 23 in head2...\n");
-	head2 = InsertElement(head2, 23);
+	InsertElement(head2, 23);
 	printf("After Inserting new values 25 then 23, head2 : \n");
 	PrintListVerbose(head2);
 }

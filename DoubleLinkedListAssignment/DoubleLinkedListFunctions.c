@@ -480,10 +480,10 @@ static void InsertGreatest(HEADER* head, int valtoins)
 	}
 }
 
-HEADER* InsertAtEndUnchecked(HEADER* head, int valtoins)
+void InsertAtEndUnchecked(HEADER* head, int valtoins)
 {
 	InsertGreatest(head, valtoins);
-	return head;
+	//return head;
 }
 
 // Inserts an element before element nextelt. Assumes that nextelt exists in list.
@@ -500,7 +500,7 @@ static void InsertBefore(HEADER* head, LISTITEM* nextelt, int valtoins)
 // Inserts an Element in forward Direction based on its value, updating branching
 // Requires list values to be in fwdending Direction going forward for the Direction to be meaningful
 // if list is not Directioned, element is added at the end. 
-HEADER* InsertElement(HEADER* head, int valtoins)
+void InsertElement(HEADER* head, int valtoins)
 {
     LISTITEM* nextelt = GetSmallestGreaterEltByVal(head, valtoins);
     // printf("Attemping to insert elt with value %d...\n", valtoins);
@@ -533,7 +533,7 @@ HEADER* InsertElement(HEADER* head, int valtoins)
 	}
     // printf("Updated List: \n");
     // PrintList(head);
-	return head;
+	//return head;
 }
 
 // deletes element in list
@@ -637,9 +637,9 @@ HEADER* MakeValidOrderedList(HEADER* head)
 		outputhead = CreateEmptyList();
 		for (LISTITEM* temp = head->smallest;temp!=head->greatest;temp = temp->fwd) 
 		{
-			outputhead = InsertElement(outputhead,temp->val);
+			InsertElement(outputhead,temp->val);
 		}
-		outputhead = InsertElement(outputhead,(head->greatest)->val);
+		InsertElement(outputhead,(head->greatest)->val);
 		ClearList(head);
 	}
 	else

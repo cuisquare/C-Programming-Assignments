@@ -166,7 +166,7 @@ static void PressEnterToContinue()
     getchar();
 }
 
-static HEADER* MenuActionInsertSingleValue(HEADER* head) 
+static void MenuActionInsertSingleValue(HEADER* head) 
 {
 	int inputval;
 	int errstatus;
@@ -175,17 +175,17 @@ static HEADER* MenuActionInsertSingleValue(HEADER* head)
 	if (errstatus == 1)
 	{
 		printf("\nInserting value: %d...", inputval);
-		head = InsertElement(head, inputval);
+		InsertElement(head, inputval);
 		printf("\nValue Inserted.\n");
 	}
 	else
 	{
 		printf("\nInput error. No value Inserted.\n");
 	}
-	return head;
+	//return head;
 }
 
-static HEADER* MenuActionInsertAtEndUnchecked(HEADER* head)
+static void MenuActionInsertAtEndUnchecked(HEADER* head)
 {
 	int inputval;
 	int errstatus;
@@ -195,14 +195,14 @@ static HEADER* MenuActionInsertAtEndUnchecked(HEADER* head)
 	if (errstatus == 1)
 	{
 		printf("\nInserting value at End: %d...", inputval);
-		head = InsertAtEndUnchecked(head, inputval);
+		InsertAtEndUnchecked(head, inputval);
 		printf("\nValue Inserted at End.\n");
 	}
 	else
 	{
 		printf("\nInput error. No value Inserted.\n");
 	}
-	return head;
+	//return head;
 }
 
 
@@ -228,7 +228,7 @@ static HEADER* MenuActionInsertMultipleValues(HEADER* head)
 			if (errstatus == 1)
 			{
 				printf("\nInserting value: %d...", inputval);
-				head = InsertElement(head, inputval);
+				InsertElement(head, inputval);
 				printf("\nValue Inserted.");
 			}
 			else
@@ -260,7 +260,7 @@ static HEADER* MenuActionInsertRange(HEADER* head)
 			printf("\nRange to be Inserted Defined as [%d - %d[.\n", RangeStartForIns, RangeEndForIns);
 			for (int i = RangeStartForIns; i < RangeEndForIns; i++)
 			{
-				head = InsertElement(head, i);
+				InsertElement(head, i);
 			}
 			printf("\nRange Inserted.\n");
 		}
@@ -391,7 +391,7 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 	    printf("Exiting Program.\n");
 	    break;
 	case ActionInsertSingleValue:
-		head = MenuActionInsertSingleValue(head);
+		MenuActionInsertSingleValue(head);
 	    break;
 	case ActionDeleteSingleValue:
 		head = MenuActionDeleteSingleValue(head);
