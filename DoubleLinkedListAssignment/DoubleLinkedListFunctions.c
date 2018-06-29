@@ -11,7 +11,7 @@ static int NMaxPrint = 100;
 static int ChunkSize = 10;
 
 // completion message print out
-static void PrintCompletionMessage(char* ActionCompleted, int NbElementsConcerned)
+void PrintCompletionMessage(char* ActionCompleted, int NbElementsConcerned)
 {
 	printf("%s %d element", ActionCompleted, NbElementsConcerned);
 	if (NbElementsConcerned > 1)
@@ -622,7 +622,7 @@ static HEADER* DeleteElementByValMultipleSearch(HEADER* head, int valtodel)
 HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 {
 	// printf("Attemping to delete elt with value %d...\n", valtodel);
-	bool NothingToDelete = ((IsAValidOrderedList) && ((valtodel < head->smallest->val) || (valtodel > head->greatest->val)));
+	bool NothingToDelete = ((IsAValidOrderedList(head)) && ((valtodel < head->smallest->val) || (valtodel > head->greatest->val)));
 	if (!NothingToDelete)
 	{
 		LISTITEM** EltsToDel = GetAllEqualEltByVal(head, valtodel);
@@ -648,6 +648,17 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 	else
 	{
 		//printf("Value to delete %d out of range of ordered list [%d - %d], so cannot be deleted.",valtodel, head->smallest->val, head->greatest->val);
+	}
+	return head;
+}
+
+// Delete all elements with value in range
+HEADER* DeleteElementByValRange(HEADER* head, int RangeStart, int RangeEnd)
+{
+	printf("\nRange to be Deleted Defined as [%d - %d[.\n", RangeStart, RangeEnd);
+	for (int i = RangeStart; i<RangeEnd; i++)
+	{
+		head = DeleteElementByVal(head,i);
 	}
 	return head;
 }

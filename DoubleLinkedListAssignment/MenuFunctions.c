@@ -338,11 +338,7 @@ static HEADER* MenuActionDeleteRange(HEADER* head)
 		int RangeEndForDel = getInputValAsInt(&errstatus);
 		if (errstatus == 1)
 		{
-			printf("\nRange to be Deleted Defined as [%d - %d[.\n", RangeStartForDel, RangeEndForDel);
-			for (int i = RangeStartForDel; i < RangeEndForDel; i++)
-			{
-				head = DeleteElementByVal(head, i);
-			}
+			DeleteElementByValRange(head,RangeStartForDel,RangeEndForDel);
 			printf("\nRange Deleted.\n");
 		}
 		else
