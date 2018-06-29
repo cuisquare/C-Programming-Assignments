@@ -210,7 +210,7 @@ static void MenuActionMakeValidOrderedList(HEADER** head)
 	printf("\nList Made Valid (duplicates removed, reordered).\n");
 }
 
-static HEADER* MenuActionInsertMultipleValues(HEADER* head)
+static void MenuActionInsertMultipleValues(HEADER* head)
 {
 	int inputval;
 	int errstatus;
@@ -239,10 +239,9 @@ static HEADER* MenuActionInsertMultipleValues(HEADER* head)
 	{
 		printf("\nInput error. No value will be inserted.\n");
 	}
-	return head;
 }
 
-static HEADER* MenuActionInsertRange(HEADER* head)
+static void MenuActionInsertRange(HEADER* head)
 {
 	int errstatus;
 	printf("Input Start of Range - inclusive - to Insert:  ");
@@ -270,7 +269,6 @@ static HEADER* MenuActionInsertRange(HEADER* head)
 	{
 		printf("\nInput error for Start Range. No value will be inserted.\n");
 	}
-	return head;
 }
 
 static void MenuActionDeleteSingleValue(HEADER* head)
@@ -291,7 +289,7 @@ static void MenuActionDeleteSingleValue(HEADER* head)
 	}
 }
 
-static HEADER* MenuActionDeleteMultipleValues(HEADER* head)
+static void MenuActionDeleteMultipleValues(HEADER* head)
 {
 	int inputval;
 	int errstatus;
@@ -320,7 +318,6 @@ static HEADER* MenuActionDeleteMultipleValues(HEADER* head)
 	{
 		printf("\nInput error. No value will be deleted.\n");
 	}
-	return head;
 }
 
 static void MenuActionDeleteRange(HEADER* head)
@@ -398,13 +395,13 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 		head = MenuActionClearList(head);
 	    break;
 	case ActionInsertMultipleValues:
-		head = MenuActionInsertMultipleValues(head);
+		MenuActionInsertMultipleValues(head);
 	    break;
 	case ActionDeleteMultipleValues:
-		head = MenuActionDeleteMultipleValues(head);
+		MenuActionDeleteMultipleValues(head);
 	    break;
 	case ActionInsertRange:
-		head = MenuActionInsertRange(head);
+		MenuActionInsertRange(head);
 	    break;
 	case ActionDeleteRange:
 		MenuActionDeleteRange(head);
