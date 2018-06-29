@@ -43,10 +43,10 @@ void InsertNewElementByVal(HEADER* head, int valtoins);
 
 // Deletes One Element with value val, updating branching
 // requires list to be in ascending order because of use of GetSmallestGreaterEltByVal to get to element
-HEADER* DeleteElementByVal(HEADER* head, int valtodel);
+void DeleteElementByVal(HEADER* head, int valtodel);
 
 // Delete all elements with value in range
-HEADER* DeleteElementByValRange(HEADER* head, int RangeStart, int RangeEnd);
+void DeleteElementByValRange(HEADER* head, int RangeStart, int RangeEnd);
 
 // Prints out info on list head
 void PrintListInfo(HEADER* head);

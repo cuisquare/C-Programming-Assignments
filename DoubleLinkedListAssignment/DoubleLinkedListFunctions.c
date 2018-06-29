@@ -554,7 +554,7 @@ static HEADER* DeleteElementByRef(HEADER* head, LISTITEM* elttodel)
 
 // Deletes One Element with value val, updating branching
 // Single search multiple deletions
-HEADER* DeleteElementByVal(HEADER* head, int valtodel)
+void DeleteElementByVal(HEADER* head, int valtodel)
 {
 	// printf("Attemping to delete elt with value %d...\n", valtodel);
 	bool NothingToDelete = ((IsAValidOrderedList(head)) && ((valtodel < head->smallest->val) || (valtodel > head->greatest->val)));
@@ -584,18 +584,16 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 	{
 		//printf("Value to delete %d out of range of ordered list [%d - %d], so cannot be deleted.",valtodel, head->smallest->val, head->greatest->val);
 	}
-	return head;
 }
 
 // Delete all elements with value in range
-HEADER* DeleteElementByValRange(HEADER* head, int RangeStart, int RangeEnd)
+void DeleteElementByValRange(HEADER* head, int RangeStart, int RangeEnd)
 {
 	printf("\nRange to be Deleted Defined as [%d - %d[.\n", RangeStart, RangeEnd);
 	for (int i = RangeStart; i<RangeEnd; i++)
 	{
-		head = DeleteElementByVal(head,i);
+		DeleteElementByVal(head,i);
 	}
-	return head;
 }
 
 // Gets descriptive string for list Direction

@@ -273,7 +273,7 @@ static HEADER* MenuActionInsertRange(HEADER* head)
 	return head;
 }
 
-static HEADER* MenuActionDeleteSingleValue(HEADER* head)
+static void MenuActionDeleteSingleValue(HEADER* head)
 {
 	int inputval;
 	int errstatus;
@@ -282,14 +282,13 @@ static HEADER* MenuActionDeleteSingleValue(HEADER* head)
 	if (errstatus == 1)
 	{
 		printf("\nDeleting value: %d...", inputval);
-		head = DeleteElementByVal(head, inputval);
+		DeleteElementByVal(head, inputval);
 		printf("\nValue Deleted.\n");
 	}
 	else
 	{
 		printf("Input error. No value Deleted.\n");
 	}
-	return head;
 }
 
 static HEADER* MenuActionDeleteMultipleValues(HEADER* head)
@@ -307,7 +306,7 @@ static HEADER* MenuActionDeleteMultipleValues(HEADER* head)
 			if (errstatus == 1)
 			{
 				printf("\nDeleting value: %d...", inputval);
-				head = DeleteElementByVal(head, inputval);
+				DeleteElementByVal(head, inputval);
 				printf("\nValue Deleted.\n");
 			}
 			else
@@ -324,7 +323,7 @@ static HEADER* MenuActionDeleteMultipleValues(HEADER* head)
 	return head;
 }
 
-static HEADER* MenuActionDeleteRange(HEADER* head)
+static void MenuActionDeleteRange(HEADER* head)
 {
 	int errstatus;
 	printf("Input Start of Range - inclusive - to Delete:  ");
@@ -347,7 +346,6 @@ static HEADER* MenuActionDeleteRange(HEADER* head)
 	{
 		printf("\nInput error for Start Range. No value will be deleted.\n");
 	}
-	return head;
 }
 
 static void MenuActionPrintList(HEADER* head)
@@ -391,7 +389,7 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 		MenuActionInsertSingleValue(head);
 	    break;
 	case ActionDeleteSingleValue:
-		head = MenuActionDeleteSingleValue(head);
+		MenuActionDeleteSingleValue(head);
 	    break;
 	case ActionPrintList:
 		MenuActionPrintList(head);
@@ -409,7 +407,7 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 		head = MenuActionInsertRange(head);
 	    break;
 	case ActionDeleteRange:
-		head = MenuActionDeleteRange(head);
+		MenuActionDeleteRange(head);
 	    break;
 	case ActionReverseDirection:
 		MenuActionReverseDirection(head);
