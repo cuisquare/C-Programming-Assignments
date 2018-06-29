@@ -10,6 +10,17 @@ static int NMaxPrint = 100;
 //Maximum number of elements to print out in each line
 static int ChunkSize = 10;
 
+// completion message print out
+static void PrintCompletionMessage(char* ActionCompleted, int NbElementsConcerned)
+{
+	printf("%s %d element", ActionCompleted, NbElementsConcerned);
+	if (NbElementsConcerned > 1)
+	{
+		printf("s");
+	}
+	printf(".\n");
+}
+
 // Gets next element depending on Direction
 static LISTITEM* GetNext(HEADER* head, LISTITEM* item)
 {
@@ -632,12 +643,7 @@ HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 			i++;
 			temp = EltsToDel[i];
 		}
-		printf("Deleted %d element", i);
-		if (i > 1)
-		{
-			printf("s");
-		}
-		printf(".\n");
+		PrintCompletionMessage("Deleted", i);
 	}
 	else
 	{
