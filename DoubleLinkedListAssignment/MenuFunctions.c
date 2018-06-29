@@ -364,12 +364,11 @@ static void MenuActionPrintListInfo(HEADER* head)
 	PrintListInfo(head);
 }
 
-static HEADER* MenuActionClearList(HEADER* head)
+static void MenuActionClearList(HEADER** head)
 {
-	head = ClearList(head);
+	ClearList(head);
 	//TODO modify so that reaffectation is not necessary
 	printf("List Cleared.\n");
-	return head;
 }
 
 
@@ -392,7 +391,7 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 		MenuActionPrintList(head);
 	    break;
 	case ActionClearList:
-		head = MenuActionClearList(head);
+		MenuActionClearList(&head);
 	    break;
 	case ActionInsertMultipleValues:
 		MenuActionInsertMultipleValues(head);

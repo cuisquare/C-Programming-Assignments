@@ -298,28 +298,27 @@ HEADER* CreateEmptyList()
 }
 
 // Clears a List
-HEADER* ClearList(HEADER* head)
+void ClearList(HEADER** head)
 {
-	if (!IsEmptyList(head))
+	if (!IsEmptyList(*head))
 	{
-		if (GetListLength(head)>1)
+		if (GetListLength(*head)>1)
 		{
-			LISTITEM* temp = head->smallest->fwd;
+			LISTITEM* temp = (*head)->smallest->fwd;
 			while (temp)
 			{
 				free(temp->bck);
 				temp = temp->fwd;
 			}
 		}
-		free(head->greatest);
-		head = CreateEmptyList();
+		free((*head)->greatest);
+		*head = CreateEmptyList();
 	}
-	return head;
 }
 
 // Fully Deletes a List
 static void DeleteList(HEADER* head) {
-	ClearList(head);
+	ClearList(&head);
 	free(head);
 }
 
@@ -573,7 +572,7 @@ void DeleteElementByVal(HEADER* head, int valtodel)
 			{
 				//there is only one element left in the list, we clear the list which includes 
 				//reverting head->smallest and head->greatest to empty list attributes.
-				head = ClearList(head);
+				ClearList(&head);
 			}
 			i++;
 			temp = EltsToDel[i];
@@ -630,14 +629,13 @@ void MakeValidOrderedList(HEADER** head)
 			// the normal checks apply so ouputhead will be valid ordered list
 			InsertNewElementByVal(temphead,temp->val);
 		}
-		*head = ClearList((*head));
+		ClearList(head);
 		*head = temphead;
 	}
 	else
 	{
 		printf("List was already Validly Ordered. No action taken.\n");
 	}
-	printf("Comment for debug");
 }
 
 // Prints out info on list head

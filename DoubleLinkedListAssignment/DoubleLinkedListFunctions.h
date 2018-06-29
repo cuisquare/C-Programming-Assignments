@@ -23,7 +23,7 @@ void PrintByChunks(HEADER* head);
 HEADER* CreateEmptyList();
 
 // Clears a List
-HEADER* ClearList(HEADER* head);
+void ClearList(HEADER** head);
 
 // Creates new LISTITEM elt containing value val
 LISTITEM* CreateEltFromVal(int val);
