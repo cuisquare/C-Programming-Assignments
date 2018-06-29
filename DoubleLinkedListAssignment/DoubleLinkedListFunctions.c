@@ -385,32 +385,6 @@ static LISTITEM* GetEltByIndex(HEADER* head, int IndexSearched)
 	return temp;
 }
 
-// Returns element in head that has value equal to val
-static LISTITEM* GetFirstEqualEltByVal(HEADER* head, int inputval)
-{
-	//default output is NULL
-	LISTITEM* output = NULL;
-	if (!IsAValidOrderedList(head))
-	{
-		printf("Warning: the List is not validly Directioned - any value found might have a duplicate further in the list.\n");
-	}
-	// the list is not empty and there is an elt in it with value greater than, or equal to val
-	if (!IsEmptyList(head))
-	{
-		// the list is not empty, a value might be found in list with val equal to inputval
-		LISTITEM* temp;
-		for (temp = head->smallest;temp;temp = temp->fwd)
-		{
-			if (temp->val == inputval) 
-			{
-				output = temp;
-				break;
-			}
-		}
-	}
-	return output;
-}
-
 // outputs pointer to list of pointer to all elements in list head with val matching inputval
 static LISTITEM** GetAllEqualEltByVal(HEADER* head, int inputval)
 {
@@ -578,44 +552,6 @@ static HEADER* DeleteElementByRef(HEADER* head, LISTITEM* elttodel)
 }
 
 
-// Deletes One Element with value val, updating branching
-// Multiple searches single deletion at each pass
-static HEADER* DeleteElementByValMultipleSearch(HEADER* head, int valtodel)
-{
-    // printf("Attemping to delete elt with value %d...\n", valtodel);
-	bool FinishedDeleting = false;
-	bool DeletedAtLeastOne = false;
-	while (!FinishedDeleting)
-	{ 
-		LISTITEM* elttodel = GetFirstEqualEltByVal(head, valtodel);
-		FinishedDeleting = (elttodel == NULL);
-		if (FinishedDeleting)
-		{
-			if (!DeletedAtLeastOne)
-			{
-				printf("There is no element with value %d in the list.\n", valtodel);
-			}
-		}
-		else
-		{
-			if (GetListLength(head) > 1)
-			{
-				head = DeleteElementByRef(head,elttodel);
-			}
-			else
-			{
-				//there is only one element left in the list, we clear the list which includes 
-				//reverting head->smallest and head->greatest to empty list attributes.
-				head = ClearList(head);
-			}
-			DeletedAtLeastOne = true;
-			printf("Deleted one instance of %d.\n", valtodel);
-		}
-	}
-    // printf("Updated List: \n");
-    // PrintList(head);
-	return head;
-}
 
 // Deletes One Element with value val, updating branching
 // Single search multiple deletions
