@@ -100,7 +100,7 @@ static bool IsAValidOrderedList(HEADER* head)
 }
 
 // changes Direction of head
-HEADER* ReverseList(HEADER* head)
+HEADER* ReverseDirection(HEADER* head)
 {
 	if (head->direction == fwd)
 	{
@@ -611,30 +611,38 @@ static HEADER* DeleteElementByValMultipleSearch(HEADER* head, int valtodel)
 HEADER* DeleteElementByVal(HEADER* head, int valtodel)
 {
 	// printf("Attemping to delete elt with value %d...\n", valtodel);
-	LISTITEM** EltsToDel = GetAllEqualEltByVal(head, valtodel);
-	LISTITEM* temp = EltsToDel[0];
-	int i = 0;
-	while (temp)
-	{ 
-		if (GetListLength(head) > 1)
-		{
-			head = DeleteElementByRef(head,temp);
-		}
-		else 
-		{
-			//there is only one element left in the list, we clear the list which includes 
-			//reverting head->smallest and head->greatest to empty list attributes.
-			head = ClearList(head);
-		}
-		i++;
-		temp = EltsToDel[i];
-	}
-	printf("Deleted %d element",i);
-	if (i > 0) 
+	bool NothingToDelete = ((IsAValidOrderedList) && ((valtodel < head->smallest->val) || (valtodel > head->greatest->val)));
+	if (!NothingToDelete)
 	{
-		printf("s");
+		LISTITEM** EltsToDel = GetAllEqualEltByVal(head, valtodel);
+		LISTITEM* temp = EltsToDel[0];
+		int i = 0;
+		while (temp)
+		{
+			if (GetListLength(head) > 1)
+			{
+				head = DeleteElementByRef(head, temp);
+			}
+			else
+			{
+				//there is only one element left in the list, we clear the list which includes 
+				//reverting head->smallest and head->greatest to empty list attributes.
+				head = ClearList(head);
+			}
+			i++;
+			temp = EltsToDel[i];
+		}
+		printf("Deleted %d element", i);
+		if (i > 1)
+		{
+			printf("s");
+		}
+		printf(".\n");
 	}
-	printf(".\n");
+	else
+	{
+		//printf("Value to delete %d out of range of ordered list [%d - %d], so cannot be deleted.",valtodel, head->smallest->val, head->greatest->val);
+	}
 	return head;
 }
 

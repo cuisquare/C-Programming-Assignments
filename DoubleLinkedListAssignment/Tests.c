@@ -34,7 +34,7 @@ void TestUpdatePos()
     getchar();
 }
 
-//Testing ReverseList function
+//Testing ReverseDirection function
 void TestReverse() {
 	HEADER* head = CreateEmptyList();
     for(int i = 10; i < 20; i++)
@@ -43,7 +43,7 @@ void TestReverse() {
 	}
 	printf("Before Reversing, head: : \n");
 	PrintListVerbose(head);
-	HEADER* head2 = ReverseList(head);
+	HEADER* head2 = ReverseDirection(head);
 	printf("After Reversing, head2 : \n");
 	PrintListVerbose(head2);
 	printf("After Reversing, head : \n");

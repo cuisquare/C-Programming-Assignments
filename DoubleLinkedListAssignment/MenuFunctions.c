@@ -21,16 +21,16 @@ typedef enum
 	ActionExit=0,
 	ActionPrintList,
 	ActionPrintListInfo,
+	ActionReverseDirection,
 	ActionInsertSingleValue,
 	ActionDeleteSingleValue,
 	ActionInsertMultipleValues,
 	ActionDeleteMultipleValues,
 	ActionInsertRange,
 	ActionDeleteRange,
-	ActionReverseList,
+	ActionMakeValidOrderedList,
 	ActionClearList,
 	ActionInsertAtEndUnchecked,
-	ActionMakeValidOrderedList,
 	NbActions
 } Action;
 
@@ -73,9 +73,9 @@ char* GetActionsbck(Action action)
 	{
 		output = "Delete Range from List";
 	}
-	else if (action == ActionReverseList)
+	else if (action == ActionReverseDirection)
 	{
-		output = "Reverse List";
+		output = "Reverse Print Direction";
 	}
 	else if (action == ActionPrintListInfo)
 	{
@@ -145,7 +145,7 @@ static int getMenuChoice(int* errstatus)
     // catching additional error that the input while integer is outside of range allowed for menu choices
     if(*errstatus == 1)
 	{
-	    if((output < 0) || (output > NbActions))
+	    if((output < 0) || (output >= NbActions))
 		{
 		    *errstatus = MenuOutOfRangeError;
 		}
@@ -364,9 +364,9 @@ static void MenuActionPrintList(HEADER* head)
 	printf("List Printed.\n");
 }
 
-static HEADER* MenuActionReverseList(HEADER* head)
+static HEADER* MenuActionReverseDirection(HEADER* head)
 {
-	head = ReverseList(head);
+	head = ReverseDirection(head);
 	printf("List Print Direction Reversed.\n");
 	return head;
 }
@@ -418,8 +418,8 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 	case ActionDeleteRange:
 		head = MenuActionDeleteRange(head);
 	    break;
-	case ActionReverseList:
-		head = MenuActionReverseList(head);
+	case ActionReverseDirection:
+		head = MenuActionReverseDirection(head);
 		break;
 	case ActionPrintListInfo:
 		MenuActionPrintListInfo(head);
@@ -456,7 +456,7 @@ void MenuLoop() {
 		{
 		    if(errstatus == MenuOutOfRangeError)
 			{
-			    printf("Menu Input Error: Menu Input was integer but not between 0 and 10.\n");
+			    printf("Menu Input Error: Menu Input should be integer in [0 - %d] range.\n", (NbActions-1));
 			}
 		    else
 			{
