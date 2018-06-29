@@ -532,13 +532,13 @@ static HEADER* DeleteElementByRef(HEADER* head, LISTITEM* elttodel)
 		{
 			head->smallest = elttodel->fwd; // branch head smallest to old 2nd element - elttodel now inaccessible
 											// going through list
-			head->smallest->bck = NULL; // necessary as it still points back to old head->smallest
+			head->smallest->bck = NULL; 	// necessary as it still points back to old head->smallest
 		}
 	else if (elttodel == head->greatest)
 		{
 			head->greatest = elttodel->bck; // branch head greatest to old one but last element - elttodel now
 											// inaccessible going through list
-			head->greatest->fwd =  NULL; // necessary as it still points fwd to old head->greatest
+			head->greatest->fwd =  NULL; 	// necessary as it still points fwd to old head->greatest
 		}
 	else
 	{
