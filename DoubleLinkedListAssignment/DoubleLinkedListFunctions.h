@@ -29,7 +29,7 @@ HEADER* ClearList(HEADER* head);
 LISTITEM* CreateEltFromVal(int val);
 
 // outputs new list that is reverse of input list
-HEADER* ReverseDirection(HEADER* head);
+void ReverseDirection(HEADER** head);
 
 //Unsafe insert of value at end of list
 HEADER* InsertAtEndUnchecked(HEADER* head, int valtoins);

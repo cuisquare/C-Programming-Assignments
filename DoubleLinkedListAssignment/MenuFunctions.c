@@ -362,7 +362,7 @@ static void MenuActionPrintList(HEADER* head)
 
 static HEADER* MenuActionReverseDirection(HEADER* head)
 {
-	head = ReverseDirection(head);
+	ReverseDirection(&head);
 	printf("List Print Direction Reversed.\n");
 	return head;
 }
