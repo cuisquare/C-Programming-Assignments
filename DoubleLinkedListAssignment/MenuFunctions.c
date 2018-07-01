@@ -9,7 +9,7 @@
 #include "DoubleLinkedListFunctions.h"
 
 //continues looping through menu after invalid menu choice 1 - or not
-static int ContinueDefault = 1; 
+static int ContinueDefault = 1;
 
 //error status given if integer not in range for menu items
 static int MenuOutOfRangeError = 99;
@@ -34,7 +34,7 @@ typedef enum
 	NbActions
 } Action;
 
-char* GetActionsbck(Action action)
+char* GetActionsdesc(Action action)
 {
 	char* output;
 	if (action == ActionExit)
@@ -105,7 +105,7 @@ static void PrintMenu()
 	//NbAction last element of enum Action, dummy action used to access the number of relevant element in Actiont 
 	for (Action action = 0; action < NbActions; action++)
 	{
-		printf("	 %2d : %s\n", action, GetActionsbck(action));
+		printf("	 %2d : %s\n", action, GetActionsdesc(action));
 	}
 }
 
@@ -116,7 +116,7 @@ static int getInputValAsInt(int* errstatus)
     char charinput[10];
     char* garbagestring;
     bool invalidinput = 1;
-    int inputval;
+	int inputval;
 
     scanf_s("%9s", &charinput, 9);
     inputval = strtol(charinput, &garbagestring, 10);
@@ -374,7 +374,7 @@ static void MenuActionClearList(HEADER** head)
 
 
 // Carry out choice from user input
-static HEADER* carryOutChoice(HEADER* head, Action choice)
+static void carryOutChoice(HEADER** head, Action choice)
 {
     switch(choice)
 	{
@@ -382,46 +382,45 @@ static HEADER* carryOutChoice(HEADER* head, Action choice)
 	    printf("Exiting Program.\n");
 	    break;
 	case ActionInsertSingleValue:
-		MenuActionInsertSingleValue(head);
+		MenuActionInsertSingleValue(*head);
 	    break;
 	case ActionDeleteSingleValue:
-		MenuActionDeleteSingleValue(head);
+		MenuActionDeleteSingleValue(*head);
 	    break;
 	case ActionPrintList:
-		MenuActionPrintList(head);
+		MenuActionPrintList(*head);
 	    break;
 	case ActionClearList:
-		MenuActionClearList(&head);
+		MenuActionClearList(head);
 	    break;
 	case ActionInsertMultipleValues:
-		MenuActionInsertMultipleValues(head);
+		MenuActionInsertMultipleValues(*head);
 	    break;
 	case ActionDeleteMultipleValues:
-		MenuActionDeleteMultipleValues(head);
+		MenuActionDeleteMultipleValues(*head);
 	    break;
 	case ActionInsertRange:
-		MenuActionInsertRange(head);
+		MenuActionInsertRange(*head);
 	    break;
 	case ActionDeleteRange:
-		MenuActionDeleteRange(head);
+		MenuActionDeleteRange(*head);
 	    break;
 	case ActionReverseDirection:
-		MenuActionReverseDirection(head);
+		MenuActionReverseDirection(*head);
 		break;
 	case ActionPrintListInfo:
-		MenuActionPrintListInfo(head);
+		MenuActionPrintListInfo(*head);
 		break;
 	case ActionInsertAtEndUnchecked:
-		MenuActionInsertAtEndUnchecked(head);
+		MenuActionInsertAtEndUnchecked(*head);
 		break;
 	case ActionMakeValidOrderedList:
-		MenuActionMakeValidOrderedList(&head);
+		MenuActionMakeValidOrderedList(head);
 		break;
 	default: 
 		printf("Not a valid choice.\n");
 	}
     PressEnterToContinue();
-	return(head);
 }
 
 // Menu Loop for program : 
@@ -437,7 +436,7 @@ void MenuLoop() {
 	    choice = getMenuChoice(&errstatus);
 	    if(errstatus == 1)
 		{
-		    head = carryOutChoice(head, choice);
+		    carryOutChoice(&head, choice);
 		}
 	    else
 		{
