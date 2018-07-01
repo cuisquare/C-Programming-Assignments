@@ -9,7 +9,7 @@
 #include "DoubleLinkedListFunctions.h"
 
 //continues looping through menu after invalid menu choice 1 - or not
-static int ContinueDefault = 1;
+static bool ContinueAfterMenuChoiceInputError = 1;
 
 //error status given if integer not in range for menu items
 static int MenuOutOfRangeError = 99;
@@ -430,6 +430,7 @@ void MenuLoop() {
 
     int choice;
     int errstatus;
+	bool ContinueLoop;
     do
 	{
 	    PrintMenu();
@@ -449,9 +450,14 @@ void MenuLoop() {
 			    printf("Menu Input Error: Menu Input could not succesfully be interpreted as integer "
 			           "value.\n");
 			}
-		    choice = ContinueDefault;
+			if (!ContinueAfterMenuChoiceInputError)
+			{
+				printf("Exiting Program...\n");
+			}
 		    PressEnterToContinue();
 		}
+		//Loop Continues if valid input choice not equal to zero, or invalid choice and ContinueAfterInputError is true
+		ContinueLoop = (choice != 0) && ((errstatus == 1) || (ContinueAfterMenuChoiceInputError));
 	}
-    while(choice != 0);
+    while(ContinueLoop);
 }
